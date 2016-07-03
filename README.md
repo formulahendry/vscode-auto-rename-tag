@@ -25,6 +25,9 @@ By default, it is `["*"]` and will be activated for all languages.
 ```
 
 ## Change Log
+### 0.0.2
+* Update logo
+
 ### 0.0.1
 * Initial Release
 

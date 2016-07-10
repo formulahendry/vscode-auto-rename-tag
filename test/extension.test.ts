@@ -7,6 +7,7 @@ import * as testUtil from './testUtil';
 
 // Defines a Mocha test suite to group tests of similar kind together
 suite("Extension Tests", function () {
+    suiteSetup(testUtil.setupWorkspace);
 
     test("Insert at opening tag", function (done) {
         testUtil.insertAtPosition("<div></div>", "0", new vscode.Position(0, 4), "<div0></div0>", done);

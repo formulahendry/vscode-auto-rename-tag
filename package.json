@@ -2,7 +2,7 @@
     "name": "auto-rename-tag",
     "displayName": "Auto Rename Tag",
     "description": "Auto rename paired HTML/XML tag",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "formulahendry",
     "icon": "images/logo.png",
     "engines": {
@@ -50,9 +50,6 @@
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
         "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "dependencies": {
-        "parse5": "^2.1.5"
     },
     "devDependencies": {
         "typescript": "^1.8.5",

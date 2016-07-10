@@ -25,6 +25,12 @@ By default, it is `["*"]` and will be activated for all languages.
 ```
 
 ## Change Log
+### 0.0.3
+* Fix paired tags not updated when there are void elements or self-closing tags between paired tags
+* Fix [GitHub issue#2](https://github.com/formulahendry/vscode-auto-rename-tag/issues/2)
+* Fix [GitHub issue#3](https://github.com/formulahendry/vscode-auto-rename-tag/issues/3)
+* Parse document independently instead of using SAXParser of parse5 npm package to avoid uncontrollable parse behavior
+
 ### 0.0.2
 * Update logo
 

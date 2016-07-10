@@ -1,11 +1,21 @@
 'use strict';
 import * as vscode from 'vscode';
-import { findPairedTag } from './tagParser';
+import { findPairedTag, emptyTagName } from './tagParser';
+
+interface Tag {
+    word: string;
+    isStartTag: boolean;
+}
 
 export class TagManager {
     private _word: string;
+    private _emptyTagOffset: number;
 
     run() {
+        vscode.window.onDidChangeActiveTextEditor(event => {
+            this.getCurrentWordForNewActiveTextEditor(event);
+        })
+
         vscode.window.onDidChangeTextEditorSelection(event => {
             this.getCurrentWord(event);
         })
@@ -13,6 +23,16 @@ export class TagManager {
         vscode.workspace.onDidChangeTextDocument(event => {
             this.updatePairedTag(event);
         });
+    }
+
+    private getCurrentWordForNewActiveTextEditor(editor: vscode.TextEditor): void {
+        let document = editor.document;
+        let selection = editor.selection;
+        let range = document.getWordRangeAtPosition(selection.active);
+        let word = document.getText(range);
+        if (word.indexOf("<") === -1) {
+            this._word = word;
+        }
     }
 
     private isEnabled(): boolean {
@@ -30,7 +50,10 @@ export class TagManager {
         let selection = event.selections[0];
         let document = event.textEditor.document;
         let range = document.getWordRangeAtPosition(selection.active);
-        this._word = document.getText(range);
+        let word = document.getText(range);
+        if (word.indexOf("<") === -1) {
+            this._word = word;
+        }
     }
 
     private updatePairedTag(event: vscode.TextDocumentChangeEvent): void {
@@ -43,31 +66,50 @@ export class TagManager {
         let selection = editor.selection;
 
         let cursorPositon = selection.active;
-        if (event.contentChanges[0].text === "") {
-            cursorPositon = cursorPositon.translate(0, -1);
+        if (event.contentChanges[0].text === "" || !selection.start.isEqual(selection.end)) {
+            if (selection.start.isEqual(selection.end)) {
+                cursorPositon = cursorPositon.translate(0, -1);
+            } else {
+                // Handle deletion or update of multi-character
+                if (selection.start.isBefore(selection.end)) {
+                    cursorPositon = selection.start;
+                } else {
+                    cursorPositon = selection.end;
+                }
+            }
         }
 
-        let newWord = this.getNewWord(document, cursorPositon);
-        if (newWord === null) {
+        let newTag = this.getNewWord(document, cursorPositon);
+        if (newTag === null) {
             return;
         }
 
-        this.findAndReplacePairedTag(document, editor, cursorPositon, newWord)
+        this.findAndReplacePairedTag(document, editor, cursorPositon, newTag)
     }
 
-    private getNewWord(document: vscode.TextDocument, cursorPositon: vscode.Position): string {
+    private getNewWord(document: vscode.TextDocument, cursorPositon: vscode.Position): Tag {
         let textLine = document.lineAt(cursorPositon);
         let text = textLine.text;
-        let regex = /<(\/?[a-zA-Z][a-zA-Z0-9]*)(?:\s[^\s<>]*?[^\s/<>]+?)*?>/g;
-        let result: string[];
+        let regex = /<(\/?)(?:([a-zA-Z][a-zA-Z0-9]*))?(?:\s[^\s<>]*?[^\s/<>]+?)*?>/g;
+        let result = null;
         let index = -1;
         let character = cursorPositon.character;
         let newWord: string;
 
         while ((result = regex.exec(text)) !== null) {
-            index = text.indexOf(result[1], index + 1);
-            if (index <= character && character <= index + result[1].length) {
-                return result[1];
+            if (!result[2]) {
+                let isStartTag = result[1] === "";
+                let offset = isStartTag ? 1 : 2;
+                let search = isStartTag ? "<" : "</";
+                index = text.indexOf(search, result.index);
+                if (index + offset === character) {
+                    return { word: "", isStartTag: isStartTag };
+                }
+            } else {
+                index = text.indexOf(result[2], result.index);
+                if (index <= character && character <= index + result[2].length) {
+                    return { word: result[2], isStartTag: result[1] === "" };
+                }
             }
         }
 
@@ -75,29 +117,55 @@ export class TagManager {
     }
 
     private findAndReplacePairedTag(document: vscode.TextDocument, editor: vscode.TextEditor,
-        cursorPositon: vscode.Position, newWord: string): void {
+        cursorPositon: vscode.Position, newTag: Tag): void {
         let startTag: string;
         let endTag: string;
 
-        if (newWord.substr(0, 1) === "/") {
-            newWord = newWord.substr(1);
-            startTag = this._word;
-            endTag = newWord
-        } else {
-            startTag = newWord;
-            endTag = this._word
-        }
-
-        if (this._word === newWord) {
+        if (this._word === newTag.word) {
             return;
         }
 
-        let pairedTag = findPairedTag(document.getText(), document.offsetAt(cursorPositon), startTag, endTag);
+        if (newTag.isStartTag) {
+            startTag = newTag.word;
+            endTag = this._word
+        } else {
+            startTag = this._word;
+            endTag = newTag.word
+        }
+
+        let emptyTagOffset = null;
+        if (newTag.word === "") {
+            emptyTagOffset = document.offsetAt(cursorPositon);
+        } else if (this._word == "") {
+            emptyTagOffset = this._emptyTagOffset;
+            if (newTag.isStartTag) {
+                emptyTagOffset += newTag.word.length;
+            }
+        }
+
+        let pairedTag = findPairedTag(document.getText(), document.offsetAt(cursorPositon), startTag, endTag, newTag.isStartTag, emptyTagOffset);
         if (!pairedTag) {
             return;
         }
+
+        if (startTag === "" && newTag.isStartTag) {
+            pairedTag.startOffset -= emptyTagName.length;
+            pairedTag.endOffset -= emptyTagName.length;
+        }
+        if (endTag === "" && newTag.isStartTag) {
+            pairedTag.endOffset = pairedTag.startOffset;
+        }
+        if (startTag === "" && !newTag.isStartTag) {
+            pairedTag.endOffset = pairedTag.startOffset;
+        }
+
         editor.edit((editBuilder) => {
-            editBuilder.replace(new vscode.Range(document.positionAt(pairedTag.startOffset), document.positionAt(pairedTag.endOffset)), newWord);
+            editBuilder.replace(new vscode.Range(document.positionAt(pairedTag.startOffset), document.positionAt(pairedTag.endOffset)), newTag.word);
         })
+
+        if (newTag.word === "") {
+            this._word = "";
+            this._emptyTagOffset = pairedTag.startOffset;
+        }
     }
 }

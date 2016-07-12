@@ -10,10 +10,10 @@ suite("Extension Tests", function () {
     suiteSetup(testUtil.setupWorkspace);
 
     test("Insert at opening tag", function (done) {
-        testUtil.insertAtPosition("<div></div>", "0", new vscode.Position(0, 4), "<div0></div0>", done);
+        testUtil.insertAtPosition("<div a=b></div>", "r", new vscode.Position(0, 4), "<divr a=b></divr>", done);
     });
 
     test("Insert at closing tag", function (done) {
-        testUtil.insertAtPosition("<div></div>", "1", new vscode.Position(0, 10), "<div1></div1>", done);
+        testUtil.insertAtPosition("<xy-1></xy-1>", ":", new vscode.Position(0, 9), "<x:y-1></x:y-1>", done);
     });
 });

@@ -28,11 +28,41 @@ export class TagManager {
     private getCurrentWordForNewActiveTextEditor(editor: vscode.TextEditor): void {
         let document = editor.document;
         let selection = editor.selection;
-        let range = document.getWordRangeAtPosition(selection.active);
-        let word = document.getText(range);
-        if (word.indexOf("<") === -1) {
+        let word = this.getWordAtPosition(document, selection.active);
+        if (word) {
             this._word = word;
         }
+    }
+
+    private getCurrentWord(event: vscode.TextEditorSelectionChangeEvent): void {
+        let selection = event.selections[0];
+        let document = event.textEditor.document;
+        let word = this.getWordAtPosition(document, selection.active);
+        if (word) {
+            this._word = word;
+        }
+    }
+
+    private getWordAtPosition(document: vscode.TextDocument, position: vscode.Position): string {
+        let textLine = document.lineAt(position);
+        let text = textLine.text;
+        let regex = /[<\/]([a-zA-Z][a-zA-Z0-9-_:.]*)?[\s>]/g;
+        let result = null;
+        let character = position.character;
+
+        while ((result = regex.exec(text)) !== null) {
+            if (!result[1]) {
+                if (result.index + 1 === character) {
+                    return "";
+                }
+            } else {
+                if (result.index + 1 <= character && character <= result.index + 1 + result[1].length) {
+                    return result[1];
+                }
+            }
+        }
+
+        return null;
     }
 
     private isEnabled(): boolean {
@@ -43,16 +73,6 @@ export class TagManager {
             return false;
         } else {
             return true;
-        }
-    }
-
-    private getCurrentWord(event: vscode.TextEditorSelectionChangeEvent): void {
-        let selection = event.selections[0];
-        let document = event.textEditor.document;
-        let range = document.getWordRangeAtPosition(selection.active);
-        let word = document.getText(range);
-        if (word.indexOf("<") === -1) {
-            this._word = word;
         }
     }
 
@@ -90,25 +110,21 @@ export class TagManager {
     private getNewWord(document: vscode.TextDocument, cursorPositon: vscode.Position): Tag {
         let textLine = document.lineAt(cursorPositon);
         let text = textLine.text;
-        let regex = /<(\/?)(?:([a-zA-Z][a-zA-Z0-9]*))?(?:\s[^\s<>]*?[^\s/<>]+?)*?>/g;
+        let regex = /<(\/?)([a-zA-Z][a-zA-Z0-9-_:.]*)?(?:\s[^\s<>]*?[^\s/<>]+?)*?>/g;
         let result = null;
-        let index = -1;
         let character = cursorPositon.character;
-        let newWord: string;
 
         while ((result = regex.exec(text)) !== null) {
+            let isStartTag = result[1] === "";
+            let offset = isStartTag ? 1 : 2;
+            let index = result.index + offset;
             if (!result[2]) {
-                let isStartTag = result[1] === "";
-                let offset = isStartTag ? 1 : 2;
-                let search = isStartTag ? "<" : "</";
-                index = text.indexOf(search, result.index);
-                if (index + offset === character) {
+                if (index === character) {
                     return { word: "", isStartTag: isStartTag };
                 }
             } else {
-                index = text.indexOf(result[2], result.index);
                 if (index <= character && character <= index + result[2].length) {
-                    return { word: result[2], isStartTag: result[1] === "" };
+                    return { word: result[2], isStartTag: isStartTag };
                 }
             }
         }

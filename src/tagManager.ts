@@ -26,6 +26,9 @@ export class TagManager {
     }
 
     private getCurrentWordForNewActiveTextEditor(editor: vscode.TextEditor): void {
+        if (!editor) {
+            return;
+        }
         let document = editor.document;
         let selection = editor.selection;
         let word = this.getWordAtPosition(document, selection.active);

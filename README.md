@@ -27,6 +27,9 @@ By default, it is `["*"]` and will be activated for all languages.
 ```
 
 ## Change Log
+### 0.0.5
+* Fix [GitHub issue#6](https://github.com/formulahendry/vscode-auto-rename-tag/issues/6)
+
 ### 0.0.4
 * Add support for tag name that contains ```- _ : .```
 

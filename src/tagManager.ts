@@ -32,18 +32,14 @@ export class TagManager {
         let document = editor.document;
         let selection = editor.selection;
         let word = this.getWordAtPosition(document, selection.active);
-        if (word) {
-            this._word = word;
-        }
+        this._word = word;
     }
 
     private getCurrentWord(event: vscode.TextEditorSelectionChangeEvent): void {
         let selection = event.selections[0];
         let document = event.textEditor.document;
         let word = this.getWordAtPosition(document, selection.active);
-        if (word) {
-            this._word = word;
-        }
+        this._word = word;
     }
 
     private getWordAtPosition(document: vscode.TextDocument, position: vscode.Position): string {
@@ -140,7 +136,7 @@ export class TagManager {
         let startTag: string;
         let endTag: string;
 
-        if (this._word === newTag.word) {
+        if (this._word === newTag.word || this._word === null) {
             return;
         }
 

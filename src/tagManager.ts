@@ -87,6 +87,9 @@ export class TagManager {
         let cursorPositon = selection.active;
         if (event.contentChanges[0].text === "" || !selection.start.isEqual(selection.end)) {
             if (selection.start.isEqual(selection.end)) {
+                if (selection.start.character === 0) {
+                    return;
+                }
                 cursorPositon = cursorPositon.translate(0, -1);
             } else {
                 // Handle deletion or update of multi-character

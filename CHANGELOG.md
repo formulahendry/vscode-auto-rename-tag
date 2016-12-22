@@ -1,3 +1,6 @@
+### 0.0.9
+* Fix [GitHub issue#14](https://github.com/formulahendry/vscode-auto-rename-tag/issues/14): Avoid renaming tag when moving rows with "alt+up/down"
+
 ### 0.0.8
 * Fix [GitHub issue#11](https://github.com/formulahendry/vscode-auto-rename-tag/issues/11)
 

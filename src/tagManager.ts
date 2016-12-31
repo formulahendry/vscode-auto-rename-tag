@@ -85,19 +85,14 @@ export class TagManager {
         let selection = editor.selection;
 
         let cursorPositon = selection.active;
-        if (event.contentChanges[0].text === "" || !selection.start.isEqual(selection.end)) {
-            if (selection.start.isEqual(selection.end)) {
-                if (selection.start.character === 0) {
-                    return;
-                }
-                cursorPositon = cursorPositon.translate(0, -1);
+        let rangeStart = event.contentChanges[0].range.start;
+        let rangeEnd = event.contentChanges[0].range.end;
+        if (!rangeStart.isEqual(rangeEnd)) {
+            // Handle deletion or update of multi-character
+            if (rangeStart.isBefore(rangeEnd)) {
+                cursorPositon = rangeStart;
             } else {
-                // Handle deletion or update of multi-character
-                if (selection.start.isBefore(selection.end)) {
-                    cursorPositon = selection.start;
-                } else {
-                    cursorPositon = selection.end;
-                }
+                cursorPositon = rangeEnd;
             }
         }
 

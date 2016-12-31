@@ -1,3 +1,6 @@
+### 0.0.11
+* Fix [GitHub issue#12](https://github.com/formulahendry/vscode-auto-rename-tag/issues/12): Not work when using OPTION+DELETE (or CTRL+BACKSPACE)
+
 ### 0.0.10
 * Fix [GitHub issue#17](https://github.com/formulahendry/vscode-auto-rename-tag/issues/17): Unexpected renaming when moving row with "alt+down"
 

@@ -2,7 +2,7 @@
     "name": "auto-rename-tag",
     "displayName": "Auto Rename Tag",
     "description": "Auto rename paired HTML/XML tag",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "publisher": "formulahendry",
     "icon": "images/logo.png",
     "engines": {

@@ -76,7 +76,7 @@ export class TagManager {
     }
 
     private updatePairedTag(event: vscode.TextDocumentChangeEvent): void {
-        if (!this.isEnabled() || /\r|\n/.test(event.contentChanges[0].text)) {
+        if (!this.isEnabled() || /\r|\n/.test(event.contentChanges[0].text) || !event.contentChanges[0].range.isSingleLine) {
             return;
         }
 

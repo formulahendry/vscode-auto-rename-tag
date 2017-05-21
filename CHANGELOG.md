@@ -1,3 +1,6 @@
+### 0.0.12 (2017-05-21)
+* Fix [#15](https://github.com/formulahendry/vscode-auto-rename-tag/issues/15) and [#21](https://github.com/formulahendry/vscode-auto-rename-tag/issues/21): Undo and redo are broken
+
 ### 0.0.11
 * Fix [GitHub issue#12](https://github.com/formulahendry/vscode-auto-rename-tag/issues/12): Not work when using OPTION+DELETE (or CTRL+BACKSPACE)
 

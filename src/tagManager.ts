@@ -174,7 +174,7 @@ export class TagManager {
 
         editor.edit((editBuilder) => {
             editBuilder.replace(new vscode.Range(document.positionAt(pairedTag.startOffset), document.positionAt(pairedTag.endOffset)), newTag.word);
-        })
+        }, {undoStopBefore: false, undoStopAfter: false})
 
         if (newTag.word === "") {
             this._word = "";

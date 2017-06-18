@@ -43,6 +43,10 @@ export class TagManager {
     }
 
     private getWordAtPosition(document: vscode.TextDocument, position: vscode.Position): string {
+        if (position.line > document.lineCount) {
+            return null;
+        }
+
         let textLine = document.lineAt(position);
         let text = textLine.text;
         let regex = /[<\/]([a-zA-Z][a-zA-Z0-9-_:.]*)?[\s>]/g;
@@ -76,7 +80,8 @@ export class TagManager {
     }
 
     private updatePairedTag(event: vscode.TextDocumentChangeEvent): void {
-        if (!this.isEnabled() || /\r|\n/.test(event.contentChanges[0].text) || !event.contentChanges[0].range.isSingleLine) {
+        if (!this.isEnabled() || !event.contentChanges[0] ||
+            /\r|\n/.test(event.contentChanges[0].text) || !event.contentChanges[0].range.isSingleLine) {
             return;
         }
 
@@ -174,7 +179,7 @@ export class TagManager {
 
         editor.edit((editBuilder) => {
             editBuilder.replace(new vscode.Range(document.positionAt(pairedTag.startOffset), document.positionAt(pairedTag.endOffset)), newTag.word);
-        }, {undoStopBefore: false, undoStopAfter: false})
+        }, { undoStopBefore: false, undoStopAfter: false })
 
         if (newTag.word === "") {
             this._word = "";

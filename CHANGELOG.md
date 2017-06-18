@@ -1,3 +1,6 @@
+### 0.0.13 (2017-06-18)
+* Fix [#24](https://github.com/formulahendry/vscode-auto-rename-tag/issues/24) and [#29](https://github.com/formulahendry/vscode-auto-rename-tag/issues/29)
+
 ### 0.0.12 (2017-05-21)
 * Fix [#15](https://github.com/formulahendry/vscode-auto-rename-tag/issues/15) and [#21](https://github.com/formulahendry/vscode-auto-rename-tag/issues/21): Undo and redo are broken
 

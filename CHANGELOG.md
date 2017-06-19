@@ -1,3 +1,6 @@
+### 0.0.14 (2017-06-19)
+* Fix [#30](https://github.com/formulahendry/vscode-auto-rename-tag/issues/30)
+
 ### 0.0.13 (2017-06-18)
 * Fix [#24](https://github.com/formulahendry/vscode-auto-rename-tag/issues/24) and [#29](https://github.com/formulahendry/vscode-auto-rename-tag/issues/29)
 

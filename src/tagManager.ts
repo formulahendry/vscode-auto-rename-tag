@@ -69,6 +69,9 @@ export class TagManager {
     }
 
     private isEnabled(): boolean {
+        if (!vscode.window.activeTextEditor || !vscode.window.activeTextEditor.document) {
+            return false;
+        }
         let languageId = vscode.window.activeTextEditor.document.languageId;
         let config = vscode.workspace.getConfiguration('auto-rename-tag');
         let languages = config.get<string[]>("activationOnLanguage", ["*"]);

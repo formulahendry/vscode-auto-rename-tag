@@ -2,11 +2,11 @@
     "name": "auto-rename-tag",
     "displayName": "Auto Rename Tag",
     "description": "Auto rename paired HTML/XML tag",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "publisher": "formulahendry",
     "icon": "images/logo.png",
     "engines": {
-        "vscode": "^1.7.0"
+        "vscode": "^1.17.0"
     },
     "categories": [
         "Other",
@@ -17,7 +17,8 @@
         "rename",
         "tag",
         "html",
-        "xml"
+        "xml",
+        "multi-root ready"
     ],
     "bugs": {
         "url": "https://github.com/formulahendry/vscode-auto-rename-tag/issues",
@@ -40,7 +41,8 @@
                 "auto-rename-tag.activationOnLanguage": {
                     "type": "array",
                     "default": ["*"],
-                    "description": "Set the languages that the extension will be activated.  e.g. [\"html\",\"xml\",\"php\"] By default, it is [\"*\"] and will be activated for all languages."
+                    "description": "Set the languages that the extension will be activated.  e.g. [\"html\",\"xml\",\"php\"] By default, it is [\"*\"] and will be activated for all languages.",
+                    "scope": "resource"
                 }
             }
         }

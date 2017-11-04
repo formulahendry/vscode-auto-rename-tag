@@ -1,3 +1,6 @@
+### 0.0.15 (2017-11-04)
+* Add support for Multi Root Workspace
+
 ### 0.0.14 (2017-06-19)
 * Fix [#30](https://github.com/formulahendry/vscode-auto-rename-tag/issues/30)
 

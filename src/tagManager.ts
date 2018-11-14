@@ -49,7 +49,7 @@ export class TagManager {
 
         let textLine = document.lineAt(position);
         let text = textLine.text;
-        let regex = /[<\/]([^\/\s<>]*)?[\s>]/g;
+        let regex = /[<\/]([^\/\s>]*)?[\s>]/g;
         let result = null;
         let character = position.character;
 
@@ -119,7 +119,7 @@ export class TagManager {
     private getNewWord(document: vscode.TextDocument, cursorPositon: vscode.Position): Tag {
         let textLine = document.lineAt(cursorPositon);
         let text = textLine.text;
-        let regex = /<(\/?)([^\/\s<>]*)?(?:\s[^\s<>]*?[^\s/<>]+?)*?>/g;
+        let regex = /<(\/?)([^\/\s>]*)?(?:\s[^\s>]*?[^\s\/>]+?)*?>/g;
         let result = null;
         let character = cursorPositon.character;
 

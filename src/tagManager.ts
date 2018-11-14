@@ -55,11 +55,11 @@ export class TagManager {
 
         while ((result = regex.exec(text)) !== null) {
             if (!result[1]) {
-                if (result.index + 1 === character) {
+                if (result.index === character || result.index + 1 === character) {
                     return "";
                 }
             } else {
-                if (result.index + 1 <= character && character <= result.index + 1 + result[1].length) {
+                if (result.index + 1 <= character && character <= result.index + 2 + result[1].length) {
                     return result[1];
                 }
             }
@@ -110,7 +110,10 @@ export class TagManager {
             return;
         }
 
-        this.findAndReplacePairedTag(document, editor, cursorPositon, newTag)
+        this.findAndReplacePairedTag(document, editor, cursorPositon, newTag);
+        
+        let word = this.getWordAtPosition(document, selection.active);
+        this._word = word;
     }
 
     private getNewWord(document: vscode.TextDocument, cursorPositon: vscode.Position): Tag {
@@ -129,7 +132,7 @@ export class TagManager {
                     return { word: "", isStartTag: isStartTag };
                 }
             } else {
-                if (index <= character && character <= index + result[2].length) {
+                if (index <= character && character <= index + 1 + result[2].length) {
                     return { word: result[2], isStartTag: isStartTag };
                 }
             }

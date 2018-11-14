@@ -49,7 +49,7 @@ export class TagManager {
 
         let textLine = document.lineAt(position);
         let text = textLine.text;
-        let regex = /[<\/]([a-zA-Z][a-zA-Z0-9-_:.]*)?[\s>]/g;
+        let regex = /[<\/]([^\/\s<>]*)?[\s>]/g;
         let result = null;
         let character = position.character;
 
@@ -111,7 +111,7 @@ export class TagManager {
         }
 
         this.findAndReplacePairedTag(document, editor, cursorPositon, newTag);
-        
+
         let word = this.getWordAtPosition(document, selection.active);
         this._word = word;
     }
@@ -119,7 +119,7 @@ export class TagManager {
     private getNewWord(document: vscode.TextDocument, cursorPositon: vscode.Position): Tag {
         let textLine = document.lineAt(cursorPositon);
         let text = textLine.text;
-        let regex = /<(\/?)([a-zA-Z][a-zA-Z0-9-_:.]*)?(?:\s[^\s<>]*?[^\s/<>]+?)*?>/g;
+        let regex = /<(\/?)([^\/\s<>]*)?(?:\s[^\s<>]*?[^\s/<>]+?)*?>/g;
         let result = null;
         let character = cursorPositon.character;
 

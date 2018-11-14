@@ -10,7 +10,7 @@
     },
     "categories": [
         "Other",
-        "Languages"
+        "Programming Languages"
     ],
     "keywords": [
         "AutoComplete",
@@ -40,7 +40,9 @@
             "properties": {
                 "auto-rename-tag.activationOnLanguage": {
                     "type": "array",
-                    "default": ["*"],
+                    "default": [
+                        "*"
+                    ],
                     "description": "Set the languages that the extension will be activated.  e.g. [\"html\",\"xml\",\"php\"] By default, it is [\"*\"] and will be activated for all languages.",
                     "scope": "resource"
                 }

@@ -56,7 +56,11 @@ export function findPairedTag(text: string, pos: number, startTag: string, endTa
     }
 
     // Hack here to remove php tag to void conflict with HTML/XML tag
-    text = text.replace("<?php", "??php").replace("?>", "??");
+    //text = text.replace("<?php", "??php").replace("<?=", "??=").replace("?>", "??");
+    text = text.replace(/<\?/g, "??");
+    text = text.replace(/<\?php/g, "??php");
+    text = text.replace(/<\?=/g, "??=");
+    text = text.replace(/\?>/g, "??");
     // Hack here of empty tag
     if (startTag === "" && !isStartTagNew) {
         pos += emptyTagName.length;
@@ -70,7 +74,7 @@ export function findPairedTag(text: string, pos: number, startTag: string, endTa
         }
     }
 
-    let regex = new RegExp("<(\/?)(" + startTag + "|" + endTag + ")(?:\\s[^\\s<>]*?[^\\s/<>]+?)*?>", "g");
+    let regex = new RegExp("<(\/?)(" + startTag + "|" + endTag + ")(?:\\s[^\\s>]*?[^\\s\\/>]+?)*?>", "g");
     let result = null;
     while ((result = regex.exec(text)) !== null) {
         if (result[1] === "") {

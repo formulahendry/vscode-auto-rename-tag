@@ -1,3 +1,6 @@
+### 0.1.1 (2019-10-27)
+* Add notice about performance issue
+
 ### 0.1.0 (2019-06-02)
 * [#105](https://github.com/formulahendry/vscode-auto-rename-tag/pull/105): Bug fixes
 

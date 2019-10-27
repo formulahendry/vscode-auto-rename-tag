@@ -4,6 +4,12 @@
 
 Automatically rename paired HTML/XML tag, same as Visual Studio IDE does.
 
+## !! Notice !!
+
+The extension may have performance issue, especially when editing a large file. Please notice this potential problem before using thie extension!
+
+I will try my best to investigate the performance issue. PR is warmly welcome!
+
 ## Features
 
 * When you rename one HTML/XML tag, automatically rename the paired HTML/XML tag

@@ -1,0 +1,17 @@
+previousText:
+<xy-1></xy-1>
+
+edits:
+[
+  {
+    rangeOffset: 9
+    rangeLength: 0
+    text: ':'
+  }
+]
+
+nextText:
+<xy-1></x:y-1>
+
+expectedNextText:
+<x:y-1></x:y-1>

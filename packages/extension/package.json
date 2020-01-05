@@ -5,8 +5,9 @@
   "version": "0.1.1",
   "publisher": "formulahendry",
   "icon": "images/logo.png",
+  "main": "dist/extensionMain.js",
   "engines": {
-    "vscode": "^1.17.0"
+    "vscode": "^1.40.2"
   },
   "categories": [
     "Other",
@@ -29,9 +30,6 @@
     "type": "git",
     "url": "https://github.com/formulahendry/vscode-auto-rename-tag.git"
   },
-  "activationEvents": [
-    "*"
-  ],
   "contributes": {
     "configuration": {
       "type": "object",
@@ -48,15 +46,23 @@
       }
     }
   },
+  "activationEvents": [
+    "*"
+  ],
+  "extensionKind": [
+    "workspace",
+    "ui"
+  ],
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "test": "node ./node_modules/vscode/bin/test",
-    "postinstall": "lerna bootstrap",
-    "dev": "tsc -b -w"
+    "build": "tsc -b"
   },
+  "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.20.2",
+    "@types/vscode": "^1.41.0",
     "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "source-map-support": "^0.5.16",
+    "vscode-languageclient": "^6.0.0-next.9"
   }
 }

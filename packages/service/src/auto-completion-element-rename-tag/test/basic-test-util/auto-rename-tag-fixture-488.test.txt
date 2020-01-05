@@ -1,0 +1,44 @@
+previousText:
+<li className="nickname">
+    {nickname}
+    <p
+        className="..."
+        title="..."
+    >
+        <img src="..."/>
+        {sign}
+    </p>
+</li>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 2
+    text: modified
+  }
+]
+
+nextText:
+<modified className="nickname">
+    {nickname}
+    <p
+        className="..."
+        title="..."
+    >
+        <img src="..."/>
+        {sign}
+    </p>
+</li>
+
+expectedNextText:
+<modified className="nickname">
+    {nickname}
+    <p
+        className="..."
+        title="..."
+    >
+        <img src="..."/>
+        {sign}
+    </p>
+</modified>

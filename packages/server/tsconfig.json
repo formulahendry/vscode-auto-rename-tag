@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig-noncomposite-base",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["node"],
+    "allowUnusedLabels": true,
+    "allowUnreachableCode": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../service/tsconfig.json"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+previousText:
+<template>
+  <button
+</template>
+
+edits:
+[
+  {
+    rangeOffset: 20
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText:
+<template>
+  <button>
+</template>
+
+expectedNextText:
+<template>
+  <button>
+</template>

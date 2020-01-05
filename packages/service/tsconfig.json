@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig-base",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["node"],
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
+  },
+  "include": ["src"]
+}

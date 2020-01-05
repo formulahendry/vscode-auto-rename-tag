@@ -1,0 +1,18 @@
+previousText:
+<dilass="x"></dilass>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: 'v c'
+  }
+]
+
+nextText:
+<div class="x"></dilass>
+
+
+expectedNextText:
+<div class="x"></div>

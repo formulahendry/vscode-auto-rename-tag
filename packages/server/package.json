@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0-dev",
+  "main": "dist/serverMain.js",
+  "scripts": {
+    "dev": "tsc -b -w"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@babel/code-frame": "^7.5.5",
+    "service": "^1.0.0-dev",
+    "source-map-support": "^0.5.16",
+    "typescript": "^3.7.4",
+    "vscode-languageserver": "^6.0.0-next.8",
+    "vscode-languageserver-textdocument": "^1.0.0-next.5"
+  },
+  "devDependencies": {
+    "@types/babel__code-frame": "^7.0.1"
+  }
+}

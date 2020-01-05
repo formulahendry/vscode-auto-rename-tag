@@ -1,0 +1,17 @@
+previousText:
+<div a=b></div>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: 4
+  }
+]
+
+nextText:
+<divr a=b></div>
+
+expectedNextText:
+<divr a=b></divr>

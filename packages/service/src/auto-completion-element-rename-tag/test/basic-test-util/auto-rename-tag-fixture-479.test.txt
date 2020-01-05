@@ -1,0 +1,30 @@
+previousText:
+<View
+    style={{flex: 1}}
+>
+    <Text>Hello World!</Text>
+</View>
+
+edits:
+[
+  {
+    rangeOffset: 5
+    rangeLength: 0
+    text: Box
+  }
+]
+
+nextText:
+<ViewBox
+    style={{flex: 1}}
+>
+    <Text>Hello World!</Text>
+</View>
+
+expectedNextText:
+nextText:
+<ViewBox
+    style={{flex: 1}}
+>
+    <Text>Hello World!</Text>
+</ViewBox>

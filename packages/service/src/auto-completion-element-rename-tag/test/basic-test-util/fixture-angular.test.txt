@@ -1,0 +1,78 @@
+previousText:
+<div *ngIf="!submitted_backend">
+  <header>
+    <h1 class="article-title h2">{{ context.title }}</h1>
+    <h5>{{ context.description }}</h5>
+  </header>
+
+  <div class="article-text"
+        *ngIf="text"
+        [innerHTML]="text | transformlinks | safehtml">
+  </div>
+
+  <sf-form [schema]="schema"
+            [model]="model"
+            [actions]="actions"
+            [validators]="validators"></sf-form>
+
+  <div *ngIf="formError"
+        class="alert alert-danger submit-alert">Fejlene ovenfor skal rettes før formularen kan sendes ind.
+  </div>
+
+</div>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 3
+    text: form
+  }
+]
+
+nextText:
+<form *ngIf="!submitted_backend">
+  <header>
+    <h1 class="article-title h2">{{ context.title }}</h1>
+    <h5>{{ context.description }}</h5>
+  </header>
+
+  <div class="article-text"
+        *ngIf="text"
+        [innerHTML]="text | transformlinks | safehtml">
+  </div>
+
+  <sf-form [schema]="schema"
+            [model]="model"
+            [actions]="actions"
+            [validators]="validators"></sf-form>
+
+  <div *ngIf="formError"
+        class="alert alert-danger submit-alert">Fejlene ovenfor skal rettes før formularen kan sendes ind.
+  </div>
+
+</div>
+
+expectedNextText:
+nextText:
+<form *ngIf="!submitted_backend">
+  <header>
+    <h1 class="article-title h2">{{ context.title }}</h1>
+    <h5>{{ context.description }}</h5>
+  </header>
+
+  <div class="article-text"
+        *ngIf="text"
+        [innerHTML]="text | transformlinks | safehtml">
+  </div>
+
+  <sf-form [schema]="schema"
+            [model]="model"
+            [actions]="actions"
+            [validators]="validators"></sf-form>
+
+  <div *ngIf="formError"
+        class="alert alert-danger submit-alert">Fejlene ovenfor skal rettes før formularen kan sendes ind.
+  </div>
+
+</form>

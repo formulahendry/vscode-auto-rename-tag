@@ -1,0 +1,2 @@
+TODO
+<span class="admin-previewer-prev" @click.stop="prev" :class="{ 'admin-previewer-disabled': !image || !image.length || localCurrent > }"></span>

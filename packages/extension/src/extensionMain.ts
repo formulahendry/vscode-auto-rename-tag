@@ -50,6 +50,7 @@ const askServerForAutoCompletionsElementRenameTag: (
   document: vscode.TextDocument,
   tags: Tag[]
 ) => Promise<Result[]> = async (languageClientProxy, document, tags) => {
+  console.log(JSON.stringify(tags));
   const params: Params = {
     textDocument: languageClientProxy.code2ProtocolConverter.asTextDocumentIdentifier(
       document
@@ -194,11 +195,13 @@ const doAutoCompletionElementRenameTag: (
     return;
   }
   const beforeVersion = vscode.window.activeTextEditor.document.version;
+  console.log("ask server");
   const results = await askServerForAutoCompletionsElementRenameTag(
     languageClientProxy,
     vscode.window.activeTextEditor.document,
     tags
   );
+  console.log(JSON.stringify(results));
   if (cancelTokenSource.token.isCancellationRequested) {
     return;
   }
@@ -225,6 +228,8 @@ const doAutoCompletionElementRenameTag: (
 const setPreviousText: (
   textEditor: vscode.TextEditor | undefined
 ) => void = textEditor => {
+  console.log("CHANGE TEXT EDITOR");
+  console.log(textEditor?.document.languageId);
   if (textEditor) {
     previousText = textEditor.document.getText();
   } else {
@@ -261,8 +266,12 @@ export const activate: (
   );
   context.subscriptions.push(
     vscode.workspace.onDidChangeTextDocument(async event => {
+      if (event.document !== vscode.window.activeTextEditor?.document) {
+        return;
+      }
       const currentText = event.document.getText();
       if (!isEnabledLanguageId(event.document.languageId)) {
+        console.log("r0");
         return;
       }
       if (event.contentChanges.length === 0) {
@@ -297,8 +306,12 @@ export const activate: (
         const lineRight = line.text.slice(lineChangeOffset + totalInserted);
         const lineTagNameLeft = lineLeft.match(tagNameReLeft);
         const lineTagNameRight = lineRight.match(tagNameRERight);
+        console.log("prfullright");
+        console.log(previousText);
         const previousTextRight = previousText.slice(change.rangeOffset);
         const previousTagNameRight = previousTextRight.match(tagNameRERight);
+        console.log("pright");
+        console.log(previousTagNameRight);
 
         // console.log(lineTagNameLeft)
         // console.log(lineTagNameRight)
@@ -315,12 +328,15 @@ export const activate: (
         }
         newWord = lineTagNameLeft[0];
         oldWord = lineTagNameLeft[0];
-        // console.log('new' + newWord)
+        console.log("new" + newWord);
+        console.log("old" + oldWord);
         if (lineTagNameRight) {
           newWord += lineTagNameRight[0];
         }
         if (previousTagNameRight) {
           oldWord += previousTagNameRight[0];
+          console.log("old2" + oldWord);
+          console.log(previousTagNameRight);
         }
 
         const offset =

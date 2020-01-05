@@ -68,6 +68,7 @@ export const doAutoRenameTag: (
       matchingTagPairs,
       isSelfClosingTag
     );
+    console.log(JSON.stringify(nextClosingTag));
     if (!nextClosingTag) {
       return undefined;
     }

@@ -46,7 +46,6 @@ export const getNextClosingTagName: (
       return undefined;
     }
     if (char === "<") {
-      // skip comment
       if (scanner.stream.peekRight(1) === "/") {
         scanner.stream.advance(2);
         offset = scanner.stream.position;

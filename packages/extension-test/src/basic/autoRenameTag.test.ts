@@ -605,6 +605,7 @@ suite("Auto Rename Tag", () => {
       }
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout
     });
   });
@@ -675,6 +676,13 @@ suite("Auto Rename Tag", () => {
         expect: `<divv class = 'bg-warning'>
   <!-- </div> -->
   <?php displayErrors($errors); ?>
+</divv>`
+      },
+      {
+        input: `<div| title="<?php echo "FOO"?>">
+</div>`,
+        type: "v",
+        expect: `<divv title="<?php echo "FOO"?>">
 </divv>`
       }
     ];

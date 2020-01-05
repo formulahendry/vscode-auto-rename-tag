@@ -51,7 +51,7 @@
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
-    "test": "node ./node_modules/vscode/bin/test",
+    "e2e": "cd packages/extension-test && npm run e2e",
     "postinstall": "lerna bootstrap",
     "dev": "tsc -b -w"
   },

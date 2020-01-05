@@ -42,9 +42,8 @@ const tagsThatAreSelfClosing: { [languageId: string]: string[] } = {
 };
 
 export const isSelfClosingTagInLanguage: (
-  languageId: string,
-  tagName: string
-) => boolean = (languageId, tagName) =>
+  languageId: string
+) => (tagName: string) => boolean = languageId => tagName =>
   (
     tagsThatAreSelfClosing[languageId] || tagsThatAreSelfClosing["html"]
   ).includes(tagName);

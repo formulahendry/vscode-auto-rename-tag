@@ -1,4 +1,8 @@
-import { doAutoRenameTag } from "service";
+import {
+  doAutoRenameTag,
+  isSelfClosingTagInLanguage,
+  getMatchingTagPairs
+} from "service";
 import {
   RequestType,
   TextDocument,
@@ -34,21 +38,15 @@ export const autoRenameTagRequestType = new RequestType<
 export const autoRenameTag: (
   documents: TextDocuments<TextDocument>
 ) => (params: Params) => Result[] = documents => ({ textDocument, tags }) => {
-  console.log(textDocument.uri);
-  console.log(JSON.stringify(documents.keys()));
   const document = documents.get(textDocument.uri);
   if (!document) {
-    console.log("no document");
     return [];
   }
   const text = document.getText();
-  const matchingTagPairs: readonly [string, string][] = [
-    ["<!--", "-->"],
-    ['"', '"'],
-    ["'", "'"],
-    ["{{", "}}"]
-  ];
-  const isSelfClosingTag: (tagName: string) => boolean = tagName => false;
+  const matchingTagPairs = getMatchingTagPairs(document.languageId);
+  const isSelfClosingTag: (
+    tagName: string
+  ) => boolean = isSelfClosingTagInLanguage(document.languageId);
   const results: Result[] = tags
     .map(tag => {
       const result = doAutoRenameTag(

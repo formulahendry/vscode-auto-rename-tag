@@ -186,6 +186,7 @@ export class MultiLineStream {
             continue outerForLoop2;
           }
         }
+        this.advance(matchingTagPair[0].length);
         this.advanceUntilChars(matchingTagPair[1]);
         this.advance(matchingTagPair[1].length);
         return this.advanceUntilEitherChar(chars, matchingTagPairs);

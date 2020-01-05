@@ -684,6 +684,27 @@ suite("Auto Rename Tag", () => {
         type: "v",
         expect: `<divv title="<?php echo "FOO"?>">
 </divv>`
+      },
+      {
+        input: `<span| title="<span>">
+</span>`,
+        type: "n",
+        expect: `<spann title="<span>">
+</spann>`
+      },
+      {
+        input: `<span title="<span>">
+</span|>`,
+        type: "n",
+        expect: `<spann title="<span>">
+</spann>`
+      },
+      {
+        input: `<span title="<span|>">
+</span>`,
+        type: "n",
+        expect: `<span title="<spann>">
+</span>`
       }
     ];
     await run(testCases, {

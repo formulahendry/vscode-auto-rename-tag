@@ -64,7 +64,6 @@ export const getPreviousOpeningTagName: (
         offset = scanner.stream.position - 1;
         continue;
       }
-      // console.log('push' + scanner.getTokenText())
       stack.push(scanner.getTokenText());
       continue;
     }

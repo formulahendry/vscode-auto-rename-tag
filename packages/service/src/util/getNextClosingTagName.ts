@@ -85,8 +85,6 @@ export const getNextClosingTagName: (
         scanner.stream.advance(1);
         continue;
       }
-      console.log("push" + tokenText);
-      // push opening tag onto the stack
       stack.push(tokenText);
       continue;
     } else {

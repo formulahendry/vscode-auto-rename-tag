@@ -1,11 +1,11 @@
-import * as vscode from "vscode";
-import * as assert from "assert";
-import * as path from "path";
-import * as Mocha from "mocha";
-import * as fs from "fs";
+import * as vscode from 'vscode';
+import * as assert from 'assert';
+import * as path from 'path';
+import * as Mocha from 'mocha';
+import * as fs from 'fs';
 
 const packageJSON = JSON.parse(
-  fs.readFileSync(path.join(process.env.extensionPath, "package.json"), "utf-8")
+  fs.readFileSync(path.join(process.env.extensionPath, 'package.json'), 'utf-8')
 ) as { name: string; publisher: string };
 
 const extension = vscode.extensions.getExtension(
@@ -26,7 +26,7 @@ export interface TestCase {
   only?: boolean;
   speed?: number;
   skip?: boolean;
-  timeout?: "never" | number;
+  timeout?: 'never' | number;
   debug?: boolean;
   waitForAutoComplete?: 1;
   selection?: [number, number];
@@ -36,7 +36,7 @@ export interface TestCase {
 
 export async function createTestFile(
   fileName: string,
-  content: string = ""
+  content: string = ''
 ): Promise<void> {
   const filePath = path.join(
     vscode.workspace.workspaceFolders![0].uri.fsPath,
@@ -49,7 +49,7 @@ export async function createTestFile(
 
 export async function removeTestFile(): Promise<void> {
   const uri = vscode.window.activeTextEditor?.document.uri as vscode.Uri;
-  await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
+  await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
   await vscode.workspace.fs.delete(uri);
 }
 
@@ -114,42 +114,42 @@ async function type(
     } else {
       await new Promise(resolve => setTimeout(resolve, speed));
     }
-    if (text.slice(i).startsWith("{backspace}")) {
+    if (text.slice(i).startsWith('{backspace}')) {
       await typeDelete();
-      i += "{backspace}".length - 1;
-    } else if (text.slice(i).startsWith("{undo}")) {
-      await vscode.commands.executeCommand("undo");
-      i += "{undo}".length - 1;
-    } else if (text.slice(i).startsWith("{redo}")) {
-      await vscode.commands.executeCommand("redo");
-      i += "{redo}".length - 1;
-    } else if (text.slice(i).startsWith("{tab}")) {
-      await vscode.commands.executeCommand("html-expand-abbreviation");
-      i += "{tab}".length - 1;
-    } else if (text.slice(i).startsWith("{end}")) {
-      await vscode.commands.executeCommand("cursorEnd");
-      i += "{end}".length - 1;
-    } else if (text.slice(i).startsWith("{down}")) {
-      await vscode.commands.executeCommand("cursorDown");
-      i += "{down}".length - 1;
-    } else if (text.slice(i).startsWith("{copyLineDown}")) {
+      i += '{backspace}'.length - 1;
+    } else if (text.slice(i).startsWith('{undo}')) {
+      await vscode.commands.executeCommand('undo');
+      i += '{undo}'.length - 1;
+    } else if (text.slice(i).startsWith('{redo}')) {
+      await vscode.commands.executeCommand('redo');
+      i += '{redo}'.length - 1;
+    } else if (text.slice(i).startsWith('{tab}')) {
+      await vscode.commands.executeCommand('html-expand-abbreviation');
+      i += '{tab}'.length - 1;
+    } else if (text.slice(i).startsWith('{end}')) {
+      await vscode.commands.executeCommand('cursorEnd');
+      i += '{end}'.length - 1;
+    } else if (text.slice(i).startsWith('{down}')) {
+      await vscode.commands.executeCommand('cursorDown');
+      i += '{down}'.length - 1;
+    } else if (text.slice(i).startsWith('{copyLineDown}')) {
       await vscode.commands.executeCommand(
-        "editor!.action.copyLinesDownAction"
+        'editor!.action.copyLinesDownAction'
       );
-      i += "{copyLineDown}".length - 1;
+      i += '{copyLineDown}'.length - 1;
     } else {
       await typeLiteral(text[i], undoStops);
     }
   }
 }
 
-async function waitForAutoComplete(timeout: "never" | number) {
+async function waitForAutoComplete(timeout: 'never' | number) {
   return new Promise(resolve => {
     const disposable = vscode.workspace.onDidChangeTextDocument(() => {
       disposable.dispose();
       resolve();
     });
-    if (timeout !== "never") {
+    if (timeout !== 'never') {
       setTimeout(resolve, timeout);
     }
   });
@@ -163,7 +163,7 @@ export async function run(
   testCases: TestCase[],
   { speed = 0, timeout = 40, afterCommands = [] as any[] } = {}
 ) {
-  await setText("");
+  await setText('');
   const only = testCases.filter(testCase => testCase.only);
   const applicableTestCases = only.length ? only : testCases;
   for (const testCase of applicableTestCases) {
@@ -179,11 +179,11 @@ export async function run(
     if (testCase.input !== undefined) {
       const cursorOffsets = [];
       for (let i = 0; i < testCase.input.length; i++) {
-        if (testCase.input[i] === "|") {
+        if (testCase.input[i] === '|') {
           cursorOffsets.push(i - cursorOffsets.length);
         }
       }
-      const input = testCase.input.replace(/\|/g, "");
+      const input = testCase.input.replace(/\|/g, '');
       await setText(input);
       if (cursorOffsets.length > 0) {
         setCursorPositions(cursorOffsets);
@@ -241,15 +241,15 @@ export async function run(
 // export const slowSpeed = 30
 
 // export const slowTimeout = 200
-export const slowSpeed = 70;
+export const slowSpeed = 150;
 
-export const slowTimeout = 2000;
+export const slowTimeout = 3500;
 
 export const createRunner: (
   dirname: string
 ) => () => Promise<void> = dirname => () => {
   const mocha = new Mocha({
-    ui: "tdd",
+    ui: 'tdd',
     timeout: 1000000
   });
   mocha.useColors(true);
@@ -258,7 +258,7 @@ export const createRunner: (
   return new Promise((resolve, reject) => {
     const fileNames = fs
       .readdirSync(dirname)
-      .filter(fileName => fileName.endsWith(".test.js"));
+      .filter(fileName => fileName.endsWith('.test.js'));
     for (const fileName of fileNames) {
       mocha.addFile(path.join(dirname, fileName));
     }

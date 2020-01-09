@@ -1,6 +1,6 @@
-import { createScanner } from "./htmlScanner/htmlScanner";
-import { getPreviousOpeningTagName } from "./util/getPreviousOpenTagName";
-import { getNextClosingTagName } from "./util/getNextClosingTagName";
+import { createScanner } from './htmlScanner/htmlScanner';
+import { getPreviousOpeningTagName } from './util/getPreviousOpenTagName';
+import { getNextClosingTagName } from './util/getNextClosingTagName';
 
 export const doAutoRenameTag: (
   text: string,
@@ -24,7 +24,7 @@ export const doAutoRenameTag: (
   isSelfClosingTag
 ) => {
   const scanner = createScanner(text);
-  if (newWord.startsWith("</")) {
+  if (newWord.startsWith('</')) {
     scanner.stream.goTo(offset);
     const tagName = newWord.slice(2);
     const oldTagName = oldWord.slice(2);
@@ -55,8 +55,9 @@ export const doAutoRenameTag: (
     const tagName = newWord.slice(1);
     const oldTagName = oldWord.slice(1);
     const hasAdvanced = scanner.stream.advanceUntilEitherChar(
-      [">"],
-      matchingTagPairs
+      ['>'],
+      matchingTagPairs,
+      true
     );
     if (!hasAdvanced) {
       return undefined;

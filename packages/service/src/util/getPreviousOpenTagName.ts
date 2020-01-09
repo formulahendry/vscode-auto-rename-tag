@@ -3,7 +3,7 @@ import {
   Scanner,
   ScannerState,
   TokenType
-} from "../htmlScanner/htmlScanner";
+} from '../htmlScanner/htmlScanner';
 
 export const getPreviousOpeningTagName: (
   scanner: Scanner,
@@ -30,37 +30,40 @@ export const getPreviousOpeningTagName: (
   let i = 0;
   outer: do {
     scanner.stream.goTo(offset - 2);
+    console.log('at the here' + (offset - 2));
     const hasFoundChar = scanner.stream.goBackUntilEitherChar(
-      ["<", ">"],
-      matchingTagPairs
+      ['<', '>'],
+      matchingTagPairs,
+      false
     );
     if (!hasFoundChar) {
       return undefined;
     }
     const char = scanner.stream.peekLeft(1);
-    if (!["<", ">"].includes(char)) {
+    if (!['<', '>'].includes(char)) {
       return undefined;
     }
-    if (char === ">") {
-      if (scanner.stream.peekLeft(2) === "/") {
+    if (char === '>') {
+      if (scanner.stream.peekLeft(2) === '/') {
         selfClosing = true;
       }
       seenRightAngleBracket = true;
       scanner.stream.goBack(1);
-      scanner.stream.goBackUntilEitherChar(["<"], matchingTagPairs);
+      scanner.stream.goBackUntilEitherChar(['<'], matchingTagPairs, true);
       offset = scanner.stream.position;
     }
-    if (char === "<") {
+    if (char === '<') {
       seenRightAngleBracket;
     }
     // push closing tags onto the stack
-    if (scanner.stream.peekRight() === "/") {
-      offset = scanner.stream.position - 1;
+    if (scanner.stream.peekRight() === '/') {
+      offset = scanner.stream.position - 1; // TODO minus 1???
+      console.log('other offset' + offset);
       scanner.stream.advance(1);
       scanner.state = ScannerState.AfterOpeningEndTag;
       scanner.scan();
       const token = scanner.getTokenText();
-      if (token === "") {
+      if (token === '') {
         offset = scanner.stream.position - 1;
         continue;
       }
@@ -137,15 +140,21 @@ export const getPreviousOpeningTagName: (
 // const text = `<head><link></headd>`
 // getPreviousOpeningTagName(createScanner(text), 12, 'html') //?
 
-const text = `<span title="<span>">
-</span>`;
+const text = `<li
+  className={\`tag \${tag === currentTag ? 'currentTag' : ''}\`}
+>
+
+</li>`;
 
 getPreviousOpeningTagName(
   createScanner(text),
-  21,
+  68,
   [
+    ['{', '}'],
     ["'", "'"],
-    ['"', '"']
+    ['"', '"'],
+    ['`', '`'],
+    ['<!--', '-->']
   ],
   () => false
 ); //?

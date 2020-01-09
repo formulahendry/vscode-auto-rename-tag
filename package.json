@@ -1,62 +1,18 @@
 {
-  "name": "auto-rename-tag",
-  "displayName": "Auto Rename Tag",
-  "description": "Auto rename paired HTML/XML tag",
-  "version": "0.1.1",
-  "publisher": "formulahendry",
-  "icon": "images/logo.png",
-  "engines": {
-    "vscode": "^1.17.0"
-  },
-  "categories": [
-    "Other",
-    "Programming Languages"
-  ],
-  "keywords": [
-    "AutoComplete",
-    "rename",
-    "tag",
-    "html",
-    "xml",
-    "multi-root ready"
-  ],
-  "bugs": {
-    "url": "https://github.com/formulahendry/vscode-auto-rename-tag/issues",
-    "email": "formulahendry@gmail.com"
-  },
-  "homepage": "https://github.com/formulahendry/vscode-auto-rename-tag/blob/master/README.md",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/formulahendry/vscode-auto-rename-tag.git"
-  },
-  "activationEvents": [
-    "*"
-  ],
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "Auto Rename Tag configuration",
-      "properties": {
-        "auto-rename-tag.activationOnLanguage": {
-          "type": "array",
-          "default": [
-            "*"
-          ],
-          "description": "Set the languages that the extension will be activated.  e.g. [\"html\",\"xml\",\"php\"] By default, it is [\"*\"] and will be activated for all languages.",
-          "scope": "resource"
-        }
-      }
-    }
-  },
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "e2e": "cd packages/extension-test && npm run e2e",
     "postinstall": "lerna bootstrap",
-    "dev": "tsc -b -w"
+    "dev": "tsc -b -w",
+    "e2e": "cd packages/extension-test && npm run e2e",
+    "publish": "cd dist && vsce publish"
   },
   "devDependencies": {
+    "fs-extra": "^8.1.0",
     "lerna": "^3.20.2",
+    "prettier": "^1.19.1",
     "typescript": "^3.7.4"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true
   }
 }

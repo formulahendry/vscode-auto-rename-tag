@@ -1,9 +1,4 @@
-import {
-  Scanner,
-  ScannerState,
-  TokenType,
-  createScanner
-} from "../htmlScanner/htmlScanner";
+import { Scanner, ScannerState, TokenType } from '../htmlScanner/htmlScanner';
 
 export const getNextClosingTagName: (
   scanner: Scanner,
@@ -32,21 +27,23 @@ export const getNextClosingTagName: (
   do {
     if (i++ > 10000000) {
       // TODO show ui error (Auto Rename Tag does not work for this tag because the matching tag is too far away.)
-      throw new Error("probably infinite loop");
+      throw new Error('probably infinite loop');
     }
+    console.log('get next closing');
     const hasFoundChar = scanner.stream.advanceUntilEitherChar(
-      ["<", ">"],
-      matchingTagPairs
+      ['<', '>'],
+      matchingTagPairs,
+      false
     );
     if (!hasFoundChar) {
       return undefined;
     }
     const char = scanner.stream.peekRight(); //?
-    if (!["<", ">"].includes(char)) {
+    if (!['<', '>'].includes(char)) {
       return undefined;
     }
-    if (char === "<") {
-      if (scanner.stream.peekRight(1) === "/") {
+    if (char === '<') {
+      if (scanner.stream.peekRight(1) === '/') {
         scanner.stream.advance(2);
         offset = scanner.stream.position;
         scanner.state = ScannerState.AfterOpeningEndTag;
@@ -61,7 +58,7 @@ export const getNextClosingTagName: (
             console.log(scanner.stream.position);
             console.log(top);
             console.log(tokenText);
-            console.error("no");
+            console.error('no');
           }
           continue;
         }
@@ -81,23 +78,27 @@ export const getNextClosingTagName: (
       }
       const tokenText = scanner.getTokenText();
       if (isSelfClosingTag(tokenText)) {
-        scanner.stream.advanceUntilEitherChar([">"], matchingTagPairs);
+        scanner.stream.advanceUntilEitherChar(['>'], matchingTagPairs, true);
         scanner.stream.advance(1);
         continue;
       }
+      console.log('here');
       stack.push(tokenText);
+      // scanner.stream.advanceUntilEitherChar(['>'], matchingTagPairs, true);
+      // scanner.stream.advance(1);
+      // offset = scanner.stream.position;
       continue;
     } else {
-      if (scanner.stream.peekRight(1) === "") {
+      if (scanner.stream.peekRight(1) === '') {
         // console.log("end");
         return undefined;
       }
       // don't go outside of comment when inside
-      if (scanner.stream.previousChars(2) === "--") {
+      if (scanner.stream.previousChars(2) === '--') {
         // console.log("return undefined");
         return undefined;
       }
-      if (scanner.stream.peekLeft(1) === "/") {
+      if (scanner.stream.peekLeft(1) === '/') {
         if (stack.length === 0) {
           // console.log("return undefined 2");
           return undefined;

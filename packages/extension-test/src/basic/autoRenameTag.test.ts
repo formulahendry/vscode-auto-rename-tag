@@ -1,4 +1,4 @@
-import { before, test } from "mocha";
+import { before, test } from 'mocha';
 import {
   activateExtension,
   createTestFile,
@@ -6,55 +6,55 @@ import {
   TestCase,
   slowTimeout,
   slowSpeed
-} from "../test-utils";
+} from '../test-utils';
 
-suite("Auto Rename Tag", () => {
+suite('Auto Rename Tag', () => {
   before(async () => {
-    await createTestFile("auto-rename-tag.html");
+    await createTestFile('auto-rename-tag.html');
     await activateExtension();
   });
 
-  test("Cursor is at the back of a start tag", async () => {
+  test('Cursor is at the back of a start tag', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<div|>test</div>",
-        type: "s",
-        expect: "<divs>test</divs>"
+        input: '<div|>test</div>',
+        type: 's',
+        expect: '<divs>test</divs>'
       },
       {
-        input: "<div|>test</div>",
-        type: "{backspace}",
-        expect: "<di>test</di>"
+        input: '<div|>test</div>',
+        type: '{backspace}',
+        expect: '<di>test</di>'
       },
       {
-        input: "<div|>test</div>",
-        type: "{backspace}{backspace}{backspace}",
-        expect: "<>test</>"
+        input: '<div|>test</div>',
+        type: '{backspace}{backspace}{backspace}',
+        expect: '<>test</>'
       },
       {
-        input: "<div|>test</div>",
-        type: " ",
-        expect: "<div >test</div>"
+        input: '<div|>test</div>',
+        type: ' ',
+        expect: '<div >test</div>'
       },
       {
-        input: "<div|>test</div>",
-        type: " c",
-        expect: "<div c>test</div>"
+        input: '<div|>test</div>',
+        type: ' c',
+        expect: '<div c>test</div>'
       },
       {
-        input: "<div|>test</div>",
-        type: "{backspace}{backspace}{backspace} ",
-        expect: "< >test</>"
+        input: '<div|>test</div>',
+        type: '{backspace}{backspace}{backspace} ',
+        expect: '< >test</>'
       },
       {
-        input: "<div|>test</div>",
-        type: "v{undo}",
-        expect: "<div>test</div>"
+        input: '<div|>test</div>',
+        type: 'v{undo}',
+        expect: '<div>test</div>'
       },
       {
-        input: "<div|>test</div>",
-        type: "v{undo}{redo}",
-        expect: "<divv>test</divv>"
+        input: '<div|>test</div>',
+        type: 'v{undo}{redo}',
+        expect: '<divv>test</divv>'
       }
     ];
     await run(testCases, {
@@ -63,12 +63,12 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("Cursor at the front of a start tag", async () => {
+  test('Cursor at the front of a start tag', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<|div>test</div>",
-        type: "s",
-        expect: "<sdiv>test</sdiv>"
+        input: '<|div>test</div>',
+        type: 's',
+        expect: '<sdiv>test</sdiv>'
       }
     ];
     await run(testCases, {
@@ -76,154 +76,183 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("tag with class", async () => {
+  test('tag with class', async () => {
     const testCases: TestCase[] = [
       {
         input: '<div| class="css">test</div>',
-        type: "v",
+        type: 'v',
         expect: '<divv class="css">test</divv>'
       },
       {
         input: '<div| class="css">test</div>',
-        type: "{backspace}{backspace}{backspace}",
+        type: '{backspace}{backspace}{backspace}',
         expect: '< class="css">test</>',
         skip: true
       },
       {
         input: '<div | class="css">test</div>',
-        type: "{backspace}v",
+        type: '{backspace}v',
         expect: '<divv class="css">test</divv>'
       }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
 
-  test("multiple lines", async () => {
+  test('multiple lines', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<div|>\n  test\n</div>",
-        type: "{backspace}{backspace}{backspace}h3",
-        expect: "<h3>\n  test\n</h3>",
+        input: '<div|>\n  test\n</div>',
+        type: '{backspace}{backspace}{backspace}h3',
+        expect: '<h3>\n  test\n</h3>',
         speed: slowSpeed
       }
     ];
     await run(testCases);
   });
 
-  test("div and a nested span", async () => {
+  test('div and a nested span', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<div|>\n  <span>test</span>\n</div>",
-        type: "{backspace}{backspace}{backspace}h3",
-        expect: "<h3>\n  <span>test</span>\n</h3>"
+        input: '<div|>\n  <span>test</span>\n</div>',
+        type: '{backspace}{backspace}{backspace}h3',
+        expect: '<h3>\n  <span>test</span>\n</h3>'
       },
       {
-        input: "<div>\n  <span|>test</span>\n</div>",
-        type: "{backspace}{backspace}{backspace}{backspace}b",
-        expect: "<div>\n  <b>test</b>\n</div>"
+        input: '<div>\n  <span|>test</span>\n</div>',
+        type: '{backspace}{backspace}{backspace}{backspace}b',
+        expect: '<div>\n  <b>test</b>\n</div>'
       },
       {
-        input: "<div>\n  <span|>test</span>\n</div>",
-        type: "n",
-        expect: "<div>\n  <spann>test</spann>\n</div>"
+        input: '<div>\n  <span|>test</span>\n</div>',
+        type: 'n',
+        expect: '<div>\n  <spann>test</spann>\n</div>'
       }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
 
-  test("nested div tags", async () => {
+  test('nested div tags', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<div|>\n  <div>test</div>\n</div>",
-        type: "{backspace}{backspace}{backspace}h3",
-        expect: "<h3>\n  <div>test</div>\n</h3>"
+        input: '<div|>\n  <div>test</div>\n</div>',
+        type: '{backspace}{backspace}{backspace}h3',
+        expect: '<h3>\n  <div>test</div>\n</h3>'
       },
       {
-        input: "<div>\n  <div>test</div|>\n</div>",
-        type: "{backspace}{backspace}{backspace}p",
-        expect: "<div>\n  <p>test</p>\n</div>"
+        input: '<div>\n  <div>test</div|>\n</div>',
+        type: '{backspace}{backspace}{backspace}p',
+        expect: '<div>\n  <p>test</p>\n</div>'
       }
     ];
     await run(testCases, { speed: slowSpeed });
   });
 
-  test("dashed tag", async () => {
+  test('dashed tag', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<dashed-div|>test</dashed-div>",
-        type: "{backspace}{backspace}{backspace}{backspace}-span",
-        expect: "<dashed-span>test</dashed-span>"
+        input: '<dashed-div|>test</dashed-div>',
+        type: '{backspace}{backspace}{backspace}{backspace}-span',
+        expect: '<dashed-span>test</dashed-span>'
       }
     ];
     await run(testCases, { speed: slowSpeed });
   });
 
-  test("uppercase tag", async () => {
+  test('uppercase tag', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<DIV|>test</DIV>",
-        type: "S",
-        expect: "<DIVS>test</DIVS>"
+        input: '<DIV|>test</DIV>',
+        type: 'S',
+        expect: '<DIVS>test</DIVS>'
       }
     ];
     await run(testCases, { speed: slowSpeed });
   });
 
-  test("with class on second line", async () => {
+  test('with class on second line', async () => {
     const testCases: TestCase[] = [
       {
         input: '<foo|\n  class="bar">foobar</foo>',
-        type: "{backspace}",
+        type: '{backspace}',
         expect: '<fo\n  class="bar">foobar</fo>'
       }
     ];
     await run(testCases);
   });
 
-  test("weird chars at start tag", async () => {
+  test('quotes', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<DatenSä|tze></DatenSätze>",
-        type: "ä",
-        expect: "<DatenSäätze></DatenSäätze>"
+        input: `<p|>it's</p>`,
+        type: '1',
+        expect: `<p1>it's</p1>`
       },
       {
-        input: "<a|></a>",
-        type: "|",
-        expect: "<a|></a>",
+        input: `<p>it's</p|>`,
+        type: '1',
+        expect: `<p1>it's</p1>`
+      },
+      {
+        input: `<p|>quote "</p>`,
+        type: '1',
+        expect: `<p1>quote "</p1>`
+      },
+      {
+        input: `<p>quote "</p|>`,
+        type: '1',
+        expect: `<p1>quote "</p1>`
+      }
+    ];
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout
+    });
+  });
+
+  test('weird chars at start tag', async () => {
+    const testCases: TestCase[] = [
+      {
+        input: '<DatenSä|tze></DatenSätze>',
+        type: 'ä',
+        expect: '<DatenSäätze></DatenSäätze>'
+      },
+      {
+        input: '<a|></a>',
+        type: '|',
+        expect: '<a|></a>',
         skip: true
       },
       {
-        input: "<你|早></你早>",
-        type: "早",
-        expect: "<你早早></你早早>",
+        input: '<你|早></你早>',
+        type: '早',
+        expect: '<你早早></你早早>',
         skip: true
       },
       {
-        input: "<Sil-vous-pla|ît></Sil-vous-plaît>",
-        type: "î",
-        expect: "<Sil-vous-plaîît></Sil-vous-plaîît>"
+        input: '<Sil-vous-pla|ît></Sil-vous-plaît>',
+        type: 'î',
+        expect: '<Sil-vous-plaîît></Sil-vous-plaîît>'
       },
       {
-        input: "<ΚΑΛΗ|ΣΠΕΡΑ></ΚΑΛΗΣΠΕΡΑ>",
-        type: "Σ",
-        expect: "<ΚΑΛΗΣΣΠΕΡΑ></ΚΑΛΗΣΣΠΕΡΑ>",
+        input: '<ΚΑΛΗ|ΣΠΕΡΑ></ΚΑΛΗΣΠΕΡΑ>',
+        type: 'Σ',
+        expect: '<ΚΑΛΗΣΣΠΕΡΑ></ΚΑΛΗΣΣΠΕΡΑ>',
         skip: true
       },
       {
         input: '<foo\\n|  class="bar">foobar</foo>',
-        type: "s",
+        type: 's',
         expect: '<foo\\ns  class="bar">foobar</foo>'
       },
       {
         input: '<foo|\\n  class="bar">foobar</foo>',
-        type: "s",
+        type: 's',
         expect: '<foos\\n  class="bar">foobar</foos>',
         skip: true
       },
       {
         input: '<foo|( class="bar">foobar</foo>',
-        type: "{backspace}",
+        type: '{backspace}',
         expect: '<fo( class="bar">foobar</fo>',
         skip: true
       }
@@ -231,23 +260,23 @@ suite("Auto Rename Tag", () => {
     await run(testCases, { speed: slowSpeed });
   });
 
-  test("with incomplete inner tag", async () => {
+  test('with incomplete inner tag', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<foo>\n<foo|\n</foo>",
-        type: "b",
-        expect: "<foo>\n<foob\n</foo>"
+        input: '<foo>\n<foo|\n</foo>',
+        type: 'b',
+        expect: '<foo>\n<foob\n</foo>'
       }
     ];
     await run(testCases);
   });
 
-  test("end tag with inline div tag", async () => {
+  test('end tag with inline div tag', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<div>test</div|>",
-        type: "s",
-        expect: "<divs>test</divs>"
+        input: '<div>test</div|>',
+        type: 's',
+        expect: '<divs>test</divs>'
       }
     ];
     await run(testCases, {
@@ -255,48 +284,48 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("with comments", async () => {
+  test('with comments', async () => {
     const testCases: TestCase[] = [
       {
-        input: "<!-- <div|></div> -->",
-        type: "v",
-        expect: "<!-- <divv></divv> -->"
+        input: '<!-- <div|></div> -->',
+        type: 'v',
+        expect: '<!-- <divv></divv> -->'
       },
       {
-        input: "<div|><!-- </div>",
-        type: "v",
-        expect: "<divv><!-- </div>"
+        input: '<div|><!-- </div>',
+        type: 'v',
+        expect: '<divv><!-- </div>'
       },
       {
-        input: "<div|><!-- </div> --> </div>",
-        type: "v",
-        expect: "<divv><!-- </div> --> </divv>"
+        input: '<div|><!-- </div> --> </div>',
+        type: 'v',
+        expect: '<divv><!-- </div> --> </divv>'
       },
       {
-        input: "<div><!-- </div> --> </div|>",
-        type: "v",
-        expect: "<divv><!-- </div> --> </divv>"
+        input: '<div><!-- </div> --> </div|>',
+        type: 'v',
+        expect: '<divv><!-- </div> --> </divv>'
       },
       {
-        input: "<div><!-- <div> --> </div|>",
-        type: "v",
-        expect: "<divv><!-- <div> --> </divv>"
+        input: '<div><!-- <div> --> </div|>',
+        type: 'v',
+        expect: '<divv><!-- <div> --> </divv>'
       },
       {
-        input: "<div><!-- </div|> -->",
-        type: "v",
-        expect: "<div><!-- </divv> -->"
+        input: '<div><!-- </div|> -->',
+        type: 'v',
+        expect: '<div><!-- </divv> -->'
       },
       {
-        input: "<div><!-- <div|></div> -->",
-        type: "v",
-        expect: "<div><!-- <divv></divv> -->"
+        input: '<div><!-- <div|></div> -->',
+        type: 'v',
+        expect: '<div><!-- <divv></divv> -->'
       }
     ];
     await run(testCases, { timeout: slowTimeout, speed: slowSpeed });
   });
 
-  test("bug 2", async () => {
+  test('bug 2', async () => {
     const testCases: TestCase[] = [
       {
         input: `<svg viewBox="0 0 100 100">
@@ -309,7 +338,7 @@ suite("Auto Rename Tag", () => {
 
   <!--|-->
 </path>`,
-        type: "\n",
+        type: '\n',
         expect: `<svg viewBox="0 0 100 100">
   <circle cx="0" cy="20" r="20" />
   <path
@@ -327,13 +356,13 @@ suite("Auto Rename Tag", () => {
     await run(testCases);
   });
 
-  test("bug 3", async () => {
+  test('bug 3', async () => {
     const testCases: TestCase[] = [
       {
         input: `<div>
   <div></div>
 </div|>`,
-        type: "v",
+        type: 'v',
         expect: `<divv>
   <div></div>
 </divv>`
@@ -342,13 +371,13 @@ suite("Auto Rename Tag", () => {
     await run(testCases);
   });
 
-  test("bug 4", async () => {
+  test('bug 4', async () => {
     const testCases: TestCase[] = [
       {
         input: `<div>
   <div><|
 </div>`,
-        type: "/",
+        type: '/',
         expect: `<div>
   <div></
 </div>`
@@ -357,13 +386,13 @@ suite("Auto Rename Tag", () => {
     await run(testCases);
   });
 
-  test("type space after bu", async () => {
+  test('type space after bu', async () => {
     const testCases: TestCase[] = [
       {
         input: `<template>
   <bu|tton></button>
 </template>`,
-        type: " ",
+        type: ' ',
         expect: `<template>
   <bu tton></bu>
 </template>`
@@ -374,12 +403,12 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language plaintext", async () => {
-    await createTestFile("auto-rename-tag.language.txt");
+  test('language plaintext', async () => {
+    await createTestFile('auto-rename-tag.language.txt');
     const testCases: TestCase[] = [
       {
         input: `<button|>this is a button</button>`,
-        type: "2",
+        type: '2',
         expect: `<button2>this is a button</button2>`
       }
     ];
@@ -388,14 +417,14 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test.skip("language typescript", async () => {
-    await createTestFile("auto-rename-tag.language.vue");
+  test.skip('language typescript', async () => {
+    await createTestFile('auto-rename-tag.language.vue');
     const testCases: TestCase[] = [
       {
         input: `<template>
   <button|>this is a button</button>
 </template>`,
-        type: "2",
+        type: '2',
         expect: `<template>
   <button2>this is a button</button2>
 </template>`
@@ -404,14 +433,14 @@ suite("Auto Rename Tag", () => {
     await run(testCases);
   });
 
-  test.skip("language typescriptreact", async () => {
-    await createTestFile("auto-rename-tag.language.vue");
+  test.skip('language typescriptreact', async () => {
+    await createTestFile('auto-rename-tag.language.vue');
     const testCases: TestCase[] = [
       {
         input: `<template>
   <button|>this is a button</button>
 </template>`,
-        type: "2",
+        type: '2',
         expect: `<template>
   <button2>this is a button</button2>
 </template>`
@@ -420,8 +449,8 @@ suite("Auto Rename Tag", () => {
     await run(testCases);
   });
 
-  test.skip("language xml", async () => {
-    await createTestFile("auto-rename-tag.language.xml");
+  test.skip('language xml', async () => {
+    await createTestFile('auto-rename-tag.language.xml');
     const testCases: TestCase[] = [
       {
         input: `<?xml version = "1.0" encoding = "UTF-8" ?>
@@ -431,7 +460,7 @@ suite("Auto Rename Tag", () => {
       <grade>A</grade>
    </student>
 </class_list>`,
-        type: "2",
+        type: '2',
         expect: `<?xml version = "1.0" encoding = "UTF-8" ?>
 <class_list>
    <student2>
@@ -444,7 +473,7 @@ suite("Auto Rename Tag", () => {
     await run(testCases);
   });
 
-  test("multiple cursors", async () => {
+  test('multiple cursors', async () => {
     const testCases: TestCase[] = [
       {
         input: `<h1|></h1>
@@ -453,7 +482,7 @@ suite("Auto Rename Tag", () => {
 <h4|></h4>
 <h5|></h5>
 <h6|></h6>`,
-        type: "i",
+        type: 'i',
         expect: `<h1i></h1i>
 <h2i></h2i>
 <h3i></h3i>
@@ -468,7 +497,7 @@ suite("Auto Rename Tag", () => {
 <h4></h4|>
 <h5></h5|>
 <h6></h6|>`,
-        type: "i",
+        type: 'i',
         expect: `<h1i></h1i>
 <h2i></h2i>
 <h3i></h3i>
@@ -483,7 +512,7 @@ suite("Auto Rename Tag", () => {
 <h4|></h4>
 <h5|></h5>
 <h6|></h6>`,
-        type: "{backspace}",
+        type: '{backspace}',
         expect: `<h></h>
 <h></h>
 <h></h>
@@ -493,12 +522,12 @@ suite("Auto Rename Tag", () => {
       },
       {
         input: `<a|a|a|></aaa>`,
-        type: "b",
+        type: 'b',
         expect: `<ababab></ababab>`
       },
       {
         input: `<aaa></a|a|a|>`,
-        type: "b",
+        type: 'b',
         expect: `<ababab></ababab>`
       }
     ];
@@ -508,17 +537,17 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("self closing tags", async () => {
+  test('self closing tags', async () => {
     const testCases: TestCase[] = [
       {
         input: `<head|><link></head>`,
-        type: "d",
-        expect: "<headd><link></headd>"
+        type: 'd',
+        expect: '<headd><link></headd>'
       },
       {
         input: `<head><link></head|>`,
-        type: "d",
-        expect: "<headd><link></headd>"
+        type: 'd',
+        expect: '<headd><link></headd>'
       }
     ];
     await run(testCases, {
@@ -527,8 +556,8 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language angular", async () => {
-    await createTestFile("auto-rename-tag.component.html");
+  test('language angular', async () => {
+    await createTestFile('auto-rename-tag.component.html');
 
     const testCases: TestCase[] = [
       {
@@ -543,7 +572,7 @@ suite("Auto Rename Tag", () => {
   </h3>
 
 </div>`,
-        type: "v",
+        type: 'v',
         expect: `<h2>Products</h2>
 
 <divv *ngFor="let product of products">
@@ -562,45 +591,45 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language javascriptreact", async () => {
-    await createTestFile("auto-rename-tag.jsx");
+  test('language javascriptreact', async () => {
+    await createTestFile('auto-rename-tag.jsx');
 
     const testCases: TestCase[] = [
       {
         input: `const button = <button|>{/* </button> */}</button>;`,
-        type: "n",
+        type: 'n',
         expect: `const button = <buttonn>{/* </button> */}</buttonn>;`
       },
       {
         input: `const button = <button>{/* </button|> */}</button>;`,
-        type: "n",
+        type: 'n',
         expect: `const button = <button>{/* </buttonn> */}</button>;`
       },
       {
         input: `const button = <button>{/* </button> */}</button|>;`,
-        type: "n",
+        type: 'n',
         expect: `const button = <buttonn>{/* </button> */}</buttonn>;`
       },
       {
-        input: "const button = <button|>{/* <button> */}</button>",
-        type: "n",
-        expect: "const button = <buttonn>{/* <button> */}</buttonn>"
+        input: 'const button = <button|>{/* <button> */}</button>',
+        type: 'n',
+        expect: 'const button = <buttonn>{/* <button> */}</buttonn>'
       },
       {
-        input: "const button = <button>{/* <button|> */}</button>",
-        type: "n",
-        expect: "const button = <button>{/* <buttonn> */}</button>"
+        input: 'const button = <button>{/* <button|> */}</button>',
+        type: 'n',
+        expect: 'const button = <button>{/* <buttonn> */}</button>'
       },
       {
-        input: "const button = <button>{/* <button> */}</button|>",
-        type: "n",
-        expect: "const button = <buttonn>{/* <button> */}</buttonn>"
+        input: 'const button = <button>{/* <button> */}</button|>',
+        type: 'n',
+        expect: 'const button = <buttonn>{/* <button> */}</buttonn>'
       },
       {
-        input: "const buttons = <|><button/><button/></>",
-        type: "React.Fragment",
+        input: 'const buttons = <|><button/><button/></>',
+        type: 'React.Fragment',
         expect:
-          "const buttons = <React.Fragment><button/><button/></React.Fragment>",
+          'const buttons = <React.Fragment><button/><button/></React.Fragment>',
         speed: slowSpeed
       }
     ];
@@ -610,15 +639,15 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language markdown", async () => {
-    await createTestFile("auto-rename-tag.md");
+  test('language markdown', async () => {
+    await createTestFile('auto-rename-tag.md');
     const testCases: TestCase[] = [
       {
         input: `\`\`\`html
 <button|>
 </button>
 \`\`\``,
-        type: "n",
+        type: 'n',
         expect: `\`\`\`html
 <buttonn>
 </buttonn>
@@ -632,7 +661,7 @@ suite("Auto Rename Tag", () => {
 \`\`\`html
 </button>
 \`\`\``,
-        type: "n",
+        type: 'n',
         expect: `\`\`\`html
 <buttonn>
 \`\`\`
@@ -649,7 +678,7 @@ suite("Auto Rename Tag", () => {
 \`\`\`html
 </button|>
 \`\`\``,
-        type: "n",
+        type: 'n',
         expect: `\`\`\`html
 <button>
 \`\`\`
@@ -664,15 +693,15 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language php", async () => {
-    await createTestFile("auto-rename-tag.php");
+  test('language php', async () => {
+    await createTestFile('auto-rename-tag.php');
     const testCases: TestCase[] = [
       {
         input: `<div| class = 'bg-warning'>
   <!-- </div> -->
   <?php displayErrors($errors); ?>
 </div>`,
-        type: "v",
+        type: 'v',
         expect: `<divv class = 'bg-warning'>
   <!-- </div> -->
   <?php displayErrors($errors); ?>
@@ -681,43 +710,51 @@ suite("Auto Rename Tag", () => {
       {
         input: `<div| title="<?php echo "FOO"?>">
 </div>`,
-        type: "v",
+        type: 'v',
         expect: `<divv title="<?php echo "FOO"?>">
 </divv>`
       },
       {
         input: `<span| title="<span>">
 </span>`,
-        type: "n",
+        type: 'n',
         expect: `<spann title="<span>">
 </spann>`
       },
       {
         input: `<span title="<span>">
 </span|>`,
-        type: "n",
+        type: 'n',
         expect: `<spann title="<span>">
 </spann>`
       },
       {
         input: `<span title="<span|>">
 </span>`,
-        type: "n",
+        type: 'n',
         expect: `<span title="<spann>">
+</span>`
+      },
+      {
+        input: `<span title="</span|>">
+</span>`,
+        type: 'n',
+        expect: `<span title="</spann>">
 </span>`
       }
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout
     });
   });
 
-  test("language razor", async () => {
-    await createTestFile("auto-rename-tag.cshtml");
+  test('language razor', async () => {
+    await createTestFile('auto-rename-tag.cshtml');
     const testCases: TestCase[] = [
       {
         input: `<p|>Last week this time: @(DateTime.Now - TimeSpan.FromDays(7))</p>`,
-        type: "p",
+        type: 'p',
         expect: `<pp>Last week this time: @(DateTime.Now - TimeSpan.FromDays(7))</pp>`
       }
     ];
@@ -726,8 +763,8 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language svelte", async () => {
-    await createTestFile("auto-rename-tag.svelte");
+  test('language svelte', async () => {
+    await createTestFile('auto-rename-tag.svelte');
     const testCases: TestCase[] = [
       {
         input: `<script>
@@ -741,7 +778,7 @@ suite("Auto Rename Tag", () => {
 <button| on:click={handleClick}>
 	Count: {count}
 </button>`,
-        type: "2",
+        type: '2',
         expect: `<script>
 	let count = 1;
 
@@ -760,8 +797,8 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language svg", async () => {
-    await createTestFile("auto-rename-tag.svg");
+  test('language svg', async () => {
+    await createTestFile('auto-rename-tag.svg');
     const testCases: TestCase[] = [
       {
         input: `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -769,7 +806,7 @@ suite("Auto Rename Tag", () => {
 <circle cx="250" cy="250" r="210" fill="#fff" stroke="#000" stroke-width="8"/>
 </svg>
 `,
-        type: "2",
+        type: '2',
         expect: `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg2 xmlns="http://www.w3.org/2000/svg" width="500" height="500">
 <circle cx="250" cy="250" r="210" fill="#fff" stroke="#000" stroke-width="8"/>
@@ -782,17 +819,17 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language erb", async () => {
-    await createTestFile("auto-rename-tag.erb");
+  test('language erb', async () => {
+    await createTestFile('auto-rename-tag.erb');
     const testCases: TestCase[] = [
       {
         input: `<span>|<%= project.logo_tag %> <%= project.name %></span>`,
-        type: "{backspace}{backspace}{backspace}",
+        type: '{backspace}{backspace}{backspace}',
         expect: `<sp<%= project.logo_tag %> <%= project.name %></span>`
       },
       {
         input: `<span|><%= project.logo_tag %> <%= project.name %></span>`,
-        type: "n",
+        type: 'n',
         expect: `<spann><%= project.logo_tag %> <%= project.name %></spann>`
       }
     ];
@@ -801,8 +838,8 @@ suite("Auto Rename Tag", () => {
     });
   });
 
-  test("language typescriptreact", async () => {
-    await createTestFile("auto-rename-tag.tsx");
+  test('language typescriptreact', async () => {
+    await createTestFile('auto-rename-tag.tsx');
     const testCases: TestCase[] = [
       {
         input: `interface Props {
@@ -813,7 +850,7 @@ const Link = <a target="_blank" href="blabla.com">
     Bla Bla
 </a>`,
         selection: [47, 57],
-        type: "any",
+        type: 'any',
         expect: `interface Props {
 	readonly dispatch: Dispatch<any>;
 }
@@ -830,7 +867,7 @@ const Link = <a target="_blank" href="blabla.com">
 const Link = <a| target="_blank" href="blabla.com">
     Bla Bla
 </a>`,
-        type: "a",
+        type: 'a',
         expect: `interface Props {
 	readonly dispatch: Dispatch<() => void>;
 }
@@ -847,7 +884,7 @@ const Link = <aa target="_blank" href="blabla.com">
 const Link = <a target="_blank" href="blabla.com">
     Bla Bla
 </a|>`,
-        type: "a",
+        type: 'a',
         expect: `interface Props {
 	readonly dispatch: Dispatch<() => void>;
 }
@@ -862,8 +899,8 @@ const Link = <aa target="_blank" href="blabla.com">
     });
   });
 
-  test("language vue", async () => {
-    await createTestFile("auto-rename-tag.vue");
+  test('language vue', async () => {
+    await createTestFile('auto-rename-tag.vue');
     const testCases: TestCase[] = [
       {
         input: `<template>
@@ -880,7 +917,7 @@ var app = new Vue({
   }
 })
 </script>`,
-        type: "v",
+        type: 'v',
         expect: `<template>
   <divv id="app">
     {{ message }}
@@ -902,8 +939,8 @@ var app = new Vue({
     });
   });
 
-  test("language xml", async () => {
-    await createTestFile("auto-rename-tag.xml");
+  test('language xml', async () => {
+    await createTestFile('auto-rename-tag.xml');
     const testCases: TestCase[] = [
       {
         input: `<?xml| version = "1.0" encoding = "UTF-8" ?>
@@ -913,7 +950,7 @@ var app = new Vue({
       <grade>A</grade>
    </student>
 </class_list>`,
-        type: "l",
+        type: 'l',
         expect: `<?xmll version = "1.0" encoding = "UTF-8" ?>
 <class_list>
    <student>
@@ -930,7 +967,7 @@ var app = new Vue({
       <grade>A</grade>
    </student>
 </class_list>`,
-        type: "t",
+        type: 't',
         expect: `<?xml version = "1.0" encoding = "UTF-8" ?>
 <class_list>
    <studentt>
@@ -945,13 +982,13 @@ var app = new Vue({
     });
   });
 
-  test("bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/502", async () => {
-    await createTestFile("502.html");
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/502', async () => {
+    await createTestFile('502.html');
     const testCases: TestCase[] = [
       {
         input: `<div class="row">
 </div>`,
-        type: "b-row",
+        type: 'b-row',
         selection: [1, 16],
         expect: `<b-row>
 </b-row>`
@@ -962,8 +999,8 @@ var app = new Vue({
     });
   });
 
-  test("bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/488", async () => {
-    await createTestFile("488.html");
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/488', async () => {
+    await createTestFile('488.html');
     const testCases: TestCase[] = [
       {
         input: `<li className="nickname">
@@ -977,7 +1014,7 @@ var app = new Vue({
     </p>
 </li>`,
         selection: [1, 3],
-        type: "modified",
+        type: 'modified',
         expect: `<modified className="nickname">
     {nickname}
     <p
@@ -995,7 +1032,7 @@ var app = new Vue({
     });
   });
 
-  test("bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/19", async () => {
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/19', async () => {
     // TODO test for Button in the middle (should not be renamed)
     const testCases: TestCase[] = [
       {
@@ -1004,7 +1041,7 @@ var app = new Vue({
 >
   <View />
 </View|>`,
-        type: "w",
+        type: 'w',
         undoStops: true,
         expect: `<Vieww
   prop1="1"
@@ -1013,7 +1050,7 @@ var app = new Vue({
 </Vieww>`
       },
       {
-        type: "w",
+        type: 'w',
         undoStops: true,
         expect: `<Viewww
   prop1="1"
@@ -1022,7 +1059,7 @@ var app = new Vue({
 </Viewww>`
       },
       {
-        type: "w",
+        type: 'w',
         undoStops: true,
         expect: `<Viewwww
   prop1="1"
@@ -1031,8 +1068,8 @@ var app = new Vue({
 </Viewwww>`
       },
       {
-        type: "",
-        afterTypeCommands: ["undo"],
+        type: '',
+        afterTypeCommands: ['undo'],
         expect: `<Viewww
   prop1="1"
 >
@@ -1040,7 +1077,7 @@ var app = new Vue({
 </Viewww>`
       },
       {
-        type: "w",
+        type: 'w',
         expect: `<Viewwww
   prop1="1"
 >
@@ -1054,7 +1091,7 @@ var app = new Vue({
     });
   });
 
-  test("bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/472", async () => {
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/472', async () => {
     const testCases: TestCase[] = [
       {
         input: `<body>
@@ -1082,7 +1119,7 @@ var app = new Vue({
     </div>
   </div>
 </body>`,
-        type: "x",
+        type: 'x',
         undoStops: true,
         expect: `<body>
   <div id="app">
@@ -1117,15 +1154,15 @@ var app = new Vue({
     });
   });
 
-  test("bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/250", async () => {
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/250', async () => {
     const testCases: TestCase[] = [
       {
         input: `<|form></form>`,
-        type: " ",
+        type: ' ',
         expect: `< form></>`
       },
       {
-        type: "{backspace}",
+        type: '{backspace}',
         expect: `<form></form>`
       }
     ];
@@ -1135,7 +1172,7 @@ var app = new Vue({
     });
   });
 
-  test("bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/179", async () => {
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/179', async () => {
     const testCases: TestCase[] = [
       {
         input: `<body>
@@ -1152,7 +1189,7 @@ var app = new Vue({
       To create a production bundle, use \`npm run build\` or \`yarn build\`.
     -->
   </body|>`,
-        type: "y",
+        type: 'y',
         expect: `<bodyy>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
@@ -1175,7 +1212,7 @@ var app = new Vue({
     });
   });
 
-  test("bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/93", async () => {
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/93', async () => {
     const testCases: TestCase[] = [
       {
         input: `<div class="parent">
@@ -1183,12 +1220,71 @@ var app = new Vue({
     <a href="http://example.com/">a link</a>
   </div>|
 </div>`,
-        type: "-->",
+        type: '-->',
         expect: `<div class="parent">
   <!--div class="child">
     <a href="http://example.com/">a link</a>
   </div>-->
 </div>`
+      }
+    ];
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout
+    });
+  });
+
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/510', async () => {
+    const testCases: TestCase[] = [
+      {
+        input: `<Tag|>
+  {person.tags.map(tag => (
+    <Tag
+      key={tag}
+      as="li"
+      className={\`tag \${tag === currentTag ? 'currentTag' : ''}\`}
+    >
+      {tag}
+    </Tag>
+  ))}
+  </Tags>`,
+        type: 's',
+        expect: `<Tags>
+  {person.tags.map(tag => (
+    <Tag
+      key={tag}
+      as="li"
+      className={\`tag \${tag === currentTag ? 'currentTag' : ''}\`}
+    >
+      {tag}
+    </Tag>
+  ))}
+  </Tags>`
+      },
+      {
+        input: `<Tags>
+  {person.tags.map(tag => (
+    <Tag
+      key={tag}
+      as="li"
+      className={\`tag \${tag === currentTag ? 'currentTag' : ''}\`}
+    >
+      {tag}
+    </Tag|>
+  ))}
+  </Tags>`,
+        type: 's',
+        expect: `<Tags>
+  {person.tags.map(tag => (
+    <Tags
+      key={tag}
+      as="li"
+      className={\`tag \${tag === currentTag ? 'currentTag' : ''}\`}
+    >
+      {tag}
+    </Tags>
+  ))}
+  </Tags>`
       }
     ];
     await run(testCases, {

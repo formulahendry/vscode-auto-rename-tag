@@ -1,9 +1,9 @@
 const whitespaceMap = {
-  " ": true,
-  "\n": true,
-  "\t": true,
-  "\f": true,
-  "\r": true
+  ' ': true,
+  '\n': true,
+  '\t': true,
+  '\f': true,
+  '\r': true
 };
 
 /**
@@ -20,7 +20,7 @@ const whitespaceMap = {
  * the next quote.
  *
  */
-const matchingTagPairsThatPreferSkip = ['"', "'"];
+const matchingTagPairsThatPreferSkip = ['`', '"', "'", '{'];
 
 function isWhitespace(char: string): boolean {
   return char in whitespaceMap;
@@ -84,7 +84,7 @@ export class MultiLineStream {
     }
     this.position++;
     if (this.position === 0) {
-      return "";
+      return '';
     }
     return this.source[this.position - 1];
   }
@@ -97,9 +97,9 @@ export class MultiLineStream {
   }
   public goBackToUntilChars(chars: string): void {
     const reversedChars = chars
-      .split("")
+      .split('')
       .reverse()
-      .join("");
+      .join('');
     outer: while (this.position >= 0) {
       for (let i = 0; i < reversedChars.length; i++) {
         if (this.source[this.position - i] !== reversedChars[i]) {
@@ -114,7 +114,8 @@ export class MultiLineStream {
 
   public goBackUntilEitherChar(
     chars: string[],
-    matchingTagPairs: readonly [string, string][]
+    matchingTagPairs: readonly [string, string][],
+    skipQuotes: boolean
   ): boolean {
     while (this.position >= 0) {
       // don't go outside of matching tag pairs, e.g. don't go before `<!--` in `<!-- <but|ton> -->`
@@ -145,10 +146,26 @@ export class MultiLineStream {
             continue outerForLoop2;
           }
         }
-        this.goBack(matchingTagPair[1].length); // e.g. go back 3 characters for `-->`
-        this.goBackToUntilChars(matchingTagPair[0]); // e.g. go back to `<!--`
-        this.goBack(matchingTagPair[0].length + 1); // e.g. go back 5 characters for `<!--`
-        return this.goBackUntilEitherChar(chars, matchingTagPairs);
+        if (matchingTagPairsThatPreferSkip.includes(matchingTagPair[0])) {
+          if (!skipQuotes) {
+            console.log('dont', this.position);
+            if (this.source[this.position - 1] === '=') {
+              console.log(this.source.slice(0, this.position));
+              console.log('false');
+              return false;
+            }
+            this.goBack(1);
+            return this.goBackUntilEitherChar(
+              chars,
+              matchingTagPairs,
+              skipQuotes
+            );
+          }
+        }
+        this.goBack(matchingTagPair[1].length); // e.g. go before `-->`
+        this.goBackToUntilChars(matchingTagPair[0]); // e.g. go back until `<!--`
+        this.goBack(matchingTagPair[0].length + 1); // e.g. go before `<!--`
+        return this.goBackUntilEitherChar(chars, matchingTagPairs, skipQuotes);
       }
       if (chars.includes(this.source[this.position])) {
         this.position++;
@@ -160,7 +177,8 @@ export class MultiLineStream {
   }
   public advanceUntilEitherChar(
     chars: string[],
-    matchingTagPairs: readonly [string, string][]
+    matchingTagPairs: readonly [string, string][],
+    skipQuotes: boolean
   ): boolean {
     while (this.position < this.source.length) {
       // don't go outside of matching tag pair, e.g. don't go past `-->` in `<!-- <but|ton> -->`
@@ -186,10 +204,23 @@ export class MultiLineStream {
             continue outerForLoop2;
           }
         }
-        this.advance(matchingTagPair[0].length);
-        this.advanceUntilChars(matchingTagPair[1]);
-        this.advance(matchingTagPair[1].length);
-        return this.advanceUntilEitherChar(chars, matchingTagPairs);
+        if (matchingTagPairsThatPreferSkip.includes(matchingTagPair[0])) {
+          if (!skipQuotes) {
+            if (this.source[this.position - 1] === '>') {
+              return false;
+            }
+            this.advance(1);
+            return this.advanceUntilEitherChar(
+              chars,
+              matchingTagPairs,
+              skipQuotes
+            );
+          }
+        }
+        this.advance(matchingTagPair[0].length); // e.g. advance until after `<!--`
+        this.advanceUntilChars(matchingTagPair[1]); // e.g. advance until `-->`
+        this.advance(matchingTagPair[1].length); // e.g. advance until after `-->`
+        return this.advanceUntilEitherChar(chars, matchingTagPairs, skipQuotes);
       }
       if (chars.includes(this.source[this.position])) {
         return true;
@@ -232,7 +263,7 @@ export class MultiLineStream {
   }
 
   public peekRight(n: number = 0): string {
-    return this.source[this.position + n] || "";
+    return this.source[this.position + n] || '';
   }
 
   public advanceIfChar(ch: string): boolean {

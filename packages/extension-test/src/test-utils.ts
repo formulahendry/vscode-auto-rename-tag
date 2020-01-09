@@ -241,7 +241,7 @@ export async function run(
 // export const slowSpeed = 30
 
 // export const slowTimeout = 200
-export const slowSpeed = 150;
+export const slowSpeed = 250;
 
 export const slowTimeout = 3500;
 

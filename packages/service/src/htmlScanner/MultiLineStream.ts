@@ -148,7 +148,7 @@ export class MultiLineStream {
         }
         if (matchingTagPairsThatPreferSkip.includes(matchingTagPair[0])) {
           if (!skipQuotes) {
-            console.log('dont', this.position);
+            console.log('dont skip quotes', this.position);
             if (this.source[this.position - 1] === '=') {
               console.log(this.source.slice(0, this.position));
               console.log('false');

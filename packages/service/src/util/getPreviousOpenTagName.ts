@@ -57,7 +57,7 @@ export const getPreviousOpeningTagName: (
     }
     // push closing tags onto the stack
     if (scanner.stream.peekRight() === '/') {
-      offset = scanner.stream.position - 1; // TODO minus 1???
+      offset = scanner.stream.position; // TODO minus 1???
       console.log('other offset' + offset);
       scanner.stream.advance(1);
       scanner.state = ScannerState.AfterOpeningEndTag;
@@ -140,15 +140,13 @@ export const getPreviousOpeningTagName: (
 // const text = `<head><link></headd>`
 // getPreviousOpeningTagName(createScanner(text), 12, 'html') //?
 
-const text = `<li
-  className={\`tag \${tag === currentTag ? 'currentTag' : ''}\`}
->
-
-</li>`;
+const text = `<body>
+  <div id="root"></div>
+</body>`;
 
 getPreviousOpeningTagName(
   createScanner(text),
-  68,
+  30,
   [
     ['{', '}'],
     ["'", "'"],

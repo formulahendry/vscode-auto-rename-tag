@@ -418,7 +418,7 @@ suite('Auto Rename Tag', () => {
   });
 
   test.skip('language typescript', async () => {
-    await createTestFile('auto-rename-tag.language.vue');
+    await createTestFile('auto-rename-tag.ts');
     const testCases: TestCase[] = [
       {
         input: `<template>
@@ -449,8 +449,8 @@ suite('Auto Rename Tag', () => {
     await run(testCases);
   });
 
-  test.skip('language xml', async () => {
-    await createTestFile('auto-rename-tag.language.xml');
+  test('language xml', async () => {
+    await createTestFile('auto-rename-tag.xml');
     const testCases: TestCase[] = [
       {
         input: `<?xml version = "1.0" encoding = "UTF-8" ?>
@@ -538,6 +538,7 @@ suite('Auto Rename Tag', () => {
   });
 
   test('self closing tags', async () => {
+    await createTestFile('self-closing-tags.html');
     const testCases: TestCase[] = [
       {
         input: `<head|><link></head>`,
@@ -552,7 +553,7 @@ suite('Auto Rename Tag', () => {
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout
+      timeout: slowTimeout * 5
     });
   });
 
@@ -741,6 +742,16 @@ suite('Auto Rename Tag', () => {
         type: 'n',
         expect: `<span title="</spann>">
 </span>`
+      },
+      {
+        input: '<span| title="<"></span>',
+        type: 'n',
+        expect: '<spann title="<"></spann>'
+      },
+      {
+        input: '<span title="<"></span|>',
+        type: 'n',
+        expect: '<spann title="<"></spann>'
       }
     ];
     await run(testCases, {

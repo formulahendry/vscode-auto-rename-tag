@@ -1,23 +1,26 @@
-const tagsThatAreSelfClosingInHtml: string[] = [
-  "area",
-  "base",
-  "br",
-  "col",
-  "command",
-  "embed",
-  "hr",
-  "img",
-  "input",
-  "keygen",
-  "link",
-  "menuitem",
-  "meta",
-  "param",
-  "source",
-  "track",
-  "wbr"
-];
-const tagsThatAreSelfClosing: { [languageId: string]: string[] } = {
+const tagsThatAreSelfClosingInHtml: Set<string> = new Set([
+  'area',
+  'base',
+  'br',
+  'col',
+  'command',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'keygen',
+  'link',
+  'menuitem',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr'
+]);
+
+const EMPTY_SET: Set<string> = new Set();
+
+const tagsThatAreSelfClosing: { [languageId: string]: Set<string> } = {
   css: tagsThatAreSelfClosingInHtml,
   ejs: tagsThatAreSelfClosingInHtml,
   ruby: tagsThatAreSelfClosingInHtml,
@@ -28,22 +31,22 @@ const tagsThatAreSelfClosing: { [languageId: string]: string[] } = {
   plaintext: tagsThatAreSelfClosingInHtml,
   php: tagsThatAreSelfClosingInHtml,
   javascript: tagsThatAreSelfClosingInHtml,
-  javascriptreact: [],
+  javascriptreact: EMPTY_SET,
   mustache: tagsThatAreSelfClosingInHtml,
   razor: tagsThatAreSelfClosingInHtml,
   svelte: tagsThatAreSelfClosingInHtml,
-  svg: [],
+  svg: EMPTY_SET,
   typescript: tagsThatAreSelfClosingInHtml,
-  typescriptreact: [],
+  typescriptreact: EMPTY_SET,
   twig: tagsThatAreSelfClosingInHtml,
   volt: tagsThatAreSelfClosingInHtml,
-  vue: [],
-  xml: []
+  vue: EMPTY_SET,
+  xml: EMPTY_SET
 };
 
 export const isSelfClosingTagInLanguage: (
   languageId: string
 ) => (tagName: string) => boolean = languageId => tagName =>
-  (
-    tagsThatAreSelfClosing[languageId] || tagsThatAreSelfClosing["html"]
-  ).includes(tagName);
+  (tagsThatAreSelfClosing[languageId] || tagsThatAreSelfClosing['html']).has(
+    tagName
+  );

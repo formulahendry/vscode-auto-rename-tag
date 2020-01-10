@@ -1,12 +1,11 @@
 import {
-  createScanner,
-  Scanner,
-  ScannerState,
-  TokenType
-} from '../htmlScanner/htmlScanner';
+  ScannerFast,
+  ScannerStateFast,
+  TokenTypeFast
+} from '../htmlScanner/htmlScannerFast';
 
 export const getPreviousOpeningTagName: (
-  scanner: Scanner,
+  scanner: ScannerFast,
   initialOffset: number,
   matchingTagPairs: readonly [string, string][],
   isSelfClosingTag: (tagName: string) => boolean
@@ -27,7 +26,6 @@ export const getPreviousOpeningTagName: (
   let stack: string[] = [];
   let seenRightAngleBracket = false;
   let selfClosing = false;
-  let i = 0;
   outer: do {
     scanner.stream.goTo(offset - 2);
     const hasFoundChar = scanner.stream.goBackUntilEitherChar(
@@ -55,7 +53,7 @@ export const getPreviousOpeningTagName: (
     if (scanner.stream.peekRight() === '/') {
       offset = scanner.stream.position;
       scanner.stream.advance(1);
-      scanner.state = ScannerState.AfterOpeningEndTag;
+      scanner.state = ScannerStateFast.AfterOpeningEndTag;
       scanner.scan();
       const token = scanner.getTokenText();
       if (token === '') {
@@ -66,9 +64,9 @@ export const getPreviousOpeningTagName: (
       continue;
     }
     offset = scanner.stream.position;
-    scanner.state = ScannerState.AfterOpeningStartTag;
+    scanner.state = ScannerStateFast.AfterOpeningStartTag;
     const token = scanner.scan();
-    if (token !== TokenType.StartTag) {
+    if (token !== TokenTypeFast.StartTag) {
       return undefined;
     }
     const tokenText = scanner.getTokenText();

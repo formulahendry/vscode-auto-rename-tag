@@ -1,4 +1,7 @@
-import { createScanner } from './htmlScanner/htmlScanner';
+import {
+  createScannerFast,
+  ScannerStateFast
+} from './htmlScanner/htmlScannerFast';
 import { getPreviousOpeningTagName } from './util/getPreviousOpenTagName';
 import { getNextClosingTagName } from './util/getNextClosingTagName';
 
@@ -23,7 +26,11 @@ export const doAutoRenameTag: (
   matchingTagPairs,
   isSelfClosingTag
 ) => {
-  const scanner = createScanner(text);
+  const scanner = createScannerFast({
+    input: text,
+    initialOffset: 0,
+    initialState: ScannerStateFast.WithinContent
+  });
   if (newWord.startsWith('</')) {
     scanner.stream.goTo(offset);
     const tagName = newWord.slice(2);
@@ -87,39 +94,3 @@ export const doAutoRenameTag: (
     };
   }
 };
-
-// doAutoCompletionElementRenameTag('<a></b>', 3, '</b', '</a', [], () => false) //?
-// TODO add to tests
-// const text = `<button>{/* <button> */}</buttonn>`
-// doAutoCompletionElementRenameTag(text, 30, [['/*', '*/']]) //?
-
-// const text = `<div><!-- </div> --> </dddddddd>`
-// doAutoCompletionElementRenameTag(text, 25, [['<!--', '-->']]) //?
-
-// const text = `<a></b>`
-// doAutoCompletionElementRenameTag(text, 6, [['<!--', '-->']]) //?
-// const text = `<divvv>
-//   <div></div>
-// </divv>`
-// doAutoCompletionElementRenameTag(text, 25, [['<!--', '-->']]) //?
-// const text = `<divv>
-//   <div>test</
-// </divv>`
-// doAutoCompletionElementRenameTag(text, 20, [['<!--', '-->']]) //?
-// const text = `<>test</l>`
-// doAutoCompletionElementRenameTag(text, 1, [['<!--', '-->']]) //?
-// const text = `<svg2 >
-// <circle cx="" />
-// </svg>`
-// doAutoCompletionElementRenameTag(text, 3, [['<!--', '-->']]) //?
-// const text = `<aa target="_blank" href="blabla.com">
-//     Bla Bla
-// </a>`
-// doAutoCompletionElementRenameTag(text, 2, 'html') //?
-
-// const text = `<head>
-//   <link>
-// </headd>`
-// doAutoCompletionElementRenameTag(text, 21, 'html') //?
-// const text = `<head><link></headd>`
-// doAutoCompletionElementRenameTag(text, 17, 'html', []) //?

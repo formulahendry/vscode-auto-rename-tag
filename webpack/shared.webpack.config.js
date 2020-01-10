@@ -17,9 +17,9 @@ module.exports = function withDefaults(/** @type WebpackConfig */ extConfig) {
       mainFields: ['module', 'main'],
       extensions: ['.ts', '.js']
     },
-    optimization: {
-      minimize: false
-    },
+    // optimization: {
+    // minimize: false
+    // },
     module: {
       rules: [
         {

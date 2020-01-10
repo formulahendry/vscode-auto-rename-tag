@@ -1,7 +1,11 @@
-import { Scanner, ScannerState, TokenType } from '../htmlScanner/htmlScanner';
+import {
+  ScannerFast,
+  ScannerStateFast,
+  TokenTypeFast
+} from '../htmlScanner/htmlScannerFast';
 
 export const getNextClosingTagName: (
-  scanner: Scanner,
+  scanner: ScannerFast,
   initialOffset: number,
   matchingTagPairs: readonly [string, string][],
   isSelfClosingTag: (tagName: string) => boolean
@@ -40,9 +44,9 @@ export const getNextClosingTagName: (
       if (scanner.stream.peekRight(1) === '/') {
         scanner.stream.advance(2);
         offset = scanner.stream.position;
-        scanner.state = ScannerState.AfterOpeningEndTag;
+        scanner.state = ScannerStateFast.AfterOpeningEndTag;
         const token = scanner.scan();
-        if (token !== TokenType.EndTag) {
+        if (token !== TokenTypeFast.EndTag) {
           return undefined;
         }
         const tokenText = scanner.getTokenText();
@@ -64,9 +68,9 @@ export const getNextClosingTagName: (
       }
 
       scanner.stream.advance(1);
-      scanner.state = ScannerState.AfterOpeningStartTag;
+      scanner.state = ScannerStateFast.AfterOpeningStartTag;
       const token = scanner.scan();
-      if (token !== TokenType.StartTag) {
+      if (token !== TokenTypeFast.StartTag) {
         return undefined;
       }
       const tokenText = scanner.getTokenText();

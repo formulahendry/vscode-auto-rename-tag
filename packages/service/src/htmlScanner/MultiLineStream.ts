@@ -1,11 +1,3 @@
-const whitespaceMap = {
-  ' ': true,
-  '\n': true,
-  '\t': true,
-  '\f': true,
-  '\r': true
-};
-
 /**
  * For these chars code can be ambiguous, e.g.
  * `<div class="<button class="></div>"</button>`
@@ -22,9 +14,8 @@ const whitespaceMap = {
  */
 const matchingTagPairsThatPreferSkip = ['`', '"', "'", '{'];
 
-function isWhitespace(char: string): boolean {
-  return char in whitespaceMap;
-}
+const whitespaceSet = new Set([' ', '\n', '\t', '\f', '\r']);
+const isWhitespace: (char: string) => boolean = char => whitespaceSet.has(char);
 
 export class MultiLineStream {
   public position: number;
@@ -55,47 +46,31 @@ export class MultiLineStream {
     this.position -= n;
   }
 
-  public goBackWhileRegex(regex: RegExp): void {
-    let char;
-    this.position++;
-    do {
-      this.position--;
-      char = this.source[this.position];
-    } while (regex.test(char) && this.position > 0);
-    this.position++;
-  }
-
   public advance(n: number): void {
     this.position += n;
   }
 
-  public goToEnd(): void {
+  private goToEnd(): void {
     this.position = this.source.length;
   }
 
-  public raceBackUntilChars(firstChar: string, secondChar: string): string {
-    this.position--;
-    while (
-      this.position >= 0 &&
-      this.source[this.position] !== firstChar &&
-      this.source[this.position] !== secondChar
-    ) {
-      this.position--;
-    }
-    this.position++;
-    if (this.position === 0) {
-      return '';
-    }
-    return this.source[this.position - 1];
-  }
+  // public raceBackUntilChars(firstChar: string, secondChar: string): string {
+  //   this.position--;
+  //   while (
+  //     this.position >= 0 &&
+  //     this.source[this.position] !== firstChar &&
+  //     this.source[this.position] !== secondChar
+  //   ) {
+  //     this.position--;
+  //   }
+  //   this.position++;
+  //   if (this.position === 0) {
+  //     return '';
+  //   }
+  //   return this.source[this.position - 1];
+  // }
 
-  public goBackToUntilChar(char: string): void {
-    while (this.position >= 0 && this.source[this.position] !== char) {
-      this.position--;
-    }
-    this.position++;
-  }
-  public goBackToUntilChars(chars: string): void {
+  private goBackToUntilChars(chars: string): void {
     const reversedChars = chars
       .split('')
       .reverse()
@@ -228,57 +203,12 @@ export class MultiLineStream {
     return this.source[this.position - n];
   }
 
-  public currentlyEndsWith(chars: string): boolean {
-    for (let i = 0; i < chars.length; i++) {
-      if (this.source[this.position - i - 1] !== chars[chars.length - 1 - i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public currentlyEndsWithRegex(regex: RegExp): boolean {
-    return regex.test(this.source.slice(0, this.position));
-  }
-
-  public previousChar(): string {
-    return this.source[this.position];
-  }
   public previousChars(n: number): string {
     return this.source.slice(this.position - n, this.position);
   }
 
-  public nextChar(): string {
-    return this.source[this.position + 1];
-  }
-
-  public nextChars(n: number): string {
-    return this.source.slice(this.position, this.position + n);
-  }
-
   public peekRight(n: number = 0): string {
     return this.source[this.position + n] || '';
-  }
-
-  public advanceIfChar(ch: string): boolean {
-    if (ch === this.source[this.position]) {
-      this.position++;
-      return true;
-    }
-    return false;
-  }
-
-  public advanceIfChars(ch: string): boolean {
-    if (this.position + ch.length > this.source.length) {
-      return false;
-    }
-    for (let i = 0; i < ch.length; i++) {
-      if (this.source[this.position + i] !== ch[i]) {
-        return false;
-      }
-    }
-    this.advance(ch.length);
-    return true;
   }
 
   public advanceIfRegExp(regex: RegExp): string | undefined {
@@ -291,29 +221,7 @@ export class MultiLineStream {
     return undefined;
   }
 
-  public advanceUntilRegExp(regex: RegExp): string | undefined {
-    const str = this.source.substr(this.position);
-    const match = str.match(regex);
-    if (match) {
-      this.position = this.position + match.index!;
-      return match[0];
-    }
-    this.goToEnd();
-
-    return undefined;
-  }
-
-  public advanceUntilChar(ch: string): boolean {
-    while (this.position < this.source.length) {
-      if (this.source[this.position] === ch) {
-        return true;
-      }
-      this.advance(1);
-    }
-    return false;
-  }
-
-  public advanceUntilChars(ch: string): boolean {
+  private advanceUntilChars(ch: string): boolean {
     while (this.position + ch.length <= this.source.length) {
       let i = 0;
       while (i < ch.length && this.source[this.position + i] === ch[i]) {
@@ -326,16 +234,5 @@ export class MultiLineStream {
     }
     this.goToEnd();
     return false;
-  }
-
-  public skipWhitespace(): boolean {
-    const initialPosition = this.position;
-    while (
-      this.position < this.length &&
-      isWhitespace(this.source[this.position])
-    ) {
-      this.position++;
-    }
-    return this.position - initialPosition > 0;
   }
 }

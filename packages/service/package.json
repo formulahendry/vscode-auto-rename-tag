@@ -4,6 +4,7 @@
   "main": "dist/serviceMain.js",
   "description": "",
   "license": "MIT",
+  "sideEffects": false,
   "scripts": {
     "dev": "tsc -b -w",
     "test": "jest"

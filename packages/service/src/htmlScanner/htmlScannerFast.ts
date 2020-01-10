@@ -186,7 +186,6 @@ export function createScannerFast({
         break
       case ScannerStateFast.AfterOpeningStartTag:
         lastTagName = nextElementName()
-        // console.log(lastTagName)
         if (lastTagName) {
           if (embeddedContentTags.includes(lastTagName)) {
             embeddedContent = true

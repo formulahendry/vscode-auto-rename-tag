@@ -69,7 +69,6 @@ export const doAutoRenameTag: (
       matchingTagPairs,
       isSelfClosingTag
     );
-    // console.log(JSON.stringify(nextClosingTag));
     if (!nextClosingTag) {
       return undefined;
     }
@@ -77,10 +76,8 @@ export const doAutoRenameTag: (
       return undefined;
     }
     if (nextClosingTag.tagName !== oldTagName) {
-      // console.log('oh no')
       return undefined;
     }
-    // console.log('yes')
     const startOffset = nextClosingTag.offset;
     const endOffset = nextClosingTag.offset + nextClosingTag.tagName.length;
     return {

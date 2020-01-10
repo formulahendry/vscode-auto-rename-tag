@@ -42,8 +42,6 @@ export const autoRenameTag: (
   if (!document) {
     return [];
   }
-  // console.log("lang");
-  // console.log(document.languageId);
   const text = document.getText();
   const matchingTagPairs = getMatchingTagPairs(document.languageId);
   const isSelfClosingTag: (

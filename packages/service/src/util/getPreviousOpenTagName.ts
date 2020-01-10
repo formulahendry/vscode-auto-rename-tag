@@ -30,7 +30,6 @@ export const getPreviousOpeningTagName: (
   let i = 0;
   outer: do {
     scanner.stream.goTo(offset - 2);
-    // console.log('at the here' + (offset - 2));
     const hasFoundChar = scanner.stream.goBackUntilEitherChar(
       ['<', '>'],
       matchingTagPairs,
@@ -57,8 +56,7 @@ export const getPreviousOpeningTagName: (
     }
     // push closing tags onto the stack
     if (scanner.stream.peekRight() === '/') {
-      offset = scanner.stream.position; // TODO minus 1???
-      // console.log('other offset' + offset);
+      offset = scanner.stream.position;
       scanner.stream.advance(1);
       scanner.state = ScannerState.AfterOpeningEndTag;
       scanner.scan();
@@ -72,18 +70,11 @@ export const getPreviousOpeningTagName: (
     }
     offset = scanner.stream.position;
     scanner.state = ScannerState.AfterOpeningStartTag;
-    // scanner.stream.advance(1)
     const token = scanner.scan();
-    // if (!seenRightAngleBracket) {
-    //   console.log('no see')
-    // }
     if (token !== TokenType.StartTag) {
       return undefined;
     }
     const tokenText = scanner.getTokenText();
-    // if (isSelfClosingTag(tokenText)) {
-    //   continue
-    // }
     if (selfClosing) {
       selfClosing = false;
       continue;
@@ -115,44 +106,3 @@ export const getPreviousOpeningTagName: (
     seenRightAngleBracket
   };
 };
-// const text = `<button> {/* </button> */}</buttonn>`
-// getPreviousOpeningTagName(createScanner(text), 25, [['/*', '*/']]) //?
-
-// const text = `<button></buttonn>`
-// getPreviousOpeningTagName(createScanner(text), 8, [['/*', '*/']]) //?
-
-// const text = `<button>   </buttonn>`
-
-// getPreviousOpeningTagName(createScanner(text), 10, [['/*', '*/']]) //?
-
-// const text = `<button>{/* <button> */}</buttonn>`
-// getPreviousOpeningTagName(createScanner(text), 24, [['/*', '*/']]) //?
-
-// const text = `<div><!-- </div> --> </dddddddd>`
-// getPreviousOpeningTagName(createScanner(text), 20, [['<!--', '-->']]) //?
-
-// const text = `<a></b>`
-// getPreviousOpeningTagName(createScanner(text), 3, [['<!--', '-->']]) //?
-// const text = `<head>
-//   <link>
-// </headd>`
-// getPreviousOpeningTagName(createScanner(text), 15, 'html') //?
-// const text = `<head><link></headd>`
-// getPreviousOpeningTagName(createScanner(text), 12, 'html') //?
-
-const text = `<body>
-  <div id="root"></div>
-</body>`;
-
-getPreviousOpeningTagName(
-  createScanner(text),
-  30,
-  [
-    ['{', '}'],
-    ["'", "'"],
-    ['"', '"'],
-    ['`', '`'],
-    ['<!--', '-->']
-  ],
-  () => false
-); //?

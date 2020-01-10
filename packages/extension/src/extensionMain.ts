@@ -2,9 +2,10 @@ import { AssertionError } from 'assert';
 import 'source-map-support/register';
 import * as vscode from 'vscode';
 import {
+  Disposable,
+  LanguageClientOptions,
   RequestType,
-  TextDocumentIdentifier,
-  LanguageClientOptions
+  TextDocumentIdentifier
 } from 'vscode-languageclient';
 import {
   createLanguageClientProxy,
@@ -205,13 +206,34 @@ const setPreviousText: (
   }
 };
 
-const isEnabledLanguageId: (languageId: string) => boolean = () => {
-  return true;
-};
-
 export const activate: (
   context: vscode.ExtensionContext
 ) => Promise<void> = async context => {
+  vscode.workspace
+    .getConfiguration('auto-rename-tag')
+    .get('activationOnLanguage');
+  const isEnabled: () => boolean = () => {
+    if (!activeTextEditor) {
+      return false;
+    }
+    const config = vscode.workspace.getConfiguration(
+      'auto-rename-tag',
+      activeTextEditor.document.uri
+    );
+    const languages = config.get<string[]>('activationOnLanguage', ['*']);
+    return (
+      languages.includes('*') ||
+      languages.includes(activeTextEditor.document.languageId)
+    );
+  };
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(event => {
+      // purges cache for `vscode.workspace.getConfiguration`
+      if (!event.affectsConfiguration('auto-rename-tag')) {
+        return;
+      }
+    })
+  );
   const clientOptions: LanguageClientOptions = {
     documentSelector: [
       {
@@ -228,22 +250,35 @@ export const activate: (
     'Auto Rename Tag',
     clientOptions
   );
-  setPreviousText(vscode.window.activeTextEditor);
-  context.subscriptions.push(
-    vscode.window.onDidChangeActiveTextEditor(setPreviousText)
-  );
-  context.subscriptions.push(
-    vscode.workspace.onDidChangeTextDocument(async event => {
-      if (event.document !== vscode.window.activeTextEditor?.document) {
+  let activeTextEditor: vscode.TextEditor | undefined =
+    vscode.window.activeTextEditor;
+  let changeListener: Disposable | undefined;
+  context.subscriptions.push({
+    dispose() {
+      if (changeListener) {
+        changeListener.dispose();
+        changeListener = undefined;
+      }
+    }
+  });
+  const setupChangeListener = () => {
+    if (changeListener) {
+      return;
+    }
+    console.log('setip change');
+    changeListener = vscode.workspace.onDidChangeTextDocument(async event => {
+      if (event.document !== activeTextEditor?.document) {
         return;
       }
-      const currentText = event.document.getText();
-      if (!isEnabledLanguageId(event.document.languageId)) {
+      if (!isEnabled()) {
+        changeListener?.dispose();
+        changeListener = undefined;
         return;
       }
       if (event.contentChanges.length === 0) {
         return;
       }
+      const currentText = event.document.getText();
       const tags: Tag[] = [];
       let totalInserted = 0;
       const sortedChanges = event.contentChanges
@@ -319,6 +354,22 @@ export const activate: (
       }
       previousText = currentText;
       doAutoCompletionElementRenameTag(languageClientProxy, tags);
+    });
+  };
+  setPreviousText(vscode.window.activeTextEditor);
+  setupChangeListener();
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(textEditor => {
+      activeTextEditor = textEditor;
+      if (!isEnabled()) {
+        if (changeListener) {
+          changeListener.dispose();
+          changeListener = undefined;
+        }
+        return;
+      }
+      setPreviousText(textEditor);
+      setupChangeListener();
     })
   );
 };

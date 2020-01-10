@@ -16,22 +16,16 @@
       "preLaunchTask": "npm: dev"
     },
     {
-      "name": "Launch Tests",
+      "name": "Launch Extension (with Extensions)",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "--disable-extensions",
-        "--extensionDevelopmentPath=${workspaceRoot}",
-        "--extensionTestsPath=${workspaceRoot}/out/test"
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/extension",
+        "${workspaceFolder}/packages/extension/playground"
       ],
-      "stopOnEntry": false,
-      "sourceMaps": true,
-      "outFiles": [
-        "${workspaceFolder}/out/test/*.js",
-        "${workspaceFolder}/out/test/*.ts"
-      ],
-      "preLaunchTask": "npm"
+      "outFiles": ["${workspaceFolder}/packages/extension/dist/**/*.js"],
+      "preLaunchTask": "npm: dev"
     }
   ]
 }

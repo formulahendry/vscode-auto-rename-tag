@@ -32,6 +32,12 @@ fs.copyFileSync(
   path.join(root, 'dist/CHANGELOG.md')
 );
 
+fs.ensureDirSync(path.join(root, 'dist/images'));
+fs.copyFileSync(
+  path.join(root, 'images/logo.png'),
+  path.join(root, 'dist/images/logo.png')
+);
+
 let extensionMain = fs
   .readFileSync(
     path.join(root, `dist/packages/extension/dist/extensionMain.js`)
@@ -43,4 +49,7 @@ extensionMain = extensionMain.replace(
   './packages/server/dist/serverMain.js'
 );
 
-fs.writeFileSync(path.join(root, `dist/extensionMain.js`), extensionMain);
+fs.writeFileSync(
+  path.join(root, `dist/packages/extension/dist/extensionMain.js`),
+  extensionMain
+);

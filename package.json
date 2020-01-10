@@ -3,13 +3,22 @@
     "postinstall": "lerna bootstrap",
     "dev": "tsc -b -w",
     "e2e": "cd packages/extension-test && npm run e2e",
-    "publish": "cd dist && vsce publish"
+    "clean": "rimraf dist",
+    "bundle:client": "webpack --mode production --config ./webpack/client.webpack.config.js",
+    "bundle:server": "webpack --mode production --config ./webpack/server.webpack.config.js",
+    "package": "npm run clean && npm run bundle:client && npm run bundle:server && node scripts/package.js && cd dist && vsce package"
   },
   "devDependencies": {
     "fs-extra": "^8.1.0",
     "lerna": "^3.20.2",
+    "merge-options": "^2.0.0",
     "prettier": "^1.19.1",
-    "typescript": "^3.7.4"
+    "rimraf": "^3.0.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.4",
+    "webpack": "^5.0.0-beta.11",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.10"
   },
   "prettier": {
     "semi": true,

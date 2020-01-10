@@ -2,13 +2,13 @@ import {
   doAutoRenameTag,
   isSelfClosingTagInLanguage,
   getMatchingTagPairs
-} from "service";
+} from 'service';
 import {
   RequestType,
   TextDocument,
   TextDocumentIdentifier,
   TextDocuments
-} from "vscode-languageserver";
+} from 'vscode-languageserver';
 
 interface Tag {
   readonly word: string;
@@ -33,7 +33,7 @@ export const autoRenameTagRequestType = new RequestType<
   Result[],
   any,
   any
->("$/auto-rename-tag");
+>('$/auto-rename-tag');
 
 export const autoRenameTag: (
   documents: TextDocuments<TextDocument>
@@ -42,8 +42,8 @@ export const autoRenameTag: (
   if (!document) {
     return [];
   }
-  console.log("lang");
-  console.log(document.languageId);
+  // console.log("lang");
+  // console.log(document.languageId);
   const text = document.getText();
   const matchingTagPairs = getMatchingTagPairs(document.languageId);
   const isSelfClosingTag: (

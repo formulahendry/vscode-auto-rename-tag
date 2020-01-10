@@ -1,7 +1,5 @@
 <!-- TODO test untitled files -->
 
-<!-- TODO test erb -->
-
 <!-- TODO https://github.com/formulahendry/vscode-auto-rename-tag/issues/45
 
 
@@ -13,3 +11,5 @@
 checks after every char for matchingTagPairs
 
  -->
+
+<!-- TODO problem with renaming start tag with w3c doc -->

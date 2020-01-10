@@ -17,7 +17,7 @@ export const getNextClosingTagName: (
   matchingTagPairs,
   isSelfClosingTag
 ) => {
-  console.log(initialOffset);
+  // console.log(initialOffset);
   let offset = initialOffset;
   let nextClosingTagName: string | undefined;
   let stack: string[] = [];
@@ -29,7 +29,7 @@ export const getNextClosingTagName: (
       // TODO show ui error (Auto Rename Tag does not work for this tag because the matching tag is too far away.)
       throw new Error('probably infinite loop');
     }
-    console.log('get next closing');
+    // console.log('get next closing');
     const hasFoundChar = scanner.stream.advanceUntilEitherChar(
       ['<', '>'],
       matchingTagPairs,
@@ -82,7 +82,7 @@ export const getNextClosingTagName: (
         scanner.stream.advance(1);
         continue;
       }
-      console.log('here');
+      // console.log('here');
       stack.push(tokenText);
       // scanner.stream.advanceUntilEitherChar(['>'], matchingTagPairs, true);
       // scanner.stream.advance(1);

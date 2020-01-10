@@ -148,12 +148,12 @@ export class MultiLineStream {
         }
         if (matchingTagPairsThatPreferSkip.includes(matchingTagPair[0])) {
           if (!skipQuotes) {
-            console.log('dont skip quotes', this.position);
-            if (this.source[this.position - 1] === '=') {
-              console.log(this.source.slice(0, this.position));
-              console.log('false');
-              return false;
-            }
+            // console.log('dont skip quotes', this.position);
+            // if (this.source[this.position - 1] === '=') {
+            // console.log(this.source.slice(0, this.position));
+            // console.log('false');
+            // return false;
+            // }
             this.goBack(1);
             return this.goBackUntilEitherChar(
               chars,
@@ -206,9 +206,9 @@ export class MultiLineStream {
         }
         if (matchingTagPairsThatPreferSkip.includes(matchingTagPair[0])) {
           if (!skipQuotes) {
-            if (this.source[this.position - 1] === '>') {
-              return false;
-            }
+            // if (this.source[this.position - 1] === '>') {
+            //   return false;
+            // }
             this.advance(1);
             return this.advanceUntilEitherChar(
               chars,

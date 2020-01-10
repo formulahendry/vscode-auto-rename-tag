@@ -30,7 +30,7 @@ export const getPreviousOpeningTagName: (
   let i = 0;
   outer: do {
     scanner.stream.goTo(offset - 2);
-    console.log('at the here' + (offset - 2));
+    // console.log('at the here' + (offset - 2));
     const hasFoundChar = scanner.stream.goBackUntilEitherChar(
       ['<', '>'],
       matchingTagPairs,
@@ -58,7 +58,7 @@ export const getPreviousOpeningTagName: (
     // push closing tags onto the stack
     if (scanner.stream.peekRight() === '/') {
       offset = scanner.stream.position; // TODO minus 1???
-      console.log('other offset' + offset);
+      // console.log('other offset' + offset);
       scanner.stream.advance(1);
       scanner.state = ScannerState.AfterOpeningEndTag;
       scanner.scan();

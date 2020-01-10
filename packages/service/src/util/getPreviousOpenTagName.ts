@@ -51,9 +51,6 @@ export const getPreviousOpeningTagName: (
       scanner.stream.goBackUntilEitherChar(['<'], matchingTagPairs, true);
       offset = scanner.stream.position;
     }
-    if (char === '<') {
-      seenRightAngleBracket;
-    }
     // push closing tags onto the stack
     if (scanner.stream.peekRight() === '/') {
       offset = scanner.stream.position;

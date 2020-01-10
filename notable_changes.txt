@@ -423,6 +423,7 @@
 - probably fixes #25
 - probably fixes #34
 - probably fixes #40
+- probably fixes #42
 - probably fixes #54
 - probably fixes #56
 - probably fixes #60
@@ -441,11 +442,3 @@
 - probably fixes #487
 - probably fixes #492
 - probably fixes #496
-
-
-
-## TODO
-- #25
-- #42
-- #43
-- #71

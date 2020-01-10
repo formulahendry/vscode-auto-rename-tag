@@ -658,8 +658,17 @@ suite('Auto Rename Tag', () => {
         input: 'const buttons = <|><button/><button/></>',
         type: 'React.Fragment',
         expect:
-          'const buttons = <React.Fragment><button/><button/></React.Fragment>',
-        speed: slowSpeed
+          'const buttons = <React.Fragment><button/><button/></React.Fragment>'
+      },
+      {
+        input: 'const Link = () => < ></|>',
+        type: 'a',
+        expect: 'const Link = () => <a ></a>'
+      },
+      {
+        input: 'const Link = () => <| ></>',
+        type: 'a',
+        expect: 'const Link = () => <a ></a>'
       }
     ];
     await run(testCases, {

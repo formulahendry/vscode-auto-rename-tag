@@ -12,4 +12,7 @@ checks after every char for matchingTagPairs
 
  -->
 
-<!-- TODO problem with renaming start tag with w3c doc -->
+<!-- TODO bug
+< href="grouping-content.html#ref-for-categories①⑥">4.4.1. The p element</>
+
+ -->

@@ -7,7 +7,6 @@ import {
 export const getNextClosingTagName: (
   scanner: ScannerFast,
   initialOffset: number,
-  matchingTagPairs: readonly [string, string][],
   isSelfClosingTag: (tagName: string) => boolean
 ) =>
   | {
@@ -18,7 +17,6 @@ export const getNextClosingTagName: (
   | undefined = (
   scanner,
   initialOffset,
-  matchingTagPairs,
   isSelfClosingTag
 ) => {
   let offset = initialOffset;
@@ -30,7 +28,6 @@ export const getNextClosingTagName: (
   do {
     const hasFoundChar = scanner.stream.advanceUntilEitherChar(
       ['<', '>'],
-      matchingTagPairs,
       false
     );
     if (!hasFoundChar) {
@@ -75,7 +72,7 @@ export const getNextClosingTagName: (
       }
       const tokenText = scanner.getTokenText();
       if (isSelfClosingTag(tokenText)) {
-        scanner.stream.advanceUntilEitherChar(['>'], matchingTagPairs, true);
+        scanner.stream.advanceUntilEitherChar(['>'],  true);
         scanner.stream.advance(1);
         continue;
       }

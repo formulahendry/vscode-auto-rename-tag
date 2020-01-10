@@ -77,13 +77,15 @@ export const enum ScannerStateFast {
 export function createScannerFast({
   input,
   initialOffset,
-  initialState
+  initialState,
+  matchingTagPairs
 }: {
   input: string;
   initialOffset: number;
   initialState: ScannerStateFast;
+  matchingTagPairs: readonly [string, string][];
 }): ScannerFast {
-  const stream = new MultiLineStream(input, initialOffset);
+  const stream = new MultiLineStream(input, initialOffset, matchingTagPairs);
   let state: ScannerStateFast = initialState;
   let tokenOffset: number;
   /**

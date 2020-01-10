@@ -7,7 +7,6 @@ import {
 export const getPreviousOpeningTagName: (
   scanner: ScannerFast,
   initialOffset: number,
-  matchingTagPairs: readonly [string, string][],
   isSelfClosingTag: (tagName: string) => boolean
 ) =>
   | {
@@ -18,7 +17,6 @@ export const getPreviousOpeningTagName: (
   | undefined = (
   scanner,
   initialOffset,
-  matchingTagPairs,
   isSelfClosingTag
 ) => {
   let offset = initialOffset + 1;
@@ -30,7 +28,6 @@ export const getPreviousOpeningTagName: (
     scanner.stream.goTo(offset - 2);
     const hasFoundChar = scanner.stream.goBackUntilEitherChar(
       ['<', '>'],
-      matchingTagPairs,
       false
     );
     if (!hasFoundChar) {
@@ -46,7 +43,7 @@ export const getPreviousOpeningTagName: (
       }
       seenRightAngleBracket = true;
       scanner.stream.goBack(1);
-      scanner.stream.goBackUntilEitherChar(['<'], matchingTagPairs, true);
+      scanner.stream.goBackUntilEitherChar(['<'],  true);
       offset = scanner.stream.position;
     }
     // push closing tags onto the stack

@@ -29,7 +29,8 @@ export const doAutoRenameTag: (
   const scanner = createScannerFast({
     input: text,
     initialOffset: 0,
-    initialState: ScannerStateFast.WithinContent
+    initialState: ScannerStateFast.WithinContent,
+    matchingTagPairs
   });
   if (newWord.startsWith('</')) {
     scanner.stream.goTo(offset);
@@ -38,7 +39,6 @@ export const doAutoRenameTag: (
     const parent = getPreviousOpeningTagName(
       scanner,
       scanner.stream.position,
-      matchingTagPairs,
       isSelfClosingTag
     );
     if (!parent) {
@@ -61,11 +61,7 @@ export const doAutoRenameTag: (
     scanner.stream.goTo(offset + 1);
     const tagName = newWord.slice(1);
     const oldTagName = oldWord.slice(1);
-    const hasAdvanced = scanner.stream.advanceUntilEitherChar(
-      ['>'],
-      matchingTagPairs,
-      true
-    );
+    const hasAdvanced = scanner.stream.advanceUntilEitherChar(['>'], true);
     if (!hasAdvanced) {
       return undefined;
     }
@@ -73,7 +69,6 @@ export const doAutoRenameTag: (
     const nextClosingTag = getNextClosingTagName(
       scanner,
       scanner.stream.position,
-      matchingTagPairs,
       isSelfClosingTag
     );
     if (!nextClosingTag) {

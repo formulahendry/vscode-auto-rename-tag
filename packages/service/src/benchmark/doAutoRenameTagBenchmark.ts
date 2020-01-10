@@ -8,7 +8,7 @@ const file = fs
   .readFileSync(path.join(__dirname, '../../src/benchmark/file.txt'))
   .toString();
 
-const measure: any = (fn: any, runs: number) => {
+const measure: any = (name: string, fn: any, runs: number) => {
   const NS_PER_MS = 1e6;
   const NS_PER_SEC = 1e9;
   const start = process.hrtime();
@@ -19,18 +19,35 @@ const measure: any = (fn: any, runs: number) => {
   const elapsedTime = process.hrtime(start);
   const elapsedTimeMs =
     (elapsedTime[0] * NS_PER_SEC + elapsedTime[1]) / NS_PER_MS / runs;
-  console.log('took ' + elapsedTimeMs + 'ms');
+  console.log(name + ' took ' + elapsedTimeMs + 'ms');
 };
 
-measure(() => {
-  doAutoRenameTag(
-    file,
-    0,
-    '<htmll',
-    '<html',
-    getMatchingTagPairs('html'),
-    isSelfClosingTagInLanguage('html')
-  );
-}, 10); //?
+measure(
+  'rename',
+  () => {
+    doAutoRenameTag(
+      file,
+      0,
+      '<htmll',
+      '<html',
+      getMatchingTagPairs('html'),
+      isSelfClosingTagInLanguage('html')
+    );
+  },
+  10
+); //?
 
-console.log();
+measure(
+  'nothing',
+  () => {
+    const whitespaceSet = new Set([' ', '\n', '\t', '\r', '\f']);
+    let whitespaceCount = 0;
+    for (let i = 0; i < file.length; i++) {
+      const j = file[i];
+      if (whitespaceSet.has(j)) {
+        whitespaceCount++;
+      }
+    }
+  },
+  10
+); //?

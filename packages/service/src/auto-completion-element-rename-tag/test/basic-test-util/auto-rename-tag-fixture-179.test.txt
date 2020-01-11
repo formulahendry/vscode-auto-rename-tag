@@ -1,2 +1,0 @@
-TODO
-https://github.com/formulahendry/vscode-auto-rename-tag/issues/179

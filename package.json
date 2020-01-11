@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap && tsc -b",
     "dev": "tsc -b -w",
     "e2e": "cd packages/extension-test && npm run e2e",
     "clean": "rimraf dist",

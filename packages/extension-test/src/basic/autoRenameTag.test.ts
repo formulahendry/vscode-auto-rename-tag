@@ -447,38 +447,6 @@ suite('Auto Rename Tag', () => {
     });
   });
 
-  test.skip('language typescript', async () => {
-    await createTestFile('auto-rename-tag.ts');
-    const testCases: TestCase[] = [
-      {
-        input: `<template>
-  <button|>this is a button</button>
-</template>`,
-        type: '2',
-        expect: `<template>
-  <button2>this is a button</button2>
-</template>`
-      }
-    ];
-    await run(testCases);
-  });
-
-  test.skip('language typescriptreact', async () => {
-    await createTestFile('auto-rename-tag.language.vue');
-    const testCases: TestCase[] = [
-      {
-        input: `<template>
-  <button|>this is a button</button>
-</template>`,
-        type: '2',
-        expect: `<template>
-  <button2>this is a button</button2>
-</template>`
-      }
-    ];
-    await run(testCases);
-  });
-
   test('language xml', async () => {
     await createTestFile('auto-rename-tag.xml');
     const testCases: TestCase[] = [
@@ -1115,7 +1083,6 @@ var app = new Vue({
   });
 
   test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/19', async () => {
-    // TODO test for Button in the middle (should not be renamed)
     const testCases: TestCase[] = [
       {
         input: `<View

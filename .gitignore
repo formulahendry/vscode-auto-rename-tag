@@ -8,8 +8,9 @@ lerna-debug.log*
 .vscode-test
 out
 stats
-**/playground/**
-!**/playground/.gitkeep
+packages/extension/playground/*
+!packages/extension/playground/.vscode
+!packages/extension/playground/.vscode/*
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

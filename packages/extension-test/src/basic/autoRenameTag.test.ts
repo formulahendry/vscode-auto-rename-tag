@@ -177,7 +177,9 @@ suite('Auto Rename Tag', () => {
         expect: '<fo\n  class="bar">foobar</fo>'
       }
     ];
-    await run(testCases);
+    await run(testCases, {
+      timeout: slowTimeout
+    });
   });
 
   test('quotes', async () => {

@@ -14,11 +14,7 @@ export const getNextClosingTagName: (
       offset: number;
       seenRightAngleBracket: boolean;
     }
-  | undefined = (
-  scanner,
-  initialOffset,
-  isSelfClosingTag
-) => {
+  | undefined = (scanner, initialOffset, isSelfClosingTag) => {
   let offset = initialOffset;
   let nextClosingTagName: string | undefined;
   let stack: string[] = [];
@@ -51,10 +47,11 @@ export const getNextClosingTagName: (
           const top = stack.pop();
           if (top !== tokenText) {
             // TODO
-            console.log(scanner.stream.position);
-            console.log(top);
-            console.log(tokenText);
-            console.error('no');
+            // console.log(scanner.stream.position);
+            // console.log(top);
+            // console.log(tokenText);
+            // console.error('no');
+            return undefined;
           }
           continue;
         }
@@ -72,7 +69,7 @@ export const getNextClosingTagName: (
       }
       const tokenText = scanner.getTokenText();
       if (isSelfClosingTag(tokenText)) {
-        scanner.stream.advanceUntilEitherChar(['>'],  true);
+        scanner.stream.advanceUntilEitherChar(['>'], true);
         scanner.stream.advance(1);
         continue;
       }

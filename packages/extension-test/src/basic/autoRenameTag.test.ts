@@ -1032,6 +1032,36 @@ var app = new Vue({
     });
   });
 
+  test('invalid code', async () => {
+    const testCases: TestCase[] = [
+      {
+        input: `<button|>
+  <a>
+  </div>
+</button>`,
+        type: 'n',
+        expect: `<buttonn>
+  <a>
+  </div>
+</button>`
+      },
+      {
+        input: `<button>
+  <a>
+  </div>
+</button|>`,
+        type: 'n',
+        expect: `<button>
+  <a>
+  </div>
+</buttonn>`
+      }
+    ];
+    await run(testCases, {
+      timeout: slowTimeout
+    });
+  });
+
   test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/502', async () => {
     await createTestFile('502.html');
     const testCases: TestCase[] = [

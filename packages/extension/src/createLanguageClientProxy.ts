@@ -1,4 +1,4 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 import {
   Code2ProtocolConverter,
   LanguageClient,
@@ -6,7 +6,7 @@ import {
   RequestType,
   ServerOptions,
   TransportKind
-} from "vscode-languageclient";
+} from 'vscode-languageclient';
 
 type VslSendRequest = <P, R, E, RO>(
   type: RequestType<P, R, E, RO>,
@@ -29,13 +29,13 @@ export const createLanguageClientProxy: (
   name,
   clientOptions
 ) => {
-  const serverModule = context.asAbsolutePath("../server/dist/serverMain.js");
+  const serverModule = context.asAbsolutePath('../server/dist/serverMain.js');
   const serverOptions: ServerOptions = {
     run: { module: serverModule, transport: TransportKind.ipc },
     debug: {
       module: serverModule,
       transport: TransportKind.ipc,
-      options: { execArgv: ["--nolazy", "--inspect=6009"] }
+      options: { execArgv: ['--nolazy', '--inspect=6009'] }
     }
   };
   const outputChannel = vscode.window.createOutputChannel(name);
@@ -49,7 +49,7 @@ export const createLanguageClientProxy: (
           outputChannel.appendLine(value);
         }
       } catch (error) {
-        if (typeof value !== "object") {
+        if (typeof value !== 'object') {
           outputChannel.appendLine(value);
         }
       }

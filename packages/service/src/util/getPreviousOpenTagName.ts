@@ -14,11 +14,7 @@ export const getPreviousOpeningTagName: (
       offset: number;
       seenRightAngleBracket: boolean;
     }
-  | undefined = (
-  scanner,
-  initialOffset,
-  isSelfClosingTag
-) => {
+  | undefined = (scanner, initialOffset, isSelfClosingTag) => {
   let offset = initialOffset + 1;
   let parentTagName: string | undefined;
   let stack: string[] = [];
@@ -43,7 +39,7 @@ export const getPreviousOpeningTagName: (
       }
       seenRightAngleBracket = true;
       scanner.stream.goBack(1);
-      scanner.stream.goBackUntilEitherChar(['<'],  true);
+      scanner.stream.goBackUntilEitherChar(['<'], true);
       offset = scanner.stream.position;
     }
     // push closing tags onto the stack

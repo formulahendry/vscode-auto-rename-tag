@@ -6,7 +6,6 @@
     "build": "tsc -b",
     "e2e": "rimraf dist tsconfig.tsbuildinfo && npm run build && node dist/extensionTestMain"
   },
-  "license": "MIT",
   "devDependencies": {
     "@types/fs-extra": "^8.0.1",
     "@types/mocha": "^5.2.7",

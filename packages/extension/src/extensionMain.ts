@@ -237,10 +237,7 @@ export const activate: (
   const clientOptions: LanguageClientOptions = {
     documentSelector: [
       {
-        scheme: 'file'
-      },
-      {
-        scheme: 'untitled'
+        scheme: '*'
       }
     ]
   };

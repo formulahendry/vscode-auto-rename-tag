@@ -5,7 +5,7 @@ import {
   Disposable,
   LanguageClientOptions,
   RequestType,
-  TextDocumentIdentifier
+  VersionedTextDocumentIdentifier
 } from 'vscode-languageclient';
 import {
   createLanguageClientProxy,
@@ -20,7 +20,7 @@ interface Tag {
 }
 
 interface Params {
-  readonly textDocument: TextDocumentIdentifier;
+  readonly textDocument: VersionedTextDocumentIdentifier;
   readonly tags: Tag[];
 }
 
@@ -52,7 +52,7 @@ const askServerForAutoCompletionsElementRenameTag: (
   tags: Tag[]
 ) => Promise<Result[]> = async (languageClientProxy, document, tags) => {
   const params: Params = {
-    textDocument: languageClientProxy.code2ProtocolConverter.asTextDocumentIdentifier(
+    textDocument: languageClientProxy.code2ProtocolConverter.asVersionedTextDocumentIdentifier(
       document
     ),
     tags

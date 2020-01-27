@@ -6,8 +6,8 @@ import {
 import {
   RequestType,
   TextDocument,
-  TextDocumentIdentifier,
-  TextDocuments
+  TextDocuments,
+  VersionedTextDocumentIdentifier
 } from 'vscode-languageserver';
 
 interface Tag {
@@ -16,7 +16,7 @@ interface Tag {
   readonly offset: number;
 }
 interface Params {
-  readonly textDocument: TextDocumentIdentifier;
+  readonly textDocument: VersionedTextDocumentIdentifier;
   readonly tags: Tag[];
 }
 
@@ -35,12 +35,21 @@ export const autoRenameTagRequestType = new RequestType<
   any
 >('$/auto-rename-tag');
 
+const NULL_AUTO_RENAME_TAG_RESULT: Result[] = [];
+
 export const autoRenameTag: (
   documents: TextDocuments<TextDocument>
-) => (params: Params) => Result[] = documents => ({ textDocument, tags }) => {
+) => (params: Params) => Promise<Result[]> = documents => async ({
+  textDocument,
+  tags
+}) => {
+  await new Promise(r => setTimeout(r, 20));
   const document = documents.get(textDocument.uri);
   if (!document) {
-    return [];
+    return NULL_AUTO_RENAME_TAG_RESULT;
+  }
+  if (textDocument.version !== document.version) {
+    return NULL_AUTO_RENAME_TAG_RESULT;
   }
   const text = document.getText();
   const matchingTagPairs = getMatchingTagPairs(document.languageId);

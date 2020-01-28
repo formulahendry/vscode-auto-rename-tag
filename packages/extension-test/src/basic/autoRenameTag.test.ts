@@ -443,6 +443,7 @@ suite('Auto Rename Tag', () => {
       }
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout
     });
   });
@@ -468,7 +469,10 @@ suite('Auto Rename Tag', () => {
 </class_list>`
       }
     ];
-    await run(testCases);
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout
+    });
   });
 
   test('multiple cursors', async () => {
@@ -586,7 +590,8 @@ suite('Auto Rename Tag', () => {
       }
     ];
     await run(testCases, {
-      timeout: slowTimeout
+      timeout: slowTimeout,
+      speed: slowSpeed
     });
   });
 
@@ -761,6 +766,35 @@ suite('Auto Rename Tag', () => {
         input: '<span title="<"></span|>',
         type: 'n',
         expect: '<spann title="<"></spann>'
+      },
+      {
+        input: `<div|>
+@foreach ($users as $user)
+    @if ($loop->first)
+        This is the first iteration.
+    @endif
+
+    @if ($loop->last)
+        This is the last iteration.
+    @endif
+
+    <p>This is user {{ $user->id }}</p>
+@endforeach
+</div>`,
+        type: 'v',
+        expect: `<divv>
+@foreach ($users as $user)
+    @if ($loop->first)
+        This is the first iteration.
+    @endif
+
+    @if ($loop->last)
+        This is the last iteration.
+    @endif
+
+    <p>This is user {{ $user->id }}</p>
+@endforeach
+</divv>`
       }
     ];
     await run(testCases, {
@@ -813,6 +847,7 @@ suite('Auto Rename Tag', () => {
       }
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout
     });
   });
@@ -835,6 +870,7 @@ suite('Auto Rename Tag', () => {
       }
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout
     });
   });
@@ -955,6 +991,7 @@ var app = new Vue({
       }
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout
     });
   });
@@ -1078,6 +1115,7 @@ var app = new Vue({
       }
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout
     });
   });

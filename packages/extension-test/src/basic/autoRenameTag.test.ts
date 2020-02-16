@@ -600,6 +600,19 @@ suite('Auto Rename Tag', () => {
 
     const testCases: TestCase[] = [
       {
+        input: `const fragment =
+  <>
+    |
+    <input />
+  </>`,
+        type: '<span>',
+        expect: `const fragment =
+  <>
+    <span></span>
+    <input />
+  </>`
+      },
+      {
         input: `const button = <button|>{/* </button> */}</button>;`,
         type: 'n',
         expect: `const button = <buttonn>{/* </button> */}</buttonn>;`

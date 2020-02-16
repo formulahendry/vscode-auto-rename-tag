@@ -65,6 +65,9 @@ export const doAutoRenameTag: (
     if (!hasAdvanced) {
       return undefined;
     }
+    if (scanner.stream.peekLeft(1) === '/') {
+      return undefined;
+    }
     scanner.stream.advance(1);
     const nextClosingTag = getNextClosingTagName(
       scanner,

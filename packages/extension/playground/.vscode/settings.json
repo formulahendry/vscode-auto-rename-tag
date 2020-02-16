@@ -1,3 +1,4 @@
 {
-  "html.mirrorCursorOnMatchingTag": false
+  "html.mirrorCursorOnMatchingTag": false,
+  "editor.formatOnSave": false
 }

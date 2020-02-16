@@ -56,7 +56,7 @@
     "build": "tsc -b"
   },
   "devDependencies": {
-    "@types/vscode": "^1.41.0",
+    "@types/vscode": "^1.42.0",
     "typescript": "^3.7.5"
   },
   "dependencies": {

@@ -36,3 +36,9 @@ Submit the [issues](https://github.com/formulahendry/vscode-auto-rename-tag/issu
 ## Contribution
 
 Fork the [repo](https://github.com/formulahendry/vscode-auto-rename-tag) and submit pull requests.
+
+<!--
+TODO REACT BUG: const Navigation = ()=><>
+</>
+type nav
+-->

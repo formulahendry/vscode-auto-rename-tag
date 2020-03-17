@@ -57,7 +57,9 @@ const matchingTagPairs: { [languageId: string]: [string, string][] } = {
     ['{/*', '*/}'],
     ["'", "'"],
     ['"', '"'],
-    ['`', '`']
+    ['`', '`'],
+    ['{{', '}}'],
+    ['{', '}']
   ],
   mustache: [['{{', '}}']],
   razor: [
@@ -87,7 +89,9 @@ const matchingTagPairs: { [languageId: string]: [string, string][] } = {
     ['{/*', '*/}'],
     ["'", "'"],
     ['"', '"'],
-    ['`', '`']
+    ['`', '`'],
+    ['{{', '}}'],
+    ['{', '}']
   ],
   twig: [
     ['<!--', '-->'],

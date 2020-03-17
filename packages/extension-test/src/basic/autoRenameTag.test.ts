@@ -599,6 +599,53 @@ suite('Auto Rename Tag', () => {
     await createTestFile('auto-rename-tag.jsx');
 
     const testCases: TestCase[] = [
+      //       {
+      //         input: `const Select = () => (
+      //   <|select
+      //     aria-label="Interval" // '
+      //   >
+      //     <option selected>Weekly</option>
+      //     <option>Monthly</option>
+      //     <option>Yearly</option>
+      //   </select>
+      // );
+      // `,
+      //         type: 'B',
+      //         expect: `const Select = () => (
+      //   <Bselect
+      //     aria-label="Interval" // '
+      //   >
+      //     <option selected>Weekly</option>
+      //     <option>Monthly</option>
+      //     <option>Yearly</option>
+      //   </|select>
+      // );
+      // `
+      //       },
+      {
+        input: `const Heading = () => <|h1 style={{fontSize: '24px'}}></|h1>`,
+        type: 'B',
+        expect: `const Heading = () => <Bh1 style={{fontSize: '24px'}}></Bh1>`
+      },
+      {
+        input: `<BoardLayout
+  footer={
+    <>
+      Hello
+    </>
+  }
+>
+  {children}|`,
+        type: '</BoardLayout>',
+        expect: `<BoardLayout
+  footer={
+    <>
+      Hello
+    </>
+  }
+>
+  {children}</BoardLayout>`
+      },
       {
         input: `const fragment =
   <>

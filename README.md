@@ -4,6 +4,15 @@
 
 Automatically rename paired HTML/XML tag, same as Visual Studio IDE does.
 
+## Sponsors
+
+<p><a title="Try CodeStream" href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=autorenametag&amp;utm_medium=banner"><img src="https://alt-images.codestream.com/codestream_logo_autorenametag.png"></a><br>
+Request and perform code reviews from inside your IDE.  Review any code, even if it's a work-in-progress that hasn't been committed yet, and use jump-to-definition, your favorite keybindings, and other IDE tools.<br> <a title="Try CodeStream" href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=autorenametag&amp;utm_medium=banner">Try it free</a></p>
+
+## ❤️ Contributors
+
+Kudos to [@SimonSiefke](https://github.com/SimonSiefke) for rewriting the logic of this extension!
+
 ## Features
 
 - When you rename one HTML/XML tag, automatically rename the paired HTML/XML tag

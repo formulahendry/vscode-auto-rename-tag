@@ -1,3 +1,6 @@
+### 0.1.2 (2020-04-21)
+* Kudos to [@SimonSiefke](https://github.com/SimonSiefke) for [rewriting the logic of this extension](https://github.com/formulahendry/vscode-auto-rename-tag/pull/511)
+
 ### 0.1.1 (2019-10-27)
 * Add notice about performance issue
 

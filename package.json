@@ -1,65 +1,29 @@
 {
-    "name": "auto-rename-tag",
-    "displayName": "Auto Rename Tag",
-    "description": "Auto rename paired HTML/XML tag",
-    "version": "0.1.1",
-    "publisher": "formulahendry",
-    "icon": "images/logo.png",
-    "engines": {
-        "vscode": "^1.17.0"
-    },
-    "categories": [
-        "Other",
-        "Programming Languages"
-    ],
-    "keywords": [
-        "AutoComplete",
-        "rename",
-        "tag",
-        "html",
-        "xml",
-        "multi-root ready"
-    ],
-    "bugs": {
-        "url": "https://github.com/formulahendry/vscode-auto-rename-tag/issues",
-        "email": "formulahendry@gmail.com"
-    },
-    "homepage": "https://github.com/formulahendry/vscode-auto-rename-tag/blob/master/README.md",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/formulahendry/vscode-auto-rename-tag.git"
-    },
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "configuration": {
-            "type": "object",
-            "title": "Auto Rename Tag configuration",
-            "properties": {
-                "auto-rename-tag.activationOnLanguage": {
-                    "type": "array",
-                    "default": [
-                        "*"
-                    ],
-                    "description": "Set the languages that the extension will be activated.  e.g. [\"html\",\"xml\",\"php\"] By default, it is [\"*\"] and will be activated for all languages.",
-                    "scope": "resource"
-                }
-            }
-        }
-    },
-    "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "@types/mocha": "^2.2.32",
-        "@types/node": "^6.0.40",
-        "mocha": "^6.1.4",
-        "typescript": "^2.0.3",
-        "vscode": "^1.0.0"
-    }
+  "scripts": {
+    "postinstall": "lerna bootstrap && tsc -b",
+    "dev": "tsc -b -w",
+    "e2e": "cd packages/extension-test && npm run e2e",
+    "clean": "rimraf dist",
+    "bundle:client": "webpack --mode production --config ./webpack/client.webpack.config.js",
+    "bundle:server": "webpack --mode production --config ./webpack/server.webpack.config.js",
+    "package": "npm run clean && npm run bundle:client && npm run bundle:server && node scripts/package.js && cd dist && vsce package",
+    "prettier": "prettier --write \"packages/*/src/**/*.ts\"",
+    "benchmark": "nodemon --watch packages/**/*.js --exec \"node packages/service/dist/benchmark/doAutoRenameTagBenchmark.js\""
+  },
+  "devDependencies": {
+    "fs-extra": "^8.1.0",
+    "lerna": "^3.20.2",
+    "merge-options": "^2.0.0",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.5",
+    "webpack": "^5.0.0-beta.11",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true
+  }
 }

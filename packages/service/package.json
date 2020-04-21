@@ -1,0 +1,14 @@
+{
+  "name": "service",
+  "version": "1.0.0-dev",
+  "main": "dist/serviceMain.js",
+  "description": "",
+  "sideEffects": false,
+  "scripts": {
+    "dev": "tsc -b -w",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  }
+}

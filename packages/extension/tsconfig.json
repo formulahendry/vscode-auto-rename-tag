@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig-noncomposite-base",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["node"],
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": ["src"],
+  "references": []
+}

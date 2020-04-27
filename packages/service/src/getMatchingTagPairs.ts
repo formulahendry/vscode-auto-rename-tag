@@ -2,13 +2,13 @@ const matchingTagPairs: { [languageId: string]: [string, string][] } = {
   css: [
     ['/*', '*/'],
     ['"', '"'],
-    ["'", "'"]
+    ["'", "'"],
   ],
   ejs: [['<%', '%>']],
   ruby: [
     ['<%=', '%>'],
     ['"', '"'],
-    ["'", "'"]
+    ["'", "'"],
   ],
   html: [
     ['<!--', '-->'],
@@ -16,42 +16,44 @@ const matchingTagPairs: { [languageId: string]: [string, string][] } = {
     ["'", "'"],
     ['<style', '</style>'],
     ['<script', '</script'],
-    ['<%=', '%>'] // support for html-webpack-plugin
+    ['<%=', '%>'], // support for html-webpack-plugin
   ],
   markdown: [
     ['<!--', '-->'],
     ['"', '"'],
     ["'", "'"],
     ['```', '```'],
-    ['<?', '?>']
+    ['<?', '?>'],
   ],
   marko: [
     ['<!--', '-->'],
     ['${', '}'],
-    ['<html-comment>', '</html-comment>']
+    ['<html-comment>', '</html-comment>'],
   ],
   nunjucks: [
     ['{%', '%}'],
     ['{{', '}}'],
-    ['{#', '#}']
+    ['{#', '#}'],
   ],
   plaintext: [
     ['<!--', '-->'],
     ['"', '"'],
-    ["'", "'"]
+    ["'", "'"],
   ],
   php: [
     ['<!--', '-->'],
     ['<?', '?>'],
     ['"', '"'],
-    ["'", "'"]
+    ["'", "'"],
   ],
   javascript: [
     ['<!--', '-->'],
     ['{/*', '*/}'],
     ["'", "'"],
     ['"', '"'],
-    ['`', '`']
+    ['`', '`'],
+    ['{{', '}}'],
+    ['{', '}'],
   ],
   javascriptreact: [
     ['{/*', '*/}'],
@@ -59,31 +61,33 @@ const matchingTagPairs: { [languageId: string]: [string, string][] } = {
     ['"', '"'],
     ['`', '`'],
     ['{{', '}}'],
-    ['{', '}']
+    ['{', '}'],
   ],
   mustache: [['{{', '}}']],
   razor: [
     ['<!--', '-->'],
     ['@{', '}'],
     ['"', '"'],
-    ["'", "'"]
+    ["'", "'"],
   ],
   svelte: [
     ['<!--', '-->'],
     ['"', '"'],
-    ["'", "'"]
+    ["'", "'"],
   ],
   svg: [
     ['<!--', '-->'],
     ['"', '"'],
-    ["'", "'"]
+    ["'", "'"],
   ],
   typescript: [
     ['<!--', '-->'],
     ['{/*', '*/}'],
     ["'", "'"],
     ['"', '"'],
-    ['`', '`']
+    ['`', '`'],
+    ['{{', '}}'],
+    ['{', '}'],
   ],
   typescriptreact: [
     ['{/*', '*/}'],
@@ -91,35 +95,34 @@ const matchingTagPairs: { [languageId: string]: [string, string][] } = {
     ['"', '"'],
     ['`', '`'],
     ['{{', '}}'],
-    ['{', '}']
+    ['{', '}'],
   ],
   twig: [
     ['<!--', '-->'],
     ['"', '"'],
     ["'", "'"],
     ['{{', '}}'],
-    ['{%', '%}']
+    ['{%', '%}'],
   ],
   volt: [
     ['{#', '#}'],
     ['{%', '%}'],
-    ['{{', '}}']
+    ['{{', '}}'],
   ],
   vue: [
     ['<!--', '-->'],
     ['"', '"'],
     ["'", "'"],
-    ['{{', '}}']
+    ['{{', '}}'],
   ],
   xml: [
     ['<!--', '-->'],
     ['"', '"'],
     ["'", "'"],
-    ['<?', '?>']
-  ]
+    ['<?', '?>'],
+  ],
 };
 
-export const getMatchingTagPairs: (
-  languageId: string
-) => [string, string][] = languageId =>
-  matchingTagPairs[languageId] || matchingTagPairs['html'];
+export const getMatchingTagPairs: (languageId: string) => [string, string][] = (
+  languageId
+) => matchingTagPairs[languageId] || matchingTagPairs['html'];

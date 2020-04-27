@@ -144,7 +144,7 @@ suite('Auto Rename Tag', () => {
         expect: '<div>\n  <p>test</p>\n</div>',
       },
     ];
-    await run(testCases, { speed: slowSpeed });
+    await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
 
   test('dashed tag', async () => {
@@ -311,6 +311,7 @@ suite('Auto Rename Tag', () => {
     ];
     await run(testCases, {
       speed: slowSpeed,
+      timeout: slowTimeout,
     });
   });
 
@@ -430,6 +431,7 @@ suite('Auto Rename Tag', () => {
     ];
     await run(testCases, {
       speed: slowSpeed,
+      timeout: slowTimeout,
     });
   });
 
@@ -913,6 +915,7 @@ class App extends React.Component {
       },
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout,
     });
   });

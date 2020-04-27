@@ -287,7 +287,7 @@ suite('Auto Rename Tag', () => {
         skip: true,
       },
     ];
-    await run(testCases, { speed: slowSpeed });
+    await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
 
   test('with incomplete inner tag', async () => {

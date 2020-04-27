@@ -155,7 +155,7 @@ suite('Auto Rename Tag', () => {
         expect: '<dashed-span>test</dashed-span>',
       },
     ];
-    await run(testCases, { speed: slowSpeed });
+    await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
 
   test('uppercase tag', async () => {
@@ -166,7 +166,7 @@ suite('Auto Rename Tag', () => {
         expect: '<DIVS>test</DIVS>',
       },
     ];
-    await run(testCases, { speed: slowSpeed });
+    await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
 
   test('with class on second line', async () => {

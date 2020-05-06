@@ -1482,4 +1482,39 @@ var app = new Vue({
       timeout: slowTimeout,
     });
   });
+
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/535', async () => {
+    await createTestFile('fragments-mistaken-as-tags-bug.js');
+    const testCases: TestCase[] = [
+      {
+        input: `function Item() {
+  return (
+    <>
+      <ul>
+        <|
+      </ul>
+
+      Test
+    </>
+  )
+}`,
+        type: 'li',
+        expect: `function Item() {
+  return (
+    <>
+      <ul>
+        <li
+      </ul>
+
+      Test
+    </>
+  )
+}`,
+      },
+    ];
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
+  });
 });

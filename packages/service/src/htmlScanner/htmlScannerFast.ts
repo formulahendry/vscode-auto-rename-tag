@@ -36,7 +36,7 @@ const htmlAttributeNameRE = /^[^\s"'>/=]*/;
  */
 const htmlAttributeValueRE = /^[^\s"'`=<>/]+/;
 
-export const enum TokenTypeFast {
+export enum TokenTypeFast {
   StartCommentTag, // "<--" part of "<!-- this is a comment -->"
   Comment, // " this is a comment " part of "<!-- this is a comment -->"
   EndCommentTag, // "-->" part of "<!-- this is a comment -->"
@@ -53,7 +53,7 @@ export const enum TokenTypeFast {
   EOS, // end of stream
   DelimiterAssign, // "=" part of "<div class="center">
   Unknown, // anything that doesn't make sense, e.g. ";" in "i <length;"
-  WhiteSpace
+  WhiteSpace,
 }
 
 export interface ScannerFast {
@@ -63,7 +63,7 @@ export interface ScannerFast {
   state: ScannerStateFast;
 }
 
-export const enum ScannerStateFast {
+export enum ScannerStateFast {
   WithinContent,
   AfterOpeningStartTag,
   AfterOpeningEndTag,
@@ -71,14 +71,14 @@ export const enum ScannerStateFast {
   WithinEndTag,
   WithinComment,
   AfterAttributeName,
-  BeforeAttributeValue
+  BeforeAttributeValue,
 }
 
 export function createScannerFast({
   input,
   initialOffset,
   initialState,
-  matchingTagPairs
+  matchingTagPairs,
 }: {
   input: string;
   initialOffset: number;
@@ -155,6 +155,6 @@ export function createScannerFast({
     },
     set state(newState: any) {
       state = newState;
-    }
+    },
   };
 }

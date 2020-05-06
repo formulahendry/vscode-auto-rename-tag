@@ -238,9 +238,9 @@ export async function run(
   }
 }
 
-export const slowSpeed = 250;
+export const slowSpeed = 300;
 
-export const slowTimeout = 7200;
+export const slowTimeout = 8000;
 
 export const createRunner: (dirname: string) => () => Promise<void> = (
   dirname

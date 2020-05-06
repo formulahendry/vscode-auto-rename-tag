@@ -407,7 +407,7 @@ suite('Auto Rename Tag', () => {
     });
   });
 
-  test.only('bug 4', async () => {
+  test('bug 4', async () => {
     const testCases: TestCase[] = [
       {
         input: `<div>

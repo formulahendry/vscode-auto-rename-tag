@@ -1,5 +1,5 @@
 {
-  "html.mirrorCursorOnMatchingTag": false,
+  "editor.renameOnType": false,
   "editor.formatOnSave": false,
-  "html.autoClosingTags": true
+  "html.autoClosingTags": false
 }

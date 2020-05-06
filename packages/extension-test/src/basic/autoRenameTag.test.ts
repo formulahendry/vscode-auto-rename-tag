@@ -104,10 +104,12 @@ suite('Auto Rename Tag', () => {
         input: '<div|>\n  test\n</div>',
         type: '{backspace}{backspace}{backspace}h3',
         expect: '<h3>\n  test\n</h3>',
-        speed: slowSpeed,
       },
     ];
-    await run(testCases);
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
   });
 
   test('div and a nested span', async () => {
@@ -405,7 +407,7 @@ suite('Auto Rename Tag', () => {
     });
   });
 
-  test('bug 4', async () => {
+  test.only('bug 4', async () => {
     const testCases: TestCase[] = [
       {
         input: `<div>

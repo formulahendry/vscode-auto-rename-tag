@@ -399,7 +399,10 @@ suite('Auto Rename Tag', () => {
 </divv>`,
       },
     ];
-    await run(testCases);
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
   });
 
   test('bug 4', async () => {
@@ -414,7 +417,10 @@ suite('Auto Rename Tag', () => {
 </div>`,
       },
     ];
-    await run(testCases);
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
   });
 
   test('type space after bu', async () => {

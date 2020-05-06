@@ -36,7 +36,7 @@ const htmlAttributeNameRE = /^[^\s"'>/=]*/;
  */
 const htmlAttributeValueRE = /^[^\s"'`=<>/]+/;
 
-export enum TokenTypeFast {
+export const enum TokenTypeFast {
   StartCommentTag, // "<--" part of "<!-- this is a comment -->"
   Comment, // " this is a comment " part of "<!-- this is a comment -->"
   EndCommentTag, // "-->" part of "<!-- this is a comment -->"
@@ -63,7 +63,7 @@ export interface ScannerFast {
   state: ScannerStateFast;
 }
 
-export enum ScannerStateFast {
+export const enum ScannerStateFast {
   WithinContent,
   AfterOpeningStartTag,
   AfterOpeningEndTag,

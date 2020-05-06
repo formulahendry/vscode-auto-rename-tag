@@ -812,6 +812,7 @@ class App extends React.Component {
       },
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout,
     });
   });

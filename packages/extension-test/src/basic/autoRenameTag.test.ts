@@ -104,10 +104,12 @@ suite('Auto Rename Tag', () => {
         input: '<div|>\n  test\n</div>',
         type: '{backspace}{backspace}{backspace}h3',
         expect: '<h3>\n  test\n</h3>',
-        speed: slowSpeed,
       },
     ];
-    await run(testCases);
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
   });
 
   test('div and a nested span', async () => {
@@ -399,7 +401,10 @@ suite('Auto Rename Tag', () => {
 </divv>`,
       },
     ];
-    await run(testCases);
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
   });
 
   test('bug 4', async () => {
@@ -414,7 +419,10 @@ suite('Auto Rename Tag', () => {
 </div>`,
       },
     ];
-    await run(testCases);
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
   });
 
   test('type space after bu', async () => {
@@ -804,6 +812,7 @@ class App extends React.Component {
       },
     ];
     await run(testCases, {
+      speed: slowSpeed,
       timeout: slowTimeout,
     });
   });
@@ -1475,6 +1484,41 @@ var app = new Vue({
     </Tags>
   ))}
   </Tags>`,
+      },
+    ];
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
+  });
+
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/535', async () => {
+    await createTestFile('fragments-mistaken-as-tags-bug.js');
+    const testCases: TestCase[] = [
+      {
+        input: `function Item() {
+  return (
+    <>
+      <ul>
+        <|
+      </ul>
+
+      Test
+    </>
+  )
+}`,
+        type: 'li',
+        expect: `function Item() {
+  return (
+    <>
+      <ul>
+        <li
+      </ul>
+
+      Test
+    </>
+  )
+}`,
       },
     ];
     await run(testCases, {

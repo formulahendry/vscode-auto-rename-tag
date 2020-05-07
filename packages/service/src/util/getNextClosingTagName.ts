@@ -1,8 +1,10 @@
 import {
   ScannerFast,
   ScannerStateFast,
-  TokenTypeFast
+  TokenTypeFast,
+  createScannerFast,
 } from '../htmlScanner/htmlScannerFast';
+import { getMatchingTagPairs } from '../getMatchingTagPairs';
 
 export const getNextClosingTagName: (
   scanner: ScannerFast,
@@ -98,6 +100,17 @@ export const getNextClosingTagName: (
   return {
     tagName: nextClosingTagName,
     offset,
-    seenRightAngleBracket
+    seenRightAngleBracket,
   };
 };
+
+// getNextClosingTagName(
+//   createScannerFast({
+//     input: ,
+//     initialOffset: 0,
+//     initialState: ScannerStateFast.WithinContent,
+//     matchingTagPairs: getMatchingTagPairs('javascriptreact'),
+//   }),
+//   72,
+//   () => false
+// ); //?

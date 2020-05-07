@@ -1,9 +1,10 @@
 import {
   createScannerFast,
-  ScannerStateFast
+  ScannerStateFast,
 } from './htmlScanner/htmlScannerFast';
 import { getPreviousOpeningTagName } from './util/getPreviousOpenTagName';
 import { getNextClosingTagName } from './util/getNextClosingTagName';
+import { getMatchingTagPairs } from './getMatchingTagPairs';
 
 export const doAutoRenameTag: (
   text: string,
@@ -30,7 +31,7 @@ export const doAutoRenameTag: (
     input: text,
     initialOffset: 0,
     initialState: ScannerStateFast.WithinContent,
-    matchingTagPairs
+    matchingTagPairs,
   });
   if (newWord.startsWith('</')) {
     scanner.stream.goTo(offset);
@@ -55,7 +56,7 @@ export const doAutoRenameTag: (
     return {
       startOffset,
       endOffset,
-      tagName
+      tagName,
     };
   } else {
     scanner.stream.goTo(offset + 1);
@@ -68,6 +69,15 @@ export const doAutoRenameTag: (
     if (scanner.stream.peekLeft(1) === '/') {
       return undefined;
     }
+    const possibleEndOfStartTag = scanner.stream.position;
+    // check if we might be at an end tag
+    while (scanner.stream.peekLeft(1).match(/[a-zA-Z\-\:]/)) {
+      scanner.stream.goBack(1);
+      if (scanner.stream.peekLeft(1) === '/') {
+        return undefined;
+      }
+    }
+    scanner.stream.goTo(possibleEndOfStartTag);
     scanner.stream.advance(1);
     const nextClosingTag = getNextClosingTagName(
       scanner,
@@ -88,7 +98,7 @@ export const doAutoRenameTag: (
     return {
       startOffset,
       endOffset,
-      tagName
+      tagName,
     };
   }
 };

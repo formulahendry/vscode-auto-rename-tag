@@ -3,7 +3,7 @@ import * as path from 'path';
 import { downloadAndUnzipVSCode, runTests } from 'vscode-test';
 
 const root = path.join(__dirname, '../../../');
-const vscodeVersion = '1.41.1';
+const vscodeVersion = '1.44.2';
 const extensionDevelopmentPath = path.join(root, 'packages/extension');
 
 interface Test {
@@ -32,8 +32,8 @@ const run = async (test: Test) => {
       launchArgs,
       extensionTestsEnv: {
         extensionPath: extensionDevelopmentPath,
-        NODE_ENV: 'test'
-      }
+        NODE_ENV: 'test',
+      },
     });
   } catch (err) {
     console.error(err);

@@ -53,7 +53,7 @@ export const enum TokenTypeFast {
   EOS, // end of stream
   DelimiterAssign, // "=" part of "<div class="center">
   Unknown, // anything that doesn't make sense, e.g. ";" in "i <length;"
-  WhiteSpace
+  WhiteSpace,
 }
 
 export interface ScannerFast {
@@ -71,14 +71,14 @@ export const enum ScannerStateFast {
   WithinEndTag,
   WithinComment,
   AfterAttributeName,
-  BeforeAttributeValue
+  BeforeAttributeValue,
 }
 
 export function createScannerFast({
   input,
   initialOffset,
   initialState,
-  matchingTagPairs
+  matchingTagPairs,
 }: {
   input: string;
   initialOffset: number;
@@ -155,6 +155,6 @@ export function createScannerFast({
     },
     set state(newState: any) {
       state = newState;
-    }
+    },
   };
 }

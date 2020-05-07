@@ -59,17 +59,17 @@ export async function setText(text: string): Promise<void> {
     document.positionAt(0),
     document.positionAt(document.getText().length)
   );
-  await vscode.window.activeTextEditor!.edit(editBuilder =>
+  await vscode.window.activeTextEditor!.edit((editBuilder) =>
     editBuilder.replace(all, text)
   );
 }
 
 function setCursorPositions(offsets: number[]): void {
-  const positions = offsets.map(offset =>
+  const positions = offsets.map((offset) =>
     vscode.window.activeTextEditor!.document.positionAt(offset)
   );
   const selections = positions.map(
-    position => new vscode.Selection(position, position)
+    (position) => new vscode.Selection(position, position)
   );
   vscode.window.activeTextEditor!.selections = selections;
 }
@@ -80,17 +80,17 @@ async function typeLiteral(text: string, undoStops = false): Promise<void> {
     vscode.window.activeTextEditor!.selections,
     {
       undoStopAfter: undoStops,
-      undoStopBefore: undoStops
+      undoStopBefore: undoStops,
     }
   );
 }
 
 async function typeDelete(times: number = 1): Promise<void> {
-  const offsets = vscode.window.activeTextEditor!.selections.map(selection =>
+  const offsets = vscode.window.activeTextEditor!.selections.map((selection) =>
     vscode.window.activeTextEditor!.document.offsetAt(selection.active)
   );
-  await new Promise(async resolve => {
-    await vscode.window.activeTextEditor!.edit(editBuilder => {
+  await new Promise(async (resolve) => {
+    await vscode.window.activeTextEditor!.edit((editBuilder) => {
       for (const offset of offsets) {
         editBuilder.delete(
           new vscode.Range(
@@ -110,9 +110,9 @@ async function type(
 ): Promise<void> {
   for (let i = 0; i < text.length; i++) {
     if (i === 0) {
-      await new Promise(resolve => setTimeout(resolve, speed / 2));
+      await new Promise((resolve) => setTimeout(resolve, speed / 2));
     } else {
-      await new Promise(resolve => setTimeout(resolve, speed));
+      await new Promise((resolve) => setTimeout(resolve, speed));
     }
     if (text.slice(i).startsWith('{backspace}')) {
       await typeDelete();
@@ -144,7 +144,7 @@ async function type(
 }
 
 async function waitForAutoComplete(timeout: 'never' | number) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const disposable = vscode.workspace.onDidChangeTextDocument(() => {
       disposable.dispose();
       resolve();
@@ -164,7 +164,7 @@ export async function run(
   { speed = 0, timeout = 40, afterCommands = [] as any[] } = {}
 ) {
   await setText('');
-  const only = testCases.filter(testCase => testCase.only);
+  const only = testCases.filter((testCase) => testCase.only);
   const applicableTestCases = only.length ? only : testCases;
   for (const testCase of applicableTestCases) {
     if (testCase.skip) {
@@ -238,16 +238,16 @@ export async function run(
   }
 }
 
-export const slowSpeed = 200;
+export const slowSpeed = 300;
 
-export const slowTimeout = 7000;
+export const slowTimeout = 8000;
 
-export const createRunner: (
-  dirname: string
-) => () => Promise<void> = dirname => () => {
+export const createRunner: (dirname: string) => () => Promise<void> = (
+  dirname
+) => () => {
   const mocha = new Mocha({
     ui: 'tdd',
-    timeout: 1000000
+    timeout: 1000000,
   });
   mocha.useColors(true);
   mocha.bail(true);
@@ -255,12 +255,12 @@ export const createRunner: (
   return new Promise((resolve, reject) => {
     const fileNames = fs
       .readdirSync(dirname)
-      .filter(fileName => fileName.endsWith('.test.js'));
+      .filter((fileName) => fileName.endsWith('.test.js'));
     for (const fileName of fileNames) {
       mocha.addFile(path.join(dirname, fileName));
     }
     try {
-      mocha.run(failures => {
+      mocha.run((failures) => {
         if (failures > 0) {
           reject(new Error(`${failures} tests failed.`));
         } else {

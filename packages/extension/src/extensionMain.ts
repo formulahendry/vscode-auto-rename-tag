@@ -212,19 +212,23 @@ export const activate: (
   vscode.workspace
     .getConfiguration('auto-rename-tag')
     .get('activationOnLanguage');
-  const isEnabled: () => boolean = () => {
-    if (!activeTextEditor) {
+  const isEnabled = (document: vscode.TextDocument | undefined) => {
+    if (!document) {
       return false;
     }
+
+    const languageId = document.languageId;
+    if ((languageId === 'html' || languageId === 'handlebars') && vscode.workspace.getConfiguration('editor', document).get('renameOnType')) {
+      return false;
+    }
+
     const config = vscode.workspace.getConfiguration(
       'auto-rename-tag',
-      activeTextEditor.document.uri
+      document.uri
     );
+
     const languages = config.get<string[]>('activationOnLanguage', ['*']);
-    return (
-      languages.includes('*') ||
-      languages.includes(activeTextEditor.document.languageId)
-    );
+    return (languages.includes('*') || languages.includes(languageId));
   };
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(event => {
@@ -266,14 +270,17 @@ export const activate: (
       if (event.document !== activeTextEditor?.document) {
         return;
       }
-      if (!isEnabled()) {
+
+      if (!isEnabled(event.document)) {
         changeListener?.dispose();
         changeListener = undefined;
         return;
       }
+
       if (event.contentChanges.length === 0) {
         return;
       }
+
       const currentText = event.document.getText();
       const tags: Tag[] = [];
       let totalInserted = 0;
@@ -355,7 +362,8 @@ export const activate: (
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor(textEditor => {
       activeTextEditor = textEditor;
-      if (!isEnabled()) {
+      const doument = activeTextEditor?.document;
+      if (!isEnabled(doument)) {
         if (changeListener) {
           changeListener.dispose();
           changeListener = undefined;

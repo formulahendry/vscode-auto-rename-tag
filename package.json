@@ -7,6 +7,7 @@
     "bundle:client": "webpack --mode production --config ./webpack/client.webpack.config.js",
     "bundle:server": "webpack --mode production --config ./webpack/server.webpack.config.js",
     "package": "npm run clean && npm run bundle:client && npm run bundle:server && node scripts/package.js && cd dist && vsce package",
+    "publish": "npm run clean && npm run bundle:client && npm run bundle:server && node scripts/package.js && cd dist && vsce publish",
     "prettier": "prettier --write \"packages/*/src/**/*.ts\"",
     "benchmark": "nodemon --watch packages/**/*.js --exec \"node packages/service/dist/benchmark/doAutoRenameTagBenchmark.js\""
   },

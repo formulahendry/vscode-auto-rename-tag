@@ -1,3 +1,6 @@
+### 0.1.3 (2020-05-16)
+* Skip HTML and Handlebars files when the setting `editor.renameOnType` is enabled
+
 ### 0.1.2 (2020-04-21)
 * Kudos to [@SimonSiefke](https://github.com/SimonSiefke) for [rewriting the logic of this extension](https://github.com/formulahendry/vscode-auto-rename-tag/pull/511)
 

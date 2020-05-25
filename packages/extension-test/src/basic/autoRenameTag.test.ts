@@ -1492,6 +1492,21 @@ var app = new Vue({
     });
   });
 
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/528', async () => {
+    await createTestFile('tag-starts-with-$.js');
+    const testCases: TestCase[] = [
+      {
+        input: `<$Label|>Label</$Label>`,
+        type: '2',
+        expect: `<$Label2>Label</$Label2>`,
+      },
+    ];
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
+  });
+
   test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/535', async () => {
     await createTestFile('fragments-mistaken-as-tags-bug.js');
     const testCases: TestCase[] = [

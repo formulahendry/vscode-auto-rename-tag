@@ -10,7 +10,7 @@ import { MultiLineStream } from './MultiLineStream';
  * [:\w]  ### ":" or character or digit
  * ((?![>\/])[\S])  ### everything except closing brackets
  */
-const htmlTagNameRE = /^[!:\w]((?![>\/])[\S])*/;
+const htmlTagNameRE = /^[!:\w\$]((?![>\/])[\S])*/;
 
 /**
  * Empty html tag, e.g. `< ></>`

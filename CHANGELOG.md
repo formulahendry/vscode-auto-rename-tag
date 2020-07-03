@@ -1,3 +1,7 @@
+### 0.1.4 (2020-07-03)
+* [#541](https://github.com/formulahendry/vscode-auto-rename-tag/pull/541): fix tag starting with $
+* [#544](https://github.com/formulahendry/vscode-auto-rename-tag/pull/544): fix script and style rename
+
 ### 0.1.3 (2020-05-16)
 * Skip HTML and Handlebars files when the setting `editor.renameOnType` is enabled
 

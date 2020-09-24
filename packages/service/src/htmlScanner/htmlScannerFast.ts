@@ -32,7 +32,7 @@ const htmlAttributeNameRE = /^[^\s"'>/=]*/;
  * Html attribute value (explaining the regex)
  *
  * ^  ### start
- *   [^\s"'`=<>/]+  ### no whitespace, quotes, "=", "<", ">" and "/"
+ *   [^\s"'`=<>/]+  ### no whitespace, double quotes, single quotes, back quotes, "=", "<", ">" and "/"
  */
 const htmlAttributeValueRE = /^[^\s"'`=<>/]+/;
 

@@ -609,29 +609,76 @@ suite('Auto Rename Tag', () => {
     await createTestFile('auto-rename-tag.jsx');
 
     const testCases: TestCase[] = [
-      //       {
-      //         input: `const Select = () => (
-      //   <|select
-      //     aria-label="Interval" // '
-      //   >
-      //     <option selected>Weekly</option>
-      //     <option>Monthly</option>
-      //     <option>Yearly</option>
-      //   </select>
-      // );
-      // `,
-      //         type: 'B',
-      //         expect: `const Select = () => (
-      //   <Bselect
-      //     aria-label="Interval" // '
-      //   >
-      //     <option selected>Weekly</option>
-      //     <option>Monthly</option>
-      //     <option>Yearly</option>
-      //   </|select>
-      // );
-      // `
-      //       },
+      {
+        input: `const Button = () => <button| onClick={() => {}}>click me</button>`,
+        type: 'n',
+        expect: `const Button = () => <buttonn onClick={() => {}}>click me</buttonn>`,
+      },
+      {
+        input: `const Button = () => <button onClick={() => {}}>click me</button|>`,
+        type: 'n',
+        expect: `const Button = () => <buttonn onClick={() => {}}>click me</buttonn>`,
+      },
+      {
+        input: `const T = () =>  <Tag className={className}>
+  {clearText && (
+    <div
+      dangerouslySetInnerHTML={{ __html: parseCustomMarkdown(clearText) }}
+    />
+  )}
+</Tag|>`,
+        type: 'g',
+        expect: `const T = () =>  <Tagg className={className}>
+  {clearText && (
+    <div
+      dangerouslySetInnerHTML={{ __html: parseCustomMarkdown(clearText) }}
+    />
+  )}
+</Tagg>`,
+      },
+      {
+        input: `const T = () =>  <Tag| className={className}>
+  {clearText && (
+    <div
+      dangerouslySetInnerHTML={{ __html: parseCustomMarkdown(clearText) }}
+    />
+  )}
+</Tag>`,
+        type: 'g',
+        expect: `const T = () =>  <Tagg className={className}>
+  {clearText && (
+    <div
+      dangerouslySetInnerHTML={{ __html: parseCustomMarkdown(clearText) }}
+    />
+  )}
+</Tagg>`,
+      },
+
+      // TODO
+      {
+        input: `const Select = () => (
+  <|select
+    aria-label="Interval" // '
+  >
+    <option selected>Weekly</option>
+    <option>Monthly</option>
+    <option>Yearly</option>
+  </select>
+);
+`,
+        type: 'B',
+        skip: true,
+        expect: `const Select = () => (
+  <Bselect
+    aria-label="Interval" // '
+  >
+    <option selected>Weekly</option>
+    <option>Monthly</option>
+    <option>Yearly</option>
+  </|select>
+);
+`,
+      },
 
       {
         input: `class Form extends React.Component {

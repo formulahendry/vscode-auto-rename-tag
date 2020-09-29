@@ -25,14 +25,7 @@ const measure: any = (name: string, fn: any, runs: number) => {
 measure(
   'rename',
   () => {
-    doAutoRenameTag(
-      file,
-      0,
-      '<htmll',
-      '<html',
-      getMatchingTagPairs('html'),
-      isSelfClosingTagInLanguage('html')
-    );
+    doAutoRenameTag(file, 0, '<htmll', '<html', 'html');
   },
   10
 ); //?

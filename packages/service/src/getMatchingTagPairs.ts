@@ -60,8 +60,8 @@ const matchingTagPairs: { [languageId: string]: [string, string][] } = {
     ["'", "'"],
     ['"', '"'],
     ['`', '`'],
-    ['{{', '}}'],
-    ['{', '}'],
+    // ['{{', '}}'],
+    // ['{', '}'],
   ],
   mustache: [['{{', '}}']],
   razor: [

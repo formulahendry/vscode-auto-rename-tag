@@ -23,7 +23,10 @@ export const doAutoRenameTag: (
   const matchingTagPairs = getMatchingTagPairs(languageId);
   const isSelfClosingTag = isSelfClosingTagInLanguage(languageId);
   const isReact =
-    languageId === 'javascriptreact' || languageId === 'typescriptreact';
+    languageId === 'javascript' ||
+    languageId === 'typescript' ||
+    languageId === 'javascriptreact' ||
+    languageId === 'typescriptreact';
   const scanner = createScannerFast({
     input: text,
     initialOffset: 0,

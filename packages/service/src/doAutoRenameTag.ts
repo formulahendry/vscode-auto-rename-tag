@@ -1,7 +1,9 @@
+import { getMatchingTagPairs } from './getMatchingTagPairs';
 import {
   createScannerFast,
   ScannerStateFast,
 } from './htmlScanner/htmlScannerFast';
+import { isSelfClosingTagInLanguage } from './isSelfClosingTag';
 import { getNextClosingTagName } from './util/getNextClosingTagName';
 import { getPreviousOpeningTagName } from './util/getPreviousOpenTagName';
 
@@ -10,22 +12,21 @@ export const doAutoRenameTag: (
   offset: number,
   newWord: string,
   oldWord: string,
-  matchingTagPairs: readonly [string, string][],
-  isSelfClosingTag: (tagName: string) => boolean
+  languageId: string
 ) =>
   | {
       startOffset: number;
       endOffset: number;
       tagName: string;
     }
-  | undefined = (
-  text,
-  offset,
-  newWord,
-  oldWord,
-  matchingTagPairs,
-  isSelfClosingTag
-) => {
+  | undefined = (text, offset, newWord, oldWord, languageId) => {
+  const matchingTagPairs = getMatchingTagPairs(languageId);
+  const isSelfClosingTag = isSelfClosingTagInLanguage(languageId);
+  const isReact =
+    languageId === 'javascript' ||
+    languageId === 'typescript' ||
+    languageId === 'javascriptreact' ||
+    languageId === 'typescriptreact';
   const scanner = createScannerFast({
     input: text,
     initialOffset: 0,
@@ -58,7 +59,8 @@ export const doAutoRenameTag: (
     const parent = getPreviousOpeningTagName(
       scanner,
       scanner.stream.position,
-      isSelfClosingTag
+      isSelfClosingTag,
+      isReact
     );
     if (!parent) {
       return undefined;
@@ -81,7 +83,11 @@ export const doAutoRenameTag: (
     const tagName = newWord.slice(1);
     const oldTagName = oldWord.slice(1);
     if (oldTagName.startsWith('script') || oldTagName.startsWith('style')) {
-      const hasAdvanced = scanner.stream.advanceUntilEitherChar(['>'], true);
+      const hasAdvanced = scanner.stream.advanceUntilEitherChar(
+        ['>'],
+        true,
+        isReact
+      );
       if (!hasAdvanced) {
         return undefined;
       }
@@ -98,7 +104,11 @@ export const doAutoRenameTag: (
         tagName,
       };
     }
-    const hasAdvanced = scanner.stream.advanceUntilEitherChar(['>'], true);
+    const hasAdvanced = scanner.stream.advanceUntilEitherChar(
+      ['>'],
+      true,
+      isReact
+    );
     if (!hasAdvanced) {
       return undefined;
     }
@@ -118,7 +128,8 @@ export const doAutoRenameTag: (
     const nextClosingTag = getNextClosingTagName(
       scanner,
       scanner.stream.position,
-      isSelfClosingTag
+      isSelfClosingTag,
+      isReact
     );
     if (!nextClosingTag) {
       return undefined;

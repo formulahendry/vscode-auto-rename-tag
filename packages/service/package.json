@@ -9,6 +9,6 @@
     "test": "jest"
   },
   "devDependencies": {
-    "typescript": "^3.8.3"
+    "typescript": "^4.0.3"
   }
 }

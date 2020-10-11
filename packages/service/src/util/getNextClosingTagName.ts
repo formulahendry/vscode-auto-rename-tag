@@ -9,14 +9,15 @@ import { getMatchingTagPairs } from '../getMatchingTagPairs';
 export const getNextClosingTagName: (
   scanner: ScannerFast,
   initialOffset: number,
-  isSelfClosingTag: (tagName: string) => boolean
+  isSelfClosingTag: (tagName: string) => boolean,
+  isReact?: boolean
 ) =>
   | {
       tagName: string;
       offset: number;
       seenRightAngleBracket: boolean;
     }
-  | undefined = (scanner, initialOffset, isSelfClosingTag) => {
+  | undefined = (scanner, initialOffset, isSelfClosingTag, isReact = false) => {
   let offset = initialOffset;
   let nextClosingTagName: string | undefined;
   let stack: string[] = [];
@@ -26,7 +27,8 @@ export const getNextClosingTagName: (
   do {
     const hasFoundChar = scanner.stream.advanceUntilEitherChar(
       ['<', '>'],
-      false
+      false,
+      isReact
     );
     if (!hasFoundChar) {
       return undefined;
@@ -71,7 +73,7 @@ export const getNextClosingTagName: (
       }
       const tokenText = scanner.getTokenText();
       if (isSelfClosingTag(tokenText)) {
-        scanner.stream.advanceUntilEitherChar(['>'], true);
+        scanner.stream.advanceUntilEitherChar(['>'], true, isReact);
         scanner.stream.advance(1);
         continue;
       }
@@ -106,11 +108,12 @@ export const getNextClosingTagName: (
 
 // getNextClosingTagName(
 //   createScannerFast({
-//     input: ,
+//     input: `<button>{/* </button> */}</button>`,
 //     initialOffset: 0,
 //     initialState: ScannerStateFast.WithinContent,
 //     matchingTagPairs: getMatchingTagPairs('javascriptreact'),
 //   }),
-//   72,
-//   () => false
+//   1,
+//   () => false,
+//   true
 // ); //?

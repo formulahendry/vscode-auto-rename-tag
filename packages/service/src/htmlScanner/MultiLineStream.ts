@@ -36,7 +36,7 @@ export class MultiLineStream {
     this.position = position;
     this.matchingTagPairs = matchingTagPairs;
     this.nonQuoteMatchingTagPairs = matchingTagPairs.filter(
-      matchingTagPair => !quotes.has(matchingTagPair[0])
+      (matchingTagPair) => !quotes.has(matchingTagPair[0])
     );
   }
 
@@ -82,10 +82,7 @@ export class MultiLineStream {
   // }
 
   private goBackToUntilChars(chars: string): void {
-    const reversedChars = chars
-      .split('')
-      .reverse()
-      .join('');
+    const reversedChars = chars.split('').reverse().join('');
     outer: while (this.position >= 0) {
       for (let i = 0; i < reversedChars.length; i++) {
         if (this.source[this.position - i] !== reversedChars[i]) {
@@ -98,8 +95,33 @@ export class MultiLineStream {
     this.position++;
   }
 
-  public goBackUntilEitherChar(chars: string[], skipQuotes: boolean): boolean {
+  public goBackUntilEitherChar(
+    chars: string[],
+    skipQuotes: boolean,
+    isReact: boolean
+  ): boolean {
+    const specialCharSet = new Set([...(isReact ? ['{', '}'] : [])]);
     while (this.position >= 0) {
+      if (isReact) {
+        if (specialCharSet.has(this.source[this.position])) {
+          if (this.source[this.position] === '{') {
+            return false;
+          }
+          if (this.source[this.position] === '}') {
+            let stackSize = 1;
+            while (--this.position > 0) {
+              if (this.source[this.position] === '}') {
+                stackSize++;
+              } else if (this.source[this.position] === '{') {
+                stackSize--;
+                if (stackSize === 0) {
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
       // don't go outside of matching tag pairs, e.g. don't go before `<!--` in `<!-- <but|ton> -->`
       outerForLoop1: for (const matchingTagPair of this
         .nonQuoteMatchingTagPairs) {
@@ -126,13 +148,13 @@ export class MultiLineStream {
         if (quotes.has(matchingTagPair[0])) {
           if (!skipQuotes) {
             this.goBack(1);
-            return this.goBackUntilEitherChar(chars, skipQuotes);
+            return this.goBackUntilEitherChar(chars, skipQuotes, isReact);
           }
         }
         this.goBack(matchingTagPair[1].length); // e.g. go before `-->`
         this.goBackToUntilChars(matchingTagPair[0]); // e.g. go back until `<!--`
         this.goBack(matchingTagPair[0].length + 1); // e.g. go before `<!--`
-        return this.goBackUntilEitherChar(chars, skipQuotes);
+        return this.goBackUntilEitherChar(chars, skipQuotes, isReact);
       }
       if (chars.includes(this.source[this.position])) {
         this.position++;
@@ -142,16 +164,39 @@ export class MultiLineStream {
     }
     return false;
   }
-  public advanceUntilEitherChar(chars: string[], skipQuotes: boolean): boolean {
+  public advanceUntilEitherChar(
+    chars: string[],
+    skipQuotes: boolean,
+    isReact: boolean
+  ): boolean {
     const specialCharSet = new Set([
       ...chars,
-      ...this.matchingTagPairs.map(x => x[1][0]),
-      ...this.matchingTagPairs.map(x => x[0][0])
+      ...this.matchingTagPairs.map((x) => x[1][0]),
+      ...this.matchingTagPairs.map((x) => x[0][0]),
+      ...(isReact ? ['{', '}'] : []),
     ]);
     while (this.position < this.source.length) {
       if (!specialCharSet.has(this.source[this.position])) {
         this.position++;
         continue;
+      }
+      if (isReact) {
+        if (this.source[this.position] === '{') {
+          let stackSize = 1;
+          while (++this.position < this.source.length) {
+            if (this.source[this.position] === '{') {
+              stackSize++;
+            } else if (this.source[this.position] === '}') {
+              stackSize--;
+              if (stackSize === 0) {
+                this.position++;
+                break;
+              }
+            }
+          }
+        } else if (this.source[this.position] === '}') {
+          return false;
+        }
       }
       // don't go outside of matching tag pair, e.g. don't go past `-->` in `<!-- <but|ton> -->`
       outerForLoop1: for (const matchingTagPair of this
@@ -174,13 +219,13 @@ export class MultiLineStream {
         if (quotes.has(matchingTagPair[0])) {
           if (!skipQuotes) {
             this.advance(1);
-            return this.advanceUntilEitherChar(chars, skipQuotes);
+            return this.advanceUntilEitherChar(chars, skipQuotes, isReact);
           }
         }
         this.advance(matchingTagPair[0].length); // e.g. advance until after `<!--`
         this.advanceUntilChars(matchingTagPair[1]); // e.g. advance until `-->`
         this.advance(matchingTagPair[1].length); // e.g. advance until after `-->`
-        return this.advanceUntilEitherChar(chars, skipQuotes);
+        return this.advanceUntilEitherChar(chars, skipQuotes, isReact);
       }
       if (chars.includes(this.source[this.position])) {
         return true;

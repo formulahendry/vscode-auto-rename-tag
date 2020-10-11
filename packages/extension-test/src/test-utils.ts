@@ -248,9 +248,9 @@ export const createRunner: (dirname: string) => () => Promise<void> = (
   const mocha = new Mocha({
     ui: 'tdd',
     timeout: 1000000,
+    color: true,
+    bail: true,
   });
-  mocha.useColors(true);
-  mocha.bail(true);
 
   return new Promise((resolve, reject) => {
     const fileNames = fs

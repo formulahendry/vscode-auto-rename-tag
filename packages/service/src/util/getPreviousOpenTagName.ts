@@ -1,20 +1,23 @@
+import { getMatchingTagPairs } from '../getMatchingTagPairs';
 import {
+  createScannerFast,
   ScannerFast,
   ScannerStateFast,
-  TokenTypeFast
+  TokenTypeFast,
 } from '../htmlScanner/htmlScannerFast';
 
 export const getPreviousOpeningTagName: (
   scanner: ScannerFast,
   initialOffset: number,
-  isSelfClosingTag: (tagName: string) => boolean
+  isSelfClosingTag: (tagName: string) => boolean,
+  isReact: boolean
 ) =>
   | {
       tagName: string;
       offset: number;
       seenRightAngleBracket: boolean;
     }
-  | undefined = (scanner, initialOffset, isSelfClosingTag) => {
+  | undefined = (scanner, initialOffset, isSelfClosingTag, isReact) => {
   let offset = initialOffset + 1;
   let parentTagName: string | undefined;
   let stack: string[] = [];
@@ -24,7 +27,8 @@ export const getPreviousOpeningTagName: (
     scanner.stream.goTo(offset - 2);
     const hasFoundChar = scanner.stream.goBackUntilEitherChar(
       ['<', '>'],
-      false
+      false,
+      isReact
     );
     if (!hasFoundChar) {
       return undefined;
@@ -39,7 +43,7 @@ export const getPreviousOpeningTagName: (
       }
       seenRightAngleBracket = true;
       scanner.stream.goBack(1);
-      scanner.stream.goBackUntilEitherChar(['<'], true);
+      scanner.stream.goBackUntilEitherChar(['<'], true, isReact);
       offset = scanner.stream.position;
     }
     // push closing tags onto the stack
@@ -91,6 +95,25 @@ export const getPreviousOpeningTagName: (
   return {
     tagName: parentTagName,
     offset,
-    seenRightAngleBracket
+    seenRightAngleBracket,
   };
 };
+
+// getPreviousOpeningTagName(
+//   createScannerFast({
+//     input: `<BoardLayout
+//     footer={
+//       <>
+//         Hello
+//       </>
+//     }
+//   >
+//     {children}</`,
+//     initialOffset: 0,
+//     initialState: ScannerStateFast.WithinContent,
+//     matchingTagPairs: getMatchingTagPairs('javascriptreact'),
+//   }),
+//   85,
+//   () => false,
+//   true
+// ); //?

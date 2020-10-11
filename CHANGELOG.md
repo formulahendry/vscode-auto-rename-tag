@@ -1,3 +1,6 @@
+### 0.1.5 (2020-10-11)
+* [#556](https://github.com/formulahendry/vscode-auto-rename-tag/pull/556): Improve auto renaming with React
+
 ### 0.1.4 (2020-07-03)
 * [#541](https://github.com/formulahendry/vscode-auto-rename-tag/pull/541): fix tag starting with $
 * [#544](https://github.com/formulahendry/vscode-auto-rename-tag/pull/544): fix script and style rename

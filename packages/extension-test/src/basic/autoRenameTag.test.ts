@@ -425,7 +425,7 @@ suite('Auto Rename Tag', () => {
     });
   });
 
-  test('bug with href=/', async () => {
+  test('bugs with href=/', async () => {
     const testCases: TestCase[] = [
       {
         input: `<div|>
@@ -434,6 +434,15 @@ suite('Auto Rename Tag', () => {
         type: 'v',
         expect: `<divv>
   <a href=/><span><strong>One-Page Version</strong> <code>html.spec.whatwg.org</code></span></a>
+</divv>`,
+      },
+      {
+        input: `<div|>
+  <a onclick=setLinkFragment(this); id=multipage-link href=/multipage/><span><strong>Multipage Version</strong> <code>/multipage</code></span></a>
+</div>`,
+        type: 'v',
+        expect: `<divv>
+  <a onclick=setLinkFragment(this); id=multipage-link href=/multipage/><span><strong>Multipage Version</strong> <code>/multipage</code></span></a>
 </divv>`,
       },
     ];

@@ -88,9 +88,15 @@ export const getNextClosingTagName: (
         return undefined;
       }
       if (scanner.stream.peekLeft(1) === '/') {
-        if (scanner.stream.peekLeft(2) === '=') {
-          scanner.stream.advance(1);
-          continue;
+        const charBefore = scanner.stream.peekLeft(2);
+        if (!/[\s"'\}]/.test(charBefore)) {
+          const codeBefore = scanner.stream
+            .getSource()
+            .slice(0, scanner.stream.position);
+          if (/href=[^\s]+$/.test(codeBefore)) {
+            scanner.stream.advance(1);
+            continue;
+          }
         }
         if (stack.length === 0) {
           return undefined;
@@ -113,7 +119,7 @@ export const getNextClosingTagName: (
 // getNextClosingTagName(
 //   createScannerFast({
 //     input: `<div>
-//     <a href=/><span><strong>One-Page Version</strong> <code>html.spec.whatwg.org</code></span></a>
+//   <a onclick=setLinkFragment(this); href=multipage/><span><strong>Multipage Version</strong> <code>/multipage</code></span></a>
 //   </div>`,
 //     initialOffset: 0,
 //     initialState: ScannerStateFast.WithinContent,

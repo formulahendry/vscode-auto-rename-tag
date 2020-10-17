@@ -15,7 +15,7 @@ const tagsThatAreSelfClosingInHtml: Set<string> = new Set([
   'param',
   'source',
   'track',
-  'wbr'
+  'wbr',
 ]);
 
 const EMPTY_SET: Set<string> = new Set();
@@ -41,12 +41,12 @@ const tagsThatAreSelfClosing: { [languageId: string]: Set<string> } = {
   twig: tagsThatAreSelfClosingInHtml,
   volt: tagsThatAreSelfClosingInHtml,
   vue: EMPTY_SET,
-  xml: EMPTY_SET
+  xml: EMPTY_SET,
 };
 
 export const isSelfClosingTagInLanguage: (
   languageId: string
-) => (tagName: string) => boolean = languageId => tagName =>
+) => (tagName: string) => boolean = (languageId) => (tagName) =>
   (tagsThatAreSelfClosing[languageId] || tagsThatAreSelfClosing['html']).has(
     tagName
   );

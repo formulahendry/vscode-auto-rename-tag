@@ -425,6 +425,24 @@ suite('Auto Rename Tag', () => {
     });
   });
 
+  test('bug with href=/', async () => {
+    const testCases: TestCase[] = [
+      {
+        input: `<div|>
+  <a href=/><span><strong>One-Page Version</strong> <code>html.spec.whatwg.org</code></span></a>
+</div>`,
+        type: 'v',
+        expect: `<divv>
+  <a href=/><span><strong>One-Page Version</strong> <code>html.spec.whatwg.org</code></span></a>
+</divv>`,
+      },
+    ];
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
+  });
+
   test('type space after bu', async () => {
     const testCases: TestCase[] = [
       {

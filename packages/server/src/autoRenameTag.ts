@@ -2,10 +2,10 @@ import { doAutoRenameTag } from 'service';
 import {
   RequestType,
   // TODO
-  TextDocument,
   TextDocuments,
   VersionedTextDocumentIdentifier,
 } from 'vscode-languageserver';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 
 interface Tag {
   readonly word: string;

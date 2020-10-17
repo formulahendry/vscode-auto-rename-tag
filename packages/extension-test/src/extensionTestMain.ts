@@ -3,7 +3,7 @@ import * as path from 'path';
 import { downloadAndUnzipVSCode, runTests } from 'vscode-test';
 
 const root = path.join(__dirname, '../../../');
-const vscodeVersion = '1.49.2';
+const vscodeVersion = '1.50.1';
 const extensionDevelopmentPath = path.join(root, 'packages/extension');
 
 interface Test {

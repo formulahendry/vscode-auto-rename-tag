@@ -5,11 +5,11 @@ import {
   Disposable,
   LanguageClientOptions,
   RequestType,
-  VersionedTextDocumentIdentifier
+  VersionedTextDocumentIdentifier,
 } from 'vscode-languageclient';
 import {
   createLanguageClientProxy,
-  LanguageClientProxy
+  LanguageClientProxy,
 } from './createLanguageClientProxy';
 
 interface Tag {
@@ -32,10 +32,12 @@ interface Result {
   readonly tagName: string;
 }
 
-const assertDefined: <T>(value: T) => asserts value is NonNullable<T> = val => {
+const assertDefined: <T>(value: T) => asserts value is NonNullable<T> = (
+  val
+) => {
   if (val === undefined || val === null) {
     throw new AssertionError({
-      message: `Expected 'value' to be defined, but received ${val}`
+      message: `Expected 'value' to be defined, but received ${val}`,
     });
   }
 };
@@ -55,7 +57,7 @@ const askServerForAutoCompletionsElementRenameTag: (
     textDocument: languageClientProxy.code2ProtocolConverter.asVersionedTextDocumentIdentifier(
       document
     ),
-    tags
+    tags,
   };
   return languageClientProxy.sendRequest(autoRenameTagRequestType, params);
 };
@@ -66,14 +68,14 @@ const askServerForAutoCompletionsElementRenameTag: (
  */
 let lastChangeByAutoRenameTag: { fsPath: string; version: number } = {
   fsPath: '',
-  version: -1
+  version: -1,
 };
 
-const applyResults: (results: Result[]) => Promise<void> = async results => {
+const applyResults: (results: Result[]) => Promise<void> = async (results) => {
   assertDefined(vscode.window.activeTextEditor);
   const prev = vscode.window.activeTextEditor.document.version;
   const applied = await vscode.window.activeTextEditor.edit(
-    editBuilder => {
+    (editBuilder) => {
       assertDefined(vscode.window.activeTextEditor);
       for (const result of results) {
         const startPosition = vscode.window.activeTextEditor.document.positionAt(
@@ -88,7 +90,7 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
     },
     {
       undoStopBefore: false,
-      undoStopAfter: false
+      undoStopAfter: false,
     }
   );
   const next = vscode.window.activeTextEditor.document.version;
@@ -109,12 +111,12 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
     }
     wordsAtOffsets[result.originalOffset + moved] = {
       newWord: oldWordAtOffset && oldWordAtOffset.newWord,
-      oldWord: result.originalWord
+      oldWord: result.originalWord,
     };
   }
   lastChangeByAutoRenameTag = {
     fsPath: vscode.window.activeTextEditor.document.uri.fsPath,
-    version: vscode.window.activeTextEditor.document.version
+    version: vscode.window.activeTextEditor.document.version,
   };
 };
 
@@ -130,7 +132,7 @@ let wordsAtOffsets: {
   };
 } = {};
 
-const updateWordsAtOffset: (tags: Tag[]) => void = tags => {
+const updateWordsAtOffset: (tags: Tag[]) => void = (tags) => {
   const keys = Object.keys(wordsAtOffsets);
   if (keys.length > 0) {
     if (keys.length !== tags.length) {
@@ -149,7 +151,7 @@ const updateWordsAtOffset: (tags: Tag[]) => void = tags => {
         (wordsAtOffsets[tag.previousOffset] &&
           wordsAtOffsets[tag.previousOffset].oldWord) ||
         tag.oldWord,
-      newWord: tag.word
+      newWord: tag.word,
     };
     if (tag.previousOffset !== tag.offset) {
       delete wordsAtOffsets[tag.previousOffset];
@@ -196,9 +198,9 @@ const doAutoCompletionElementRenameTag: (
   await applyResults(results);
 };
 
-const setPreviousText: (
-  textEditor: vscode.TextEditor | undefined
-) => void = textEditor => {
+const setPreviousText: (textEditor: vscode.TextEditor | undefined) => void = (
+  textEditor
+) => {
   if (textEditor) {
     previousText = textEditor.document.getText();
   } else {
@@ -208,7 +210,7 @@ const setPreviousText: (
 
 export const activate: (
   context: vscode.ExtensionContext
-) => Promise<void> = async context => {
+) => Promise<void> = async (context) => {
   vscode.workspace
     .getConfiguration('auto-rename-tag')
     .get('activationOnLanguage');
@@ -218,7 +220,10 @@ export const activate: (
     }
 
     const languageId = document.languageId;
-    if ((languageId === 'html' || languageId === 'handlebars') && vscode.workspace.getConfiguration('editor', document).get('renameOnType')) {
+    if (
+      (languageId === 'html' || languageId === 'handlebars') &&
+      vscode.workspace.getConfiguration('editor', document).get('renameOnType')
+    ) {
       return false;
     }
 
@@ -228,10 +233,10 @@ export const activate: (
     );
 
     const languages = config.get<string[]>('activationOnLanguage', ['*']);
-    return (languages.includes('*') || languages.includes(languageId));
+    return languages.includes('*') || languages.includes(languageId);
   };
   context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(event => {
+    vscode.workspace.onDidChangeConfiguration((event) => {
       // purges cache for `vscode.workspace.getConfiguration`
       if (!event.affectsConfiguration('auto-rename-tag')) {
         return;
@@ -241,9 +246,9 @@ export const activate: (
   const clientOptions: LanguageClientOptions = {
     documentSelector: [
       {
-        scheme: '*'
-      }
-    ]
+        scheme: '*',
+      },
+    ],
   };
   const languageClientProxy = await createLanguageClientProxy(
     context,
@@ -260,13 +265,13 @@ export const activate: (
         changeListener.dispose();
         changeListener = undefined;
       }
-    }
+    },
   });
   const setupChangeListener = () => {
     if (changeListener) {
       return;
     }
-    changeListener = vscode.workspace.onDidChangeTextDocument(async event => {
+    changeListener = vscode.workspace.onDidChangeTextDocument(async (event) => {
       if (event.document !== activeTextEditor?.document) {
         return;
       }
@@ -328,7 +333,7 @@ export const activate: (
           oldWord,
           word: newWord,
           offset,
-          previousOffset: offset - totalInserted
+          previousOffset: offset - totalInserted,
         });
         totalInserted += change.text.length - change.rangeLength;
       }
@@ -340,7 +345,7 @@ export const activate: (
       assertDefined(vscode.window.activeTextEditor);
       const beforeVersion = vscode.window.activeTextEditor.document.version;
       // the change event is fired before we can update the version of the last change by auto rename tag, therefore we wait for that
-      await new Promise(resolve => setImmediate(resolve));
+      await new Promise((resolve) => setImmediate(resolve));
       if (
         lastChangeByAutoRenameTag.fsPath === event.document.uri.fsPath &&
         lastChangeByAutoRenameTag.version === event.document.version
@@ -360,10 +365,10 @@ export const activate: (
   setPreviousText(vscode.window.activeTextEditor);
   setupChangeListener();
   context.subscriptions.push(
-    vscode.window.onDidChangeActiveTextEditor(textEditor => {
+    vscode.window.onDidChangeActiveTextEditor((textEditor) => {
       activeTextEditor = textEditor;
-      const doument = activeTextEditor?.document;
-      if (!isEnabled(doument)) {
+      const document = activeTextEditor?.document;
+      if (!isEnabled(document)) {
         if (changeListener) {
           changeListener.dispose();
           changeListener = undefined;

@@ -88,6 +88,10 @@ export const getNextClosingTagName: (
         return undefined;
       }
       if (scanner.stream.peekLeft(1) === '/') {
+        if (scanner.stream.peekLeft(2) === '=') {
+          scanner.stream.advance(1);
+          continue;
+        }
         if (stack.length === 0) {
           return undefined;
         }
@@ -108,12 +112,14 @@ export const getNextClosingTagName: (
 
 // getNextClosingTagName(
 //   createScannerFast({
-//     input: `<button>{/* </button> */}</button>`,
+//     input: `<div>
+//     <a href=/><span><strong>One-Page Version</strong> <code>html.spec.whatwg.org</code></span></a>
+//   </div>`,
 //     initialOffset: 0,
 //     initialState: ScannerStateFast.WithinContent,
 //     matchingTagPairs: getMatchingTagPairs('javascriptreact'),
 //   }),
-//   1,
+//   5,
 //   () => false,
 //   true
 // ); //?

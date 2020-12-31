@@ -1626,4 +1626,27 @@ var app = new Vue({
       timeout: slowTimeout,
     });
   });
+
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/562', async () => {
+    await createTestFile('another-react-bug.jsx');
+    const testCases: TestCase[] = [
+      {
+        input: `<Table.Head>
+  <Table.Row>
+    |
+  </Table.Row>
+</Table.Head>`,
+        type: `<Table.Heading>`,
+        expect: `<Table.Head>
+  <Table.Row>
+    <Table.Heading></Table.Heading>
+  </Table.Row>
+</Table.Head>`,
+      },
+    ];
+    await run(testCases, {
+      speed: slowSpeed,
+      timeout: slowTimeout,
+    });
+  });
 });

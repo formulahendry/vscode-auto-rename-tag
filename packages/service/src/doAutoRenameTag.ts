@@ -105,10 +105,14 @@ export const doAutoRenameTag: (
       };
     }
     const hasAdvanced = scanner.stream.advanceUntilEitherChar(
-      ['>'],
+      ['<', '>'],
       true,
       isReact
     );
+    // if start tag is not closed, return undefined
+    if (scanner.stream.peekRight(0) === '<') {
+      return undefined;
+    }
     if (!hasAdvanced) {
       return undefined;
     }

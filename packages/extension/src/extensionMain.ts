@@ -218,8 +218,12 @@ export const activate: (
     }
 
     const languageId = document.languageId;
-    if ((languageId === 'html' || languageId === 'handlebars') && vscode.workspace.getConfiguration('editor', document).get('renameOnType')) {
-      return false;
+
+    if ((languageId === 'html' || languageId === 'handlebars')) {
+      const editorSettings = vscode.workspace.getConfiguration('editor', document);
+      if (editorSettings.get('renameOnType') || editorSettings.get('linkedEditing')) {
+        return false;
+      }
     }
 
     const config = vscode.workspace.getConfiguration(

@@ -48,8 +48,7 @@ The setting should be set with language id defined in [VS Code](https://github.c
 
 ## Note
 
-From 1.44, VS Code offers the built-in [Rename On Type](https://code.visualstudio.com/updates/v1_44#_synced-regions) support for HTML and Handlebars that can be enabled with the setting `editor.renameOnType`. If this setting is enabled, this extension will skip HTML and Handlebars files regardless of the languages listed in `auto-rename-tag.activationOnLanguage`
-
+From 1.44, VS Code offers the built-in [auto update tags](https://code.visualstudio.com/docs/languages/html#_auto-update-tags) support for HTML and Handlebars that can be enabled with the setting `editor.linkedEditing`. If this setting is enabled, this extension will skip HTML and Handlebars files regardless of the languages listed in `auto-rename-tag.activationOnLanguage`
 ## Change Log
 
 See Change Log [here](CHANGELOG.md)

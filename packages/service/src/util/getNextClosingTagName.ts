@@ -88,6 +88,16 @@ export const getNextClosingTagName: (
         return undefined;
       }
       if (scanner.stream.peekLeft(1) === '/') {
+        const charBefore = scanner.stream.peekLeft(2);
+        if (!/[\s"'\}]/.test(charBefore)) {
+          const codeBefore = scanner.stream
+            .getSource()
+            .slice(0, scanner.stream.position);
+          if (/href=[^\s]+$/.test(codeBefore)) {
+            scanner.stream.advance(1);
+            continue;
+          }
+        }
         if (stack.length === 0) {
           return undefined;
         }

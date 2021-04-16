@@ -69,9 +69,15 @@ let lastChangeByAutoRenameTag: { fsPath: string; version: number } = {
   version: -1
 };
 
+let changing = false;
 const applyResults: (results: Result[]) => Promise<void> = async results => {
   assertDefined(vscode.window.activeTextEditor);
   const prev = vscode.window.activeTextEditor.document.version;
+  changing = true;
+  lastChangeByAutoRenameTag = {
+    fsPath: vscode.window.activeTextEditor.document.uri.fsPath,
+    version: vscode.window.activeTextEditor.document.version
+  };
   const applied = await vscode.window.activeTextEditor.edit(
     editBuilder => {
       assertDefined(vscode.window.activeTextEditor);
@@ -91,6 +97,7 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
       undoStopAfter: false
     }
   );
+  changing = false;
   const next = vscode.window.activeTextEditor.document.version;
   if (!applied) {
     return;
@@ -112,10 +119,6 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
       oldWord: result.originalWord
     };
   }
-  lastChangeByAutoRenameTag = {
-    fsPath: vscode.window.activeTextEditor.document.uri.fsPath,
-    version: vscode.window.activeTextEditor.document.version
-  };
 };
 
 let latestCancelTokenSource: vscode.CancellationTokenSource | undefined;
@@ -219,9 +222,15 @@ export const activate: (
 
     const languageId = document.languageId;
 
-    if ((languageId === 'html' || languageId === 'handlebars')) {
-      const editorSettings = vscode.workspace.getConfiguration('editor', document);
-      if (editorSettings.get('renameOnType') || editorSettings.get('linkedEditing')) {
+    if (languageId === 'html' || languageId === 'handlebars') {
+      const editorSettings = vscode.workspace.getConfiguration(
+        'editor',
+        document
+      );
+      if (
+        editorSettings.get('renameOnType') ||
+        editorSettings.get('linkedEditing')
+      ) {
         return false;
       }
     }
@@ -232,7 +241,7 @@ export const activate: (
     );
 
     const languages = config.get<string[]>('activationOnLanguage', ['*']);
-    return (languages.includes('*') || languages.includes(languageId));
+    return languages.includes('*') || languages.includes(languageId);
   };
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(event => {
@@ -344,14 +353,15 @@ export const activate: (
       assertDefined(vscode.window.activeTextEditor);
       const beforeVersion = vscode.window.activeTextEditor.document.version;
       // the change event is fired before we can update the version of the last change by auto rename tag, therefore we wait for that
-      await new Promise(resolve => setImmediate(resolve));
       if (
+        changing &&
         lastChangeByAutoRenameTag.fsPath === event.document.uri.fsPath &&
-        lastChangeByAutoRenameTag.version === event.document.version
+        lastChangeByAutoRenameTag.version + 1 === event.document.version
       ) {
         previousText = currentText;
         return;
       }
+
       assertDefined(vscode.window.activeTextEditor);
       const afterVersion = vscode.window.activeTextEditor.document.version;
       if (beforeVersion !== afterVersion) {

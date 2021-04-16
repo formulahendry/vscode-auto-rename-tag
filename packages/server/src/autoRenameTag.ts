@@ -4,7 +4,7 @@ import {
   // TODO
   TextDocument,
   TextDocuments,
-  VersionedTextDocumentIdentifier,
+  VersionedTextDocumentIdentifier
 } from 'vscode-languageserver';
 
 interface Tag {
@@ -36,11 +36,11 @@ const NULL_AUTO_RENAME_TAG_RESULT: Result[] = [];
 
 export const autoRenameTag: (
   documents: TextDocuments<TextDocument>
-) => (params: Params) => Promise<Result[]> = (documents) => async ({
+) => (params: Params) => Promise<Result[]> = documents => async ({
   textDocument,
-  tags,
+  tags
 }) => {
-  await new Promise((r) => setTimeout(r, 20));
+  await new Promise(r => setTimeout(r, 20));
   const document = documents.get(textDocument.uri);
   if (!document) {
     return NULL_AUTO_RENAME_TAG_RESULT;
@@ -50,7 +50,7 @@ export const autoRenameTag: (
   }
   const text = document.getText();
   const results: Result[] = tags
-    .map((tag) => {
+    .map(tag => {
       const result = doAutoRenameTag(
         text,
         tag.offset,

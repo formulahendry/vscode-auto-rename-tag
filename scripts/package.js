@@ -32,6 +32,8 @@ fs.copyFileSync(
   path.join(root, 'dist/CHANGELOG.md')
 );
 
+fs.copyFileSync(path.join(root, 'LICENSE'), path.join(root, 'dist/LICENSE'));
+
 fs.ensureDirSync(path.join(root, 'dist/images'));
 fs.copyFileSync(
   path.join(root, 'images/logo.png'),

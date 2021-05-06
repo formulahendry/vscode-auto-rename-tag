@@ -4,6 +4,7 @@
   "description": "Auto rename paired HTML/XML tag",
   "version": "0.1.6",
   "publisher": "formulahendry",
+  "license": "MIT",
   "icon": "images/logo.png",
   "engines": {
     "vscode": "^1.41.1"

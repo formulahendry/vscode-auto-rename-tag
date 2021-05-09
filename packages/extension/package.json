@@ -34,6 +34,12 @@
     "*"
   ],
   "main": "dist/extensionMain.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
   "contributes": {
     "configuration": {
       "type": "object",

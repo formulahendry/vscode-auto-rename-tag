@@ -1,5 +1,6 @@
 {
   "editor.renameOnType": false,
   "editor.formatOnSave": false,
+  "editor.linkedEditing": false,
   "html.autoClosingTags": false
 }

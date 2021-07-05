@@ -8,8 +8,7 @@ Automatically rename paired HTML/XML tag, same as Visual Studio IDE does.
 
 [![Tabnine](images/tabnine.png)](http://wd5a.2.vu/1)
 
-Increase your coding productivity with Tabnine’s AI code completions! Tabnine is a free powerful Artificial Intelligence assistant designed to help you code faster, reduce mistakes, and discover best coding practices - without ever leaving the comfort of VS Code.
-
+Increase your coding productivity with Tabnine’s AI code completions! Tabnine is a free powerful Artificial Intelligence assistant designed to help you code faster, reduce mistakes, and discover best coding practices - without ever leaving the comfort of VS Code.<br>
 Tabnine is trusted by more than a million developers worldwide. [Get it now](http://wd5a.2.vu/1).
 
 <p><a title="Try CodeStream" href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=autorenametag&amp;utm_medium=banner"><img src="https://alt-images.codestream.com/codestream_logo_autorenametag.png"></a><br>

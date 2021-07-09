@@ -1,3 +1,7 @@
+### 0.1.7 (2021-07-09)
+* Support new vscode apis
+* Fix bugs
+
 ### 0.1.6 (2021-01-06)
 * Also check linkedEditing setting
 * Fix #562

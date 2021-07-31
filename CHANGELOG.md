@@ -1,3 +1,6 @@
+### 0.1.8 (2021-07-31)
+* Fix potential security vulnerabilities
+
 ### 0.1.7 (2021-07-09)
 * Support new vscode apis
 * Fix bugs

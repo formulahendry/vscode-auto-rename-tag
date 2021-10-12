@@ -1,3 +1,6 @@
+### 0.1.9 (2021-10-12)
+* Fix potential security vulnerabilities
+
 ### 0.1.8 (2021-07-31)
 * Fix potential security vulnerabilities
 

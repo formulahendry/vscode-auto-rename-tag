@@ -221,15 +221,22 @@ export const activate: (
     }
 
     const languageId = document.languageId;
+    const editorSettings = vscode.workspace.getConfiguration(
+      'editor',
+      document
+    );
 
     if (languageId === 'html' || languageId === 'handlebars') {
-      const editorSettings = vscode.workspace.getConfiguration(
-        'editor',
-        document
-      );
       if (
         editorSettings.get('renameOnType') ||
         editorSettings.get('linkedEditing')
+      ) {
+        return false;
+      }
+    } else if (languageId === 'xml') {
+      if (
+        editorSettings.get('linkedEditing') &&
+        vscode.extensions.getExtension('redhat.vscode-xml')?.isActive
       ) {
         return false;
       }

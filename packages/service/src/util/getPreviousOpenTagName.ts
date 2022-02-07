@@ -3,7 +3,7 @@ import {
   createScannerFast,
   ScannerFast,
   ScannerStateFast,
-  TokenTypeFast,
+  TokenTypeFast
 } from '../htmlScanner/htmlScannerFast';
 
 export const getPreviousOpeningTagName: (
@@ -95,7 +95,7 @@ export const getPreviousOpeningTagName: (
   return {
     tagName: parentTagName,
     offset,
-    seenRightAngleBracket,
+    seenRightAngleBracket
   };
 };
 

@@ -32,8 +32,8 @@ const run = async (test: Test) => {
       launchArgs,
       extensionTestsEnv: {
         extensionPath: extensionDevelopmentPath,
-        NODE_ENV: 'test',
-      },
+        NODE_ENV: 'test'
+      }
     });
   } catch (err) {
     console.error(err);

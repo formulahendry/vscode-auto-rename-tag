@@ -2,7 +2,7 @@ import {
   ScannerFast,
   ScannerStateFast,
   TokenTypeFast,
-  createScannerFast,
+  createScannerFast
 } from '../htmlScanner/htmlScannerFast';
 import { getMatchingTagPairs } from '../getMatchingTagPairs';
 
@@ -112,7 +112,7 @@ export const getNextClosingTagName: (
   return {
     tagName: nextClosingTagName,
     offset,
-    seenRightAngleBracket,
+    seenRightAngleBracket
   };
 };
 

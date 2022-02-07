@@ -89,7 +89,7 @@ async function typeDelete(times: number = 1): Promise<void> {
   const offsets = vscode.window.activeTextEditor!.selections.map(selection =>
     vscode.window.activeTextEditor!.document.offsetAt(selection.active)
   );
-  await new Promise(async resolve => {
+  await new Promise<void>(async resolve => {
     await vscode.window.activeTextEditor!.edit(editBuilder => {
       for (const offset of offsets) {
         editBuilder.delete(
@@ -144,7 +144,7 @@ async function type(
 }
 
 async function waitForAutoComplete(timeout: 'never' | number) {
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     const disposable = vscode.workspace.onDidChangeTextDocument(() => {
       disposable.dispose();
       resolve();

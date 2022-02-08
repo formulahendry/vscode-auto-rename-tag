@@ -1692,7 +1692,7 @@ var app = new Vue({
     });
   });
 
-  test.only('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/598', async () => {
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/598', async () => {
     await createTestFile('php-bug.php');
     const testCases: TestCase[] = [
       {

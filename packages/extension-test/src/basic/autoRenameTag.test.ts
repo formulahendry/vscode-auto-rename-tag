@@ -5,7 +5,7 @@ import {
   run,
   TestCase,
   slowTimeout,
-  slowSpeed,
+  slowSpeed
 } from '../test-utils';
 
 suite('Auto Rename Tag', () => {
@@ -19,47 +19,47 @@ suite('Auto Rename Tag', () => {
       {
         input: '<div|>test</div>',
         type: 's',
-        expect: '<divs>test</divs>',
+        expect: '<divs>test</divs>'
       },
       {
         input: '<div|>test</div>',
         type: '{backspace}',
-        expect: '<di>test</di>',
+        expect: '<di>test</di>'
       },
       {
         input: '<div|>test</div>',
         type: '{backspace}{backspace}{backspace}',
-        expect: '<>test</>',
+        expect: '<>test</>'
       },
       {
         input: '<div|>test</div>',
         type: ' ',
-        expect: '<div >test</div>',
+        expect: '<div >test</div>'
       },
       {
         input: '<div|>test</div>',
         type: ' c',
-        expect: '<div c>test</div>',
+        expect: '<div c>test</div>'
       },
       {
         input: '<div|>test</div>',
         type: '{backspace}{backspace}{backspace} ',
-        expect: '< >test</>',
+        expect: '< >test</>'
       },
       {
         input: '<div|>test</div>',
         type: 'v{undo}',
-        expect: '<div>test</div>',
+        expect: '<div>test</div>'
       },
       {
         input: '<div|>test</div>',
         type: 'v{undo}{redo}',
-        expect: '<divv>test</divv>',
-      },
+        expect: '<divv>test</divv>'
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -68,11 +68,11 @@ suite('Auto Rename Tag', () => {
       {
         input: '<|div>test</div>',
         type: 's',
-        expect: '<sdiv>test</sdiv>',
-      },
+        expect: '<sdiv>test</sdiv>'
+      }
     ];
     await run(testCases, {
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -81,19 +81,19 @@ suite('Auto Rename Tag', () => {
       {
         input: '<div| class="css">test</div>',
         type: 'v',
-        expect: '<divv class="css">test</divv>',
+        expect: '<divv class="css">test</divv>'
       },
       {
         input: '<div| class="css">test</div>',
         type: '{backspace}{backspace}{backspace}',
         expect: '< class="css">test</>',
-        skip: true,
+        skip: true
       },
       {
         input: '<div | class="css">test</div>',
         type: '{backspace}v',
-        expect: '<divv class="css">test</divv>',
-      },
+        expect: '<divv class="css">test</divv>'
+      }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
@@ -103,12 +103,12 @@ suite('Auto Rename Tag', () => {
       {
         input: '<div|>\n  test\n</div>',
         type: '{backspace}{backspace}{backspace}h3',
-        expect: '<h3>\n  test\n</h3>',
-      },
+        expect: '<h3>\n  test\n</h3>'
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -117,18 +117,18 @@ suite('Auto Rename Tag', () => {
       {
         input: '<div|>\n  <span>test</span>\n</div>',
         type: '{backspace}{backspace}{backspace}h3',
-        expect: '<h3>\n  <span>test</span>\n</h3>',
+        expect: '<h3>\n  <span>test</span>\n</h3>'
       },
       {
         input: '<div>\n  <span|>test</span>\n</div>',
         type: '{backspace}{backspace}{backspace}{backspace}b',
-        expect: '<div>\n  <b>test</b>\n</div>',
+        expect: '<div>\n  <b>test</b>\n</div>'
       },
       {
         input: '<div>\n  <span|>test</span>\n</div>',
         type: 'n',
-        expect: '<div>\n  <spann>test</spann>\n</div>',
-      },
+        expect: '<div>\n  <spann>test</spann>\n</div>'
+      }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
@@ -138,13 +138,13 @@ suite('Auto Rename Tag', () => {
       {
         input: '<div|>\n  <div>test</div>\n</div>',
         type: '{backspace}{backspace}{backspace}h3',
-        expect: '<h3>\n  <div>test</div>\n</h3>',
+        expect: '<h3>\n  <div>test</div>\n</h3>'
       },
       {
         input: '<div>\n  <div>test</div|>\n</div>',
         type: '{backspace}{backspace}{backspace}p',
-        expect: '<div>\n  <p>test</p>\n</div>',
-      },
+        expect: '<div>\n  <p>test</p>\n</div>'
+      }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
@@ -154,8 +154,8 @@ suite('Auto Rename Tag', () => {
       {
         input: '<dashed-div|>test</dashed-div>',
         type: '{backspace}{backspace}{backspace}{backspace}-span',
-        expect: '<dashed-span>test</dashed-span>',
-      },
+        expect: '<dashed-span>test</dashed-span>'
+      }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
@@ -165,8 +165,8 @@ suite('Auto Rename Tag', () => {
       {
         input: '<DIV|>test</DIV>',
         type: 'S',
-        expect: '<DIVS>test</DIVS>',
-      },
+        expect: '<DIVS>test</DIVS>'
+      }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
@@ -176,11 +176,11 @@ suite('Auto Rename Tag', () => {
       {
         input: '<foo|\n  class="bar">foobar</foo>',
         type: '{backspace}',
-        expect: '<fo\n  class="bar">foobar</fo>',
-      },
+        expect: '<fo\n  class="bar">foobar</fo>'
+      }
     ];
     await run(testCases, {
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -189,22 +189,22 @@ suite('Auto Rename Tag', () => {
       {
         input: `<p|>it's</p>`,
         type: '1',
-        expect: `<p1>it's</p1>`,
+        expect: `<p1>it's</p1>`
       },
       {
         input: `<p>it's</p|>`,
         type: '1',
-        expect: `<p1>it's</p1>`,
+        expect: `<p1>it's</p1>`
       },
       {
         input: `<p|>quote "</p>`,
         type: '1',
-        expect: `<p1>quote "</p1>`,
+        expect: `<p1>quote "</p1>`
       },
       {
         input: `<p>quote "</p|>`,
         type: '1',
-        expect: `<p1>quote "</p1>`,
+        expect: `<p1>quote "</p1>`
       },
       {
         input: `<p|>
@@ -213,7 +213,7 @@ suite('Auto Rename Tag', () => {
         type: 'p',
         expect: `<pp>
   <abbr>W3C</abbr>'s
-</pp>`,
+</pp>`
       },
       {
         input: `<p>
@@ -222,22 +222,22 @@ suite('Auto Rename Tag', () => {
         type: 'p',
         expect: `<pp>
   <abbr>W3C</abbr>'s
-</pp>`,
+</pp>`
       },
       {
         input: `<p|>(type="image")</p>`,
         type: 'p',
-        expect: '<pp>(type="image")</pp>',
+        expect: '<pp>(type="image")</pp>'
       },
       {
         input: `<p>(type="image")</p|>`,
         type: 'p',
-        expect: '<pp>(type="image")</pp>',
-      },
+        expect: '<pp>(type="image")</pp>'
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -246,48 +246,48 @@ suite('Auto Rename Tag', () => {
       {
         input: '<DatenSä|tze></DatenSätze>',
         type: 'ä',
-        expect: '<DatenSäätze></DatenSäätze>',
+        expect: '<DatenSäätze></DatenSäätze>'
       },
       {
         input: '<a|></a>',
         type: '|',
         expect: '<a|></a>',
-        skip: true,
+        skip: true
       },
       {
         input: '<你|早></你早>',
         type: '早',
         expect: '<你早早></你早早>',
-        skip: true,
+        skip: true
       },
       {
         input: '<Sil-vous-pla|ît></Sil-vous-plaît>',
         type: 'î',
-        expect: '<Sil-vous-plaîît></Sil-vous-plaîît>',
+        expect: '<Sil-vous-plaîît></Sil-vous-plaîît>'
       },
       {
         input: '<ΚΑΛΗ|ΣΠΕΡΑ></ΚΑΛΗΣΠΕΡΑ>',
         type: 'Σ',
         expect: '<ΚΑΛΗΣΣΠΕΡΑ></ΚΑΛΗΣΣΠΕΡΑ>',
-        skip: true,
+        skip: true
       },
       {
         input: '<foo\\n|  class="bar">foobar</foo>',
         type: 's',
-        expect: '<foo\\ns  class="bar">foobar</foo>',
+        expect: '<foo\\ns  class="bar">foobar</foo>'
       },
       {
         input: '<foo|\\n  class="bar">foobar</foo>',
         type: 's',
         expect: '<foos\\n  class="bar">foobar</foos>',
-        skip: true,
+        skip: true
       },
       {
         input: '<foo|( class="bar">foobar</foo>',
         type: '{backspace}',
         expect: '<fo( class="bar">foobar</fo>',
-        skip: true,
-      },
+        skip: true
+      }
     ];
     await run(testCases, { speed: slowSpeed, timeout: slowTimeout });
   });
@@ -297,8 +297,8 @@ suite('Auto Rename Tag', () => {
       {
         input: '<foo>\n<foo|\n</foo>',
         type: 'b',
-        expect: '<foo>\n<foob\n</foo>',
-      },
+        expect: '<foo>\n<foob\n</foo>'
+      }
     ];
     await run(testCases);
   });
@@ -308,12 +308,12 @@ suite('Auto Rename Tag', () => {
       {
         input: '<div>test</div|>',
         type: 's',
-        expect: '<divs>test</divs>',
-      },
+        expect: '<divs>test</divs>'
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -322,38 +322,38 @@ suite('Auto Rename Tag', () => {
       {
         input: '<!-- <div|></div> -->',
         type: 'v',
-        expect: '<!-- <divv></divv> -->',
+        expect: '<!-- <divv></divv> -->'
       },
       {
         input: '<div|><!-- </div>',
         type: 'v',
-        expect: '<divv><!-- </div>',
+        expect: '<divv><!-- </div>'
       },
       {
         input: '<div|><!-- </div> --> </div>',
         type: 'v',
-        expect: '<divv><!-- </div> --> </divv>',
+        expect: '<divv><!-- </div> --> </divv>'
       },
       {
         input: '<div><!-- </div> --> </div|>',
         type: 'v',
-        expect: '<divv><!-- </div> --> </divv>',
+        expect: '<divv><!-- </div> --> </divv>'
       },
       {
         input: '<div><!-- <div> --> </div|>',
         type: 'v',
-        expect: '<divv><!-- <div> --> </divv>',
+        expect: '<divv><!-- <div> --> </divv>'
       },
       {
         input: '<div><!-- </div|> -->',
         type: 'v',
-        expect: '<div><!-- </divv> -->',
+        expect: '<div><!-- </divv> -->'
       },
       {
         input: '<div><!-- <div|></div> -->',
         type: 'v',
-        expect: '<div><!-- <divv></divv> -->',
-      },
+        expect: '<div><!-- <divv></divv> -->'
+      }
     ];
     await run(testCases, { timeout: slowTimeout, speed: slowSpeed });
   });
@@ -382,8 +382,8 @@ suite('Auto Rename Tag', () => {
 
   <!--
   -->
-</path>`,
-      },
+</path>`
+      }
     ];
 
     await run(testCases);
@@ -398,12 +398,12 @@ suite('Auto Rename Tag', () => {
         type: 'v',
         expect: `<divv>
   <div></div>
-</divv>`,
-      },
+</divv>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -416,12 +416,12 @@ suite('Auto Rename Tag', () => {
         type: '/',
         expect: `<div>
   <div></
-</div>`,
-      },
+</div>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -434,7 +434,7 @@ suite('Auto Rename Tag', () => {
         type: 'v',
         expect: `<divv>
   <a href=/><span><strong>One-Page Version</strong> <code>html.spec.whatwg.org</code></span></a>
-</divv>`,
+</divv>`
       },
       {
         input: `<div|>
@@ -443,12 +443,12 @@ suite('Auto Rename Tag', () => {
         type: 'v',
         expect: `<divv>
   <a onclick=setLinkFragment(this); id=multipage-link href=/multipage/><span><strong>Multipage Version</strong> <code>/multipage</code></span></a>
-</divv>`,
-      },
+</divv>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -461,12 +461,12 @@ suite('Auto Rename Tag', () => {
         type: ' ',
         expect: `<template>
   <bu tton></bu>
-</template>`,
-      },
+</template>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -476,12 +476,12 @@ suite('Auto Rename Tag', () => {
       {
         input: `<button|>this is a button</button>`,
         type: '2',
-        expect: `<button2>this is a button</button2>`,
-      },
+        expect: `<button2>this is a button</button2>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -503,12 +503,12 @@ suite('Auto Rename Tag', () => {
       <name>Tanmay</name>
       <grade>A</grade>
    </student2>
-</class_list>`,
-      },
+</class_list>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -527,7 +527,7 @@ suite('Auto Rename Tag', () => {
 <h3i></h3i>
 <h4i></h4i>
 <h5i></h5i>
-<h6i></h6i>`,
+<h6i></h6i>`
       },
       {
         input: `<h1></h1|>
@@ -542,7 +542,7 @@ suite('Auto Rename Tag', () => {
 <h3i></h3i>
 <h4i></h4i>
 <h5i></h5i>
-<h6i></h6i>`,
+<h6i></h6i>`
       },
       {
         input: `<h1|></h1>
@@ -557,22 +557,22 @@ suite('Auto Rename Tag', () => {
 <h></h>
 <h></h>
 <h></h>
-<h></h>`,
+<h></h>`
       },
       {
         input: `<a|a|a|></aaa>`,
         type: 'b',
-        expect: `<ababab></ababab>`,
+        expect: `<ababab></ababab>`
       },
       {
         input: `<aaa></a|a|a|>`,
         type: 'b',
-        expect: `<ababab></ababab>`,
-      },
+        expect: `<ababab></ababab>`
+      }
     ];
     await run(testCases, {
       timeout: slowTimeout,
-      speed: slowSpeed,
+      speed: slowSpeed
     });
   });
 
@@ -582,17 +582,17 @@ suite('Auto Rename Tag', () => {
       {
         input: `<head|><link></head>`,
         type: 'd',
-        expect: '<headd><link></headd>',
+        expect: '<headd><link></headd>'
       },
       {
         input: `<head><link></head|>`,
         type: 'd',
-        expect: '<headd><link></headd>',
-      },
+        expect: '<headd><link></headd>'
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout * 5,
+      timeout: slowTimeout * 5
     });
   });
 
@@ -623,12 +623,12 @@ suite('Auto Rename Tag', () => {
     </a>
   </h3>
 
-</divv>`,
-      },
+</divv>`
+      }
     ];
     await run(testCases, {
       timeout: slowTimeout,
-      speed: slowSpeed,
+      speed: slowSpeed
     });
   });
 
@@ -639,12 +639,12 @@ suite('Auto Rename Tag', () => {
       {
         input: `const Button = () => <button| onClick={() => {}}>click me</button>`,
         type: 'n',
-        expect: `const Button = () => <buttonn onClick={() => {}}>click me</buttonn>`,
+        expect: `const Button = () => <buttonn onClick={() => {}}>click me</buttonn>`
       },
       {
         input: `const Button = () => <button onClick={() => {}}>click me</button|>`,
         type: 'n',
-        expect: `const Button = () => <buttonn onClick={() => {}}>click me</buttonn>`,
+        expect: `const Button = () => <buttonn onClick={() => {}}>click me</buttonn>`
       },
       {
         input: `const T = () =>  <Tag className={className}>
@@ -661,7 +661,7 @@ suite('Auto Rename Tag', () => {
       dangerouslySetInnerHTML={{ __html: parseCustomMarkdown(clearText) }}
     />
   )}
-</Tagg>`,
+</Tagg>`
       },
       {
         input: `const T = () =>  <Tag| className={className}>
@@ -678,7 +678,7 @@ suite('Auto Rename Tag', () => {
       dangerouslySetInnerHTML={{ __html: parseCustomMarkdown(clearText) }}
     />
   )}
-</Tagg>`,
+</Tagg>`
       },
 
       // TODO
@@ -704,7 +704,7 @@ suite('Auto Rename Tag', () => {
     <option>Yearly</option>
   </|select>
 );
-`,
+`
       },
 
       {
@@ -744,12 +744,12 @@ class App extends React.Component {
       </>
     );
   }
-}`,
+}`
       },
       {
         input: `const Heading = () => <|h1 style={{fontSize: '24px'}}></|h1>`,
         type: 'B',
-        expect: `const Heading = () => <Bh1 style={{fontSize: '24px'}}></Bh1>`,
+        expect: `const Heading = () => <Bh1 style={{fontSize: '24px'}}></Bh1>`
       },
       {
         input: `<BoardLayout
@@ -768,7 +768,7 @@ class App extends React.Component {
     </>
   }
 >
-  {children}</BoardLayout>`,
+  {children}</BoardLayout>`
       },
       {
         input: `const fragment =
@@ -781,58 +781,58 @@ class App extends React.Component {
   <>
     <span></span>
     <input />
-  </>`,
+  </>`
       },
       {
         input: `const button = <button|>{/* </button> */}</button>;`,
         type: 'n',
-        expect: `const button = <buttonn>{/* </button> */}</buttonn>;`,
+        expect: `const button = <buttonn>{/* </button> */}</buttonn>;`
       },
       {
         input: `const button = <button>{/* </button|> */}</button>;`,
         type: 'n',
-        expect: `const button = <button>{/* </buttonn> */}</button>;`,
+        expect: `const button = <button>{/* </buttonn> */}</button>;`
       },
       {
         input: `const button = <button>{/* </button> */}</button|>;`,
         type: 'n',
-        expect: `const button = <buttonn>{/* </button> */}</buttonn>;`,
+        expect: `const button = <buttonn>{/* </button> */}</buttonn>;`
       },
       {
         input: 'const button = <button|>{/* <button> */}</button>',
         type: 'n',
-        expect: 'const button = <buttonn>{/* <button> */}</buttonn>',
+        expect: 'const button = <buttonn>{/* <button> */}</buttonn>'
       },
       {
         input: 'const button = <button>{/* <button|> */}</button>',
         type: 'n',
-        expect: 'const button = <button>{/* <buttonn> */}</button>',
+        expect: 'const button = <button>{/* <buttonn> */}</button>'
       },
       {
         input: 'const button = <button>{/* <button> */}</button|>',
         type: 'n',
-        expect: 'const button = <buttonn>{/* <button> */}</buttonn>',
+        expect: 'const button = <buttonn>{/* <button> */}</buttonn>'
       },
       {
         input: 'const buttons = <|><button/><button/></>',
         type: 'React.Fragment',
         expect:
-          'const buttons = <React.Fragment><button/><button/></React.Fragment>',
+          'const buttons = <React.Fragment><button/><button/></React.Fragment>'
       },
       {
         input: 'const Link = () => < ></|>',
         type: 'a',
-        expect: 'const Link = () => <a ></a>',
+        expect: 'const Link = () => <a ></a>'
       },
       {
         input: 'const Link = () => <| ></>',
         type: 'a',
-        expect: 'const Link = () => <a ></a>',
-      },
+        expect: 'const Link = () => <a ></a>'
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -848,7 +848,7 @@ class App extends React.Component {
         expect: `\`\`\`html
 <buttonn>
 </buttonn>
-\`\`\``,
+\`\`\``
       },
       {
         input: `\`\`\`html
@@ -865,7 +865,7 @@ class App extends React.Component {
 
 \`\`\`html
 </button>
-\`\`\``,
+\`\`\``
       },
       {
         input: `\`\`\`html
@@ -882,12 +882,12 @@ class App extends React.Component {
 
 \`\`\`html
 </buttonn>
-\`\`\``,
-      },
+\`\`\``
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -903,28 +903,28 @@ class App extends React.Component {
         expect: `<divv class = 'bg-warning'>
   <!-- </div> -->
   <?php displayErrors($errors); ?>
-</divv>`,
+</divv>`
       },
       {
         input: `<div| title="<?php echo "FOO"?>">
 </div>`,
         type: 'v',
         expect: `<divv title="<?php echo "FOO"?>">
-</divv>`,
+</divv>`
       },
       {
         input: `<span| title="<span>">
 </span>`,
         type: 'n',
         expect: `<spann title="<span>">
-</spann>`,
+</spann>`
       },
       {
         input: `<span title="<span>">
 </span|>`,
         type: 'n',
         expect: `<spann title="<span>">
-</spann>`,
+</spann>`
       },
       {
         input: `<span title="<span|>">
@@ -932,7 +932,7 @@ class App extends React.Component {
         type: 'n',
         expect: `<span title="<spann>">
 </span>`,
-        skip: true,
+        skip: true
       },
       {
         input: `<span title="</span|>">
@@ -940,17 +940,17 @@ class App extends React.Component {
         type: 'n',
         expect: `<span title="</spann>">
 </span>`,
-        skip: true,
+        skip: true
       },
       {
         input: '<span| title="<"></span>',
         type: 'n',
-        expect: '<spann title="<"></spann>',
+        expect: '<spann title="<"></spann>'
       },
       {
         input: '<span title="<"></span|>',
         type: 'n',
-        expect: '<spann title="<"></spann>',
+        expect: '<spann title="<"></spann>'
       },
       {
         input: `<div|>
@@ -979,12 +979,12 @@ class App extends React.Component {
 
     <p>This is user {{ $user->id }}</p>
 @endforeach
-</divv>`,
-      },
+</divv>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -994,12 +994,12 @@ class App extends React.Component {
       {
         input: `<p|>Last week this time: @(DateTime.Now - TimeSpan.FromDays(7))</p>`,
         type: 'p',
-        expect: `<pp>Last week this time: @(DateTime.Now - TimeSpan.FromDays(7))</pp>`,
-      },
+        expect: `<pp>Last week this time: @(DateTime.Now - TimeSpan.FromDays(7))</pp>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1029,12 +1029,12 @@ class App extends React.Component {
 
 <button2 on:click={handleClick}>
 	Count: {count}
-</button2>`,
-      },
+</button2>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1052,12 +1052,12 @@ class App extends React.Component {
 <svg2 xmlns="http://www.w3.org/2000/svg" width="500" height="500">
 <circle cx="250" cy="250" r="210" fill="#fff" stroke="#000" stroke-width="8"/>
 </svg2>
-`,
-      },
+`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1067,16 +1067,16 @@ class App extends React.Component {
       {
         input: `<span>|<%= project.logo_tag %> <%= project.name %></span>`,
         type: '{backspace}{backspace}{backspace}',
-        expect: `<sp<%= project.logo_tag %> <%= project.name %></span>`,
+        expect: `<sp<%= project.logo_tag %> <%= project.name %></span>`
       },
       {
         input: `<span|><%= project.logo_tag %> <%= project.name %></span>`,
         type: 'n',
-        expect: `<spann><%= project.logo_tag %> <%= project.name %></spann>`,
-      },
+        expect: `<spann><%= project.logo_tag %> <%= project.name %></spann>`
+      }
     ];
     await run(testCases, {
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1099,7 +1099,7 @@ const Link = <a target="_blank" href="blabla.com">
 
 const Link = <a target="_blank" href="blabla.com">
     Bla Bla
-</a>`,
+</a>`
       },
       {
         input: `interface Props {
@@ -1116,7 +1116,7 @@ const Link = <a| target="_blank" href="blabla.com">
 
 const Link = <aa target="_blank" href="blabla.com">
     Bla Bla
-</aa>`,
+</aa>`
       },
       {
         input: `interface Props {
@@ -1133,11 +1133,11 @@ const Link = <a target="_blank" href="blabla.com">
 
 const Link = <aa target="_blank" href="blabla.com">
     Bla Bla
-</aa>`,
-      },
+</aa>`
+      }
     ];
     await run(testCases, {
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1173,12 +1173,12 @@ var app = new Vue({
     message: 'Hello Vue!'
   }
 })
-</script>`,
-      },
+</script>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1200,7 +1200,7 @@ var app = new Vue({
       <name>Tanmay</name>
       <grade>A</grade>
    </student>
-</class_list>`,
+</class_list>`
       },
       {
         input: `<?xml version = "1.0" encoding = "UTF-8" ?>
@@ -1217,11 +1217,11 @@ var app = new Vue({
       <name>Tanmay</name>
       <grade>A</grade>
    </studentt>
-</class_list>`,
-      },
+</class_list>`
+      }
     ];
     await run(testCases, {
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1236,7 +1236,7 @@ var app = new Vue({
         expect: `<buttonn>
   <a>
   </div>
-</button>`,
+</button>`
       },
       {
         input: `<button>
@@ -1247,11 +1247,11 @@ var app = new Vue({
         expect: `<button>
   <a>
   </div>
-</buttonn>`,
-      },
+</buttonn>`
+      }
     ];
     await run(testCases, {
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1264,11 +1264,11 @@ var app = new Vue({
         type: 'b-row',
         selection: [1, 16],
         expect: `<b-row>
-</b-row>`,
-      },
+</b-row>`
+      }
     ];
     await run(testCases, {
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1297,12 +1297,12 @@ var app = new Vue({
         <img src="..."/>
         {sign}
     </p>
-</modified>`,
-      },
+</modified>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1320,7 +1320,7 @@ var app = new Vue({
   prop1="1"
 >
   <View />
-</Vieww>`,
+</Vieww>`
       },
       {
         type: 'w',
@@ -1329,7 +1329,7 @@ var app = new Vue({
   prop1="1"
 >
   <View />
-</Viewww>`,
+</Viewww>`
       },
       {
         type: 'w',
@@ -1338,7 +1338,7 @@ var app = new Vue({
   prop1="1"
 >
   <View />
-</Viewwww>`,
+</Viewwww>`
       },
       {
         type: '',
@@ -1347,7 +1347,7 @@ var app = new Vue({
   prop1="1"
 >
   <View />
-</Viewww>`,
+</Viewww>`
       },
       {
         type: 'w',
@@ -1355,12 +1355,12 @@ var app = new Vue({
   prop1="1"
 >
   <View />
-</Viewwww>`,
-      },
+</Viewwww>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1418,12 +1418,12 @@ var app = new Vue({
       </div>
     </divx>
   </div>
-</body>`,
-      },
+</body>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1432,16 +1432,16 @@ var app = new Vue({
       {
         input: `<|form></form>`,
         type: ' ',
-        expect: `< form></>`,
+        expect: `< form></>`
       },
       {
         type: '{backspace}',
-        expect: `<form></form>`,
-      },
+        expect: `<form></form>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1476,12 +1476,12 @@ var app = new Vue({
       To begin the development, run \`npm start\` or \`yarn start\`.
       To create a production bundle, use \`npm run build\` or \`yarn build\`.
     -->
-  </bodyy>`,
-      },
+  </bodyy>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1498,12 +1498,12 @@ var app = new Vue({
   <!--div class="child">
     <a href="http://example.com/">a link</a>
   </div>-->
-</div>`,
-      },
+</div>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1532,7 +1532,7 @@ var app = new Vue({
       {tag}
     </Tag>
   ))}
-  </Tags>`,
+  </Tags>`
       },
       {
         input: `<Tags>
@@ -1557,12 +1557,12 @@ var app = new Vue({
       {tag}
     </Tags>
   ))}
-  </Tags>`,
-      },
+  </Tags>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1572,12 +1572,12 @@ var app = new Vue({
       {
         input: `<$Label|>Label</$Label>`,
         type: '2',
-        expect: `<$Label2>Label</$Label2>`,
-      },
+        expect: `<$Label2>Label</$Label2>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1607,12 +1607,12 @@ var app = new Vue({
       Test
     </>
   )
-}`,
-      },
+}`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1624,33 +1624,33 @@ var app = new Vue({
 </script>`,
         type: 't',
         expect: `<scriptt>
-</scriptt>`,
+</scriptt>`
       },
       {
         input: `<style|>
 </style>`,
         type: 't',
         expect: `<stylet>
-</stylet>`,
+</stylet>`
       },
       {
         input: `<script>
 </script|>`,
         type: '2',
         expect: `<script2>
-</script2>`,
+</script2>`
       },
       {
         input: `<style>
 </style|>`,
         type: '2',
         expect: `<style2>
-</style2>`,
-      },
+</style2>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1668,12 +1668,12 @@ var app = new Vue({
   <Table.Row>
     <Table.Heading></Table.Heading>
   </Table.Row>
-</Table.Head>`,
-      },
+</Table.Head>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 
@@ -1683,12 +1683,12 @@ var app = new Vue({
       {
         input: `<script |src=""></script>`,
         type: '{backspace}abc',
-        expect: `<scriptabcsrc=""></scriptabcsrc=>`,
-      },
+        expect: `<scriptabcsrc=""></scriptabcsrc=>`
+      }
     ];
     await run(testCases, {
       speed: slowSpeed,
-      timeout: slowTimeout,
+      timeout: slowTimeout
     });
   });
 });

@@ -64,11 +64,11 @@
     "build": "tsc -b"
   },
   "devDependencies": {
-    "@types/vscode": "^1.49.0",
-    "typescript": "^4.0.3"
+    "@types/vscode": "^1.64.0",
+    "typescript": "^4.5.5"
   },
   "dependencies": {
-    "source-map-support": "^0.5.19",
-    "vscode-languageclient": "^6.1.3"
+    "source-map-support": "^0.5.21",
+    "vscode-languageclient": "^7.0.0"
   }
 }

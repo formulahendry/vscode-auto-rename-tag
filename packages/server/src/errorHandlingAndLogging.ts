@@ -26,10 +26,7 @@ export const handleError: (error: Error) => void = error => {
       console.log('\n' + result + '\n');
     }
   }
-  let relevantStack = (error as Error).stack
-    ?.split('\n')
-    .slice(1)
-    .join('\n');
+  let relevantStack = (error as Error).stack?.split('\n').slice(1).join('\n');
   if (relevantStack?.includes('at CallbackList.invoke')) {
     relevantStack = relevantStack.slice(
       0,
@@ -42,34 +39,34 @@ export const handleError: (error: Error) => void = error => {
 const useConnectionConsole: (
   connection: Connection,
   { trace }: { trace?: boolean }
-) => (method: 'log' | 'info' | 'error') => (...args: any[]) => void = (
-  connection,
-  { trace = false } = {}
-) => method => (...args) => {
-  if (trace) {
-    const stack = new Error().stack || '';
-    let file = stack.split('\n')[2];
-    file = file.slice(file.indexOf('at') + 'at'.length, -1);
-    const match = file.match(/(.*):(\d+):(\d+)$/);
-    if (match) {
-      const [_, path, line, column] = match;
-      connection.console[method]('at ' + path + ':' + line);
-    }
-  }
-  const stringify: (arg: any) => string = arg => {
-    if (arg && arg.toString) {
-      if (arg.toString() === '[object Promise]') {
-        return JSON.stringify(arg);
+) => (method: 'log' | 'info' | 'error') => (...args: any[]) => void =
+  (connection, { trace = false } = {}) =>
+  method =>
+  (...args) => {
+    if (trace) {
+      const stack = new Error().stack || '';
+      let file = stack.split('\n')[2];
+      file = file.slice(file.indexOf('at') + 'at'.length, -1);
+      const match = file.match(/(.*):(\d+):(\d+)$/);
+      if (match) {
+        const [_, path, line, column] = match;
+        connection.console[method]('at ' + path + ':' + line);
       }
-      if (arg.toString() === '[object Object]') {
-        return JSON.stringify(arg);
-      }
-      return arg;
     }
-    return JSON.stringify(arg);
+    const stringify: (arg: any) => string = arg => {
+      if (arg && arg.toString) {
+        if (arg.toString() === '[object Promise]') {
+          return JSON.stringify(arg);
+        }
+        if (arg.toString() === '[object Object]') {
+          return JSON.stringify(arg);
+        }
+        return arg;
+      }
+      return JSON.stringify(arg);
+    };
+    connection.console[method](args.map(stringify).join(''));
   };
-  connection.console[method](args.map(stringify).join(''));
-};
 
 /**
  * Enables better stack traces for errors and logging.

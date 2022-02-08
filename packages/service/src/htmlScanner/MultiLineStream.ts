@@ -36,7 +36,7 @@ export class MultiLineStream {
     this.position = position;
     this.matchingTagPairs = matchingTagPairs;
     this.nonQuoteMatchingTagPairs = matchingTagPairs.filter(
-      (matchingTagPair) => !quotes.has(matchingTagPair[0])
+      matchingTagPair => !quotes.has(matchingTagPair[0])
     );
   }
 
@@ -171,9 +171,9 @@ export class MultiLineStream {
   ): boolean {
     const specialCharSet = new Set([
       ...chars,
-      ...this.matchingTagPairs.map((x) => x[1][0]),
-      ...this.matchingTagPairs.map((x) => x[0][0]),
-      ...(isReact ? ['{', '}'] : []),
+      ...this.matchingTagPairs.map(x => x[1][0]),
+      ...this.matchingTagPairs.map(x => x[0][0]),
+      ...(isReact ? ['{', '}'] : [])
     ]);
     while (this.position < this.source.length) {
       if (!specialCharSet.has(this.source[this.position])) {

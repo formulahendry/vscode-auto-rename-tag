@@ -40,7 +40,7 @@ const assertDefined: <T>(value: T) => asserts value is NonNullable<T> = val => {
   }
 };
 
-const autoRenameTagRequestType = new RequestType<Params, Result[], any, any>(
+const autoRenameTagRequestType = new RequestType<Params, Result[], any>(
   '$/auto-rename-tag'
 );
 
@@ -52,9 +52,10 @@ const askServerForAutoCompletionsElementRenameTag: (
   tags: Tag[]
 ) => Promise<Result[]> = async (languageClientProxy, document, tags) => {
   const params: Params = {
-    textDocument: languageClientProxy.code2ProtocolConverter.asVersionedTextDocumentIdentifier(
-      document
-    ),
+    textDocument:
+      languageClientProxy.code2ProtocolConverter.asVersionedTextDocumentIdentifier(
+        document
+      ),
     tags
   };
   return languageClientProxy.sendRequest(autoRenameTagRequestType, params);
@@ -82,9 +83,10 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
     editBuilder => {
       assertDefined(vscode.window.activeTextEditor);
       for (const result of results) {
-        const startPosition = vscode.window.activeTextEditor.document.positionAt(
-          result.startOffset
-        );
+        const startPosition =
+          vscode.window.activeTextEditor.document.positionAt(
+            result.startOffset
+          );
         const endPosition = vscode.window.activeTextEditor.document.positionAt(
           result.endOffset
         );

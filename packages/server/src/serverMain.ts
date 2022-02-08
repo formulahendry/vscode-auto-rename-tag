@@ -1,14 +1,14 @@
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   createConnection,
   TextDocuments,
   TextDocumentSyncKind
-} from 'vscode-languageserver';
+} from 'vscode-languageserver/node';
+import { autoRenameTag, autoRenameTagRequestType } from './autoRenameTag';
 import {
   enableBetterErrorHandlingAndLogging,
   handleError
 } from './errorHandlingAndLogging';
-import { autoRenameTag, autoRenameTagRequestType } from './autoRenameTag';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 
 const connection = createConnection();
 const documents = new TextDocuments(TextDocument);

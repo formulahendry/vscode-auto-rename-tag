@@ -6,10 +6,10 @@ import {
   RequestType,
   ServerOptions,
   TransportKind
-} from 'vscode-languageclient';
+} from 'vscode-languageclient/node';
 
-type VslSendRequest = <P, R, E, RO>(
-  type: RequestType<P, R, E, RO>,
+type VslSendRequest = <P, R, E>(
+  type: RequestType<P, R, E>,
   params: P
 ) => Thenable<R>;
 
@@ -53,6 +53,9 @@ export const createLanguageClientProxy: (
           outputChannel.appendLine(value);
         }
       }
+    },
+    replace(value) {
+      outputChannel.replace(value);
     },
     clear() {
       outputChannel.clear();

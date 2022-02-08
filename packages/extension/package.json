@@ -2,7 +2,7 @@
   "name": "auto-rename-tag",
   "displayName": "Auto Rename Tag",
   "description": "Auto rename paired HTML/XML tag",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "publisher": "formulahendry",
   "license": "MIT",
   "icon": "images/logo.png",

@@ -1,3 +1,8 @@
+### 0.1.10 (2022-02-08)
+* Update dependencies
+* Fix Windows CO
+* Add sponsor for Duckly
+
 ### 0.1.9 (2021-10-12)
 * Fix potential security vulnerabilities
 

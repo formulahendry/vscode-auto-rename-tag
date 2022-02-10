@@ -1691,4 +1691,18 @@ var app = new Vue({
       timeout: slowTimeout
     });
   });
+
+  test.only('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/568', async () => {
+    await createTestFile('script-bug.html');
+    const testCases: TestCase[] = [
+      {
+        input: `<p|></p>`,
+        type: '{backspace}h2',
+        expect: `<h2></h2>`
+      }
+    ];
+    await run(testCases, {
+      timeout: slowTimeout
+    });
+  });
 });

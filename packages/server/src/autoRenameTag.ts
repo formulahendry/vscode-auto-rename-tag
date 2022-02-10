@@ -31,12 +31,14 @@ export const autoRenameTagRequestType = new RequestType<Params, Result[], any>(
 
 const NULL_AUTO_RENAME_TAG_RESULT: Result[] = [];
 
+const DELAY = 2000;
+
 export const autoRenameTag: (
   documents: TextDocuments<TextDocument>
 ) => (params: Params) => Promise<Result[]> =
   documents =>
   async ({ textDocument, tags }) => {
-    await new Promise(r => setTimeout(r, 20));
+    await new Promise(r => setTimeout(r, DELAY));
     const document = documents.get(textDocument.uri);
     if (!document) {
       return NULL_AUTO_RENAME_TAG_RESULT;

@@ -1692,6 +1692,28 @@ var app = new Vue({
     });
   });
 
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/598', async () => {
+    await createTestFile('php-bug.php');
+    const testCases: TestCase[] = [
+      {
+        input: `if $variable < 0 {
+
+}
+$table .= '</|>';
+`,
+        type: 'table',
+        expect: `if $variable < 0 {
+
+}
+$table .= '</table>';
+`
+      }
+    ];
+    await run(testCases, {
+      timeout: slowTimeout
+    });
+  });
+
   test.only('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/568', async () => {
     await createTestFile('script-bug.html');
     const testCases: TestCase[] = [

@@ -99,21 +99,17 @@ export const getPreviousOpeningTagName: (
   };
 };
 
-// getPreviousOpeningTagName(
-//   createScannerFast({
-//     input: `<BoardLayout
-//     footer={
-//       <>
-//         Hello
-//       </>
-//     }
-//   >
-//     {children}</`,
-//     initialOffset: 0,
-//     initialState: ScannerStateFast.WithinContent,
-//     matchingTagPairs: getMatchingTagPairs('javascriptreact'),
-//   }),
-//   85,
-//   () => false,
-//   true
-// ); //?
+getPreviousOpeningTagName(
+  createScannerFast({
+    input: `if $variable < 0 {
+
+}
+$table .= '</>';`,
+    initialOffset: 35,
+    initialState: ScannerStateFast.WithinContent,
+    matchingTagPairs: getMatchingTagPairs('javascriptreact')
+  }),
+  35,
+  () => false,
+  true
+); //?

@@ -21,7 +21,6 @@
     "skipLibCheck": true,
 
     "alwaysStrict": true,
-    "preserveConstEnums": false,
 
     "types": ["node"],
     "moduleResolution": "node",

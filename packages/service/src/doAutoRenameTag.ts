@@ -71,6 +71,9 @@ export const doAutoRenameTag: (
     if (parent.tagName !== oldTagName) {
       return undefined;
     }
+    if (!parent.seenRightAngleBracket) {
+      return undefined;
+    }
     const startOffset = parent.offset;
     const endOffset = parent.offset + parent.tagName.length;
     return {

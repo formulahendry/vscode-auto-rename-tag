@@ -96,7 +96,6 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
 
   const next = vscode.window.activeTextEditor.document.version;
   if (!applied) {
-    console.log('was not applied');
     return;
   }
   lastChangeByAutoRenameTag = {
@@ -104,10 +103,8 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
     version: vscode.window.activeTextEditor.document.version
   };
   if (prev + 1 !== next) {
-    console.log('version mismatch');
     return;
   }
-  console.log('was applied');
   for (const result of results) {
     const oldWordAtOffset = wordsAtOffsets[result.originalOffset];
     delete wordsAtOffsets[result.originalOffset];
@@ -175,7 +172,6 @@ const doAutoCompletionElementRenameTag: (
     return;
   }
   const beforeVersion = vscode.window.activeTextEditor.document.version;
-  console.log(`ask server (version ${beforeVersion})`);
   // the change event is fired before we can update the version of the last change by auto rename tag, therefore we wait for that
   await new Promise(resolve => setTimeout(resolve, 0));
   if (!vscode.window.activeTextEditor) {
@@ -187,13 +183,10 @@ const doAutoCompletionElementRenameTag: (
     lastChangeByAutoRenameTag.version ===
       vscode.window.activeTextEditor.document.version
   ) {
-    console.log('[cache] one request saved');
     return;
   }
-  console.log(`got server response (version ${beforeVersion})`);
 
   if (cancelTokenSource.token.isCancellationRequested) {
-    console.log('canceled (1)');
     return;
   }
 
@@ -202,9 +195,7 @@ const doAutoCompletionElementRenameTag: (
     vscode.window.activeTextEditor.document,
     tags
   );
-  console.log({ results });
   if (cancelTokenSource.token.isCancellationRequested) {
-    console.log('canceled (2)');
     return;
   }
   if (latestCancelTokenSource === cancelTokenSource) {
@@ -212,12 +203,10 @@ const doAutoCompletionElementRenameTag: (
     cancelTokenSource.dispose();
   }
   if (results.length === 0) {
-    console.log('no results');
     wordsAtOffsets = {};
     return;
   }
   if (!vscode.window.activeTextEditor) {
-    console.log('no editor');
     return;
   }
   const afterVersion = vscode.window.activeTextEditor.document.version;
@@ -308,7 +297,6 @@ export const activate: (
       return;
     }
     changeListener = vscode.workspace.onDidChangeTextDocument(async event => {
-      console.log('document changed');
       if (event.document !== activeTextEditor?.document) {
         return;
       }
@@ -381,7 +369,6 @@ export const activate: (
       }
       assertDefined(vscode.window.activeTextEditor);
       previousText = currentText;
-      console.log('set prev text');
       doAutoCompletionElementRenameTag(languageClientProxy, tags);
     });
   };

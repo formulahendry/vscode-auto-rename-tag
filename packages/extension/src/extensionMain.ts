@@ -93,15 +93,16 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
       undoStopAfter: false
     }
   );
-  lastChangeByAutoRenameTag = {
-    fsPath: vscode.window.activeTextEditor.document.uri.fsPath,
-    version: vscode.window.activeTextEditor.document.version
-  };
+
   const next = vscode.window.activeTextEditor.document.version;
   if (!applied) {
     console.log('was not applied');
     return;
   }
+  lastChangeByAutoRenameTag = {
+    fsPath: vscode.window.activeTextEditor.document.uri.fsPath,
+    version: vscode.window.activeTextEditor.document.version
+  };
   if (prev + 1 !== next) {
     console.log('version mismatch');
     return;
@@ -189,6 +190,8 @@ const doAutoCompletionElementRenameTag: (
     console.log('[cache] one request saved');
     return;
   }
+  console.log(`got server response (version ${beforeVersion})`);
+
   if (cancelTokenSource.token.isCancellationRequested) {
     console.log('canceled (1)');
     return;
@@ -305,6 +308,7 @@ export const activate: (
       return;
     }
     changeListener = vscode.workspace.onDidChangeTextDocument(async event => {
+      console.log('document changed');
       if (event.document !== activeTextEditor?.document) {
         return;
       }
@@ -377,6 +381,7 @@ export const activate: (
       }
       assertDefined(vscode.window.activeTextEditor);
       previousText = currentText;
+      console.log('set prev text');
       doAutoCompletionElementRenameTag(languageClientProxy, tags);
     });
   };

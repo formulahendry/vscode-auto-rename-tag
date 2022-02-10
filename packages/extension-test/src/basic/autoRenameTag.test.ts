@@ -1723,8 +1723,10 @@ $table .= '</table>';
         expect: `<h2></h2>`
       }
     ];
-    await run(testCases, {
-      timeout: slowTimeout
-    });
+    for (let i = 0; i < 100; i++) {
+      await run(testCases, {
+        timeout: slowTimeout
+      });
+    }
   });
 });

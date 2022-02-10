@@ -31,7 +31,7 @@ export const autoRenameTagRequestType = new RequestType<Params, Result[], any>(
 
 const NULL_AUTO_RENAME_TAG_RESULT: Result[] = [];
 
-const DELAY = 2000;
+const DELAY = 20;
 
 export const autoRenameTag: (
   documents: TextDocuments<TextDocument>

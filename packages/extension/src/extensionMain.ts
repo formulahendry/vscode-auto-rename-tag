@@ -99,11 +99,14 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
   };
   const next = vscode.window.activeTextEditor.document.version;
   if (!applied) {
+    console.log('was not applied');
     return;
   }
   if (prev + 1 !== next) {
+    console.log('version mismatch');
     return;
   }
+  console.log('was applied');
   for (const result of results) {
     const oldWordAtOffset = wordsAtOffsets[result.originalOffset];
     delete wordsAtOffsets[result.originalOffset];
@@ -171,6 +174,7 @@ const doAutoCompletionElementRenameTag: (
     return;
   }
   const beforeVersion = vscode.window.activeTextEditor.document.version;
+  console.log(`ask server (version ${beforeVersion})`);
   // the change event is fired before we can update the version of the last change by auto rename tag, therefore we wait for that
   await new Promise(resolve => setTimeout(resolve, 0));
   if (!vscode.window.activeTextEditor) {
@@ -182,9 +186,11 @@ const doAutoCompletionElementRenameTag: (
     lastChangeByAutoRenameTag.version ===
       vscode.window.activeTextEditor.document.version
   ) {
+    console.log('[cache] one request saved');
     return;
   }
   if (cancelTokenSource.token.isCancellationRequested) {
+    console.log('canceled (1)');
     return;
   }
 
@@ -193,7 +199,9 @@ const doAutoCompletionElementRenameTag: (
     vscode.window.activeTextEditor.document,
     tags
   );
+  console.log({ results });
   if (cancelTokenSource.token.isCancellationRequested) {
+    console.log('canceled (2)');
     return;
   }
   if (latestCancelTokenSource === cancelTokenSource) {
@@ -201,10 +209,12 @@ const doAutoCompletionElementRenameTag: (
     cancelTokenSource.dispose();
   }
   if (results.length === 0) {
+    console.log('no results');
     wordsAtOffsets = {};
     return;
   }
   if (!vscode.window.activeTextEditor) {
+    console.log('no editor');
     return;
   }
   const afterVersion = vscode.window.activeTextEditor.document.version;

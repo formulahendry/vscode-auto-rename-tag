@@ -1714,7 +1714,7 @@ $table .= '</table>';
     });
   });
 
-  test.skip('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/568', async () => {
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/568', async () => {
     await createTestFile('script-bug.html');
     const testCases: TestCase[] = [
       {

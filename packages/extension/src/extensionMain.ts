@@ -70,15 +70,9 @@ let lastChangeByAutoRenameTag: { fsPath: string; version: number } = {
   version: -1
 };
 
-let changing = false;
 const applyResults: (results: Result[]) => Promise<void> = async results => {
   assertDefined(vscode.window.activeTextEditor);
   const prev = vscode.window.activeTextEditor.document.version;
-  changing = true;
-  lastChangeByAutoRenameTag = {
-    fsPath: vscode.window.activeTextEditor.document.uri.fsPath,
-    version: vscode.window.activeTextEditor.document.version
-  };
   const applied = await vscode.window.activeTextEditor.edit(
     editBuilder => {
       assertDefined(vscode.window.activeTextEditor);
@@ -99,15 +93,18 @@ const applyResults: (results: Result[]) => Promise<void> = async results => {
       undoStopAfter: false
     }
   );
-  changing = false;
+
   const next = vscode.window.activeTextEditor.document.version;
   if (!applied) {
     return;
   }
+  lastChangeByAutoRenameTag = {
+    fsPath: vscode.window.activeTextEditor.document.uri.fsPath,
+    version: vscode.window.activeTextEditor.document.version
+  };
   if (prev + 1 !== next) {
     return;
   }
-
   for (const result of results) {
     const oldWordAtOffset = wordsAtOffsets[result.originalOffset];
     delete wordsAtOffsets[result.originalOffset];
@@ -175,6 +172,24 @@ const doAutoCompletionElementRenameTag: (
     return;
   }
   const beforeVersion = vscode.window.activeTextEditor.document.version;
+  // the change event is fired before we can update the version of the last change by auto rename tag, therefore we wait for that
+  await new Promise(resolve => setTimeout(resolve, 0));
+  if (!vscode.window.activeTextEditor) {
+    return;
+  }
+  if (
+    lastChangeByAutoRenameTag.fsPath ===
+      vscode.window.activeTextEditor.document.uri.fsPath &&
+    lastChangeByAutoRenameTag.version ===
+      vscode.window.activeTextEditor.document.version
+  ) {
+    return;
+  }
+
+  if (cancelTokenSource.token.isCancellationRequested) {
+    return;
+  }
+
   const results = await askServerForAutoCompletionsElementRenameTag(
     languageClientProxy,
     vscode.window.activeTextEditor.document,
@@ -353,22 +368,6 @@ export const activate: (
         return;
       }
       assertDefined(vscode.window.activeTextEditor);
-      const beforeVersion = vscode.window.activeTextEditor.document.version;
-      // the change event is fired before we can update the version of the last change by auto rename tag, therefore we wait for that
-      if (
-        changing &&
-        lastChangeByAutoRenameTag.fsPath === event.document.uri.fsPath &&
-        lastChangeByAutoRenameTag.version + 1 === event.document.version
-      ) {
-        previousText = currentText;
-        return;
-      }
-
-      assertDefined(vscode.window.activeTextEditor);
-      const afterVersion = vscode.window.activeTextEditor.document.version;
-      if (beforeVersion !== afterVersion) {
-        return;
-      }
       previousText = currentText;
       doAutoCompletionElementRenameTag(languageClientProxy, tags);
     });

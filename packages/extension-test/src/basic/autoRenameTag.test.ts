@@ -1743,10 +1743,19 @@ $table .= '</table>';
   <span>
   <div></div>
 </div>`
+      },
+      {
+        input: `<div>
+  <div|>
+  <div></div>
+</div>`,
+        type: '{backspace}{backspace}{backspace}span',
+        expect: `<div>
+  <span>
+  <div></div>
+</div>`
       }
     ];
-    await run(testCases, {
-      timeout: slowTimeout
-    });
+    await run(testCases, {});
   });
 });

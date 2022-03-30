@@ -149,7 +149,7 @@ export const doAutoRenameTag: (
     }
     const previousOpenTag = getPreviousOpeningTagName(
       scanner,
-      scanner.stream.position,
+      offset,
       isSelfClosingTag,
       isReact
     );
@@ -172,6 +172,20 @@ export const doAutoRenameTag: (
     };
   }
 };
+
+// const testCase = {
+//   text: '<div>\n  <di>\n  <div></div>\n</div>',
+//   offset: 8,
+//   newWord: '<di',
+//   oldWord: '<div'
+// };
+// doAutoRenameTag(
+//   testCase.text,
+//   testCase.offset,
+//   testCase.newWord,
+//   testCase.oldWord,
+//   'html'
+// ); //?
 
 // doAutoRenameTag(
 //   `<div>

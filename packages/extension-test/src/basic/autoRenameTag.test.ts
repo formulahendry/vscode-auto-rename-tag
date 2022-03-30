@@ -1731,7 +1731,7 @@ $table .= '</table>';
   });
 
   test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/567#issuecomment-1083228518', async () => {
-    await createTestFile('bug-567.txt');
+    await createTestFile('bug-567.html');
     const testCases: TestCase[] = [
       {
         input: `<div>

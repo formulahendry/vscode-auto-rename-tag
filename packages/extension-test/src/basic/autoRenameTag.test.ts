@@ -1729,4 +1729,24 @@ $table .= '</table>';
       });
     }
   });
+
+  test('bug https://github.com/formulahendry/vscode-auto-rename-tag/issues/567#issuecomment-1083228518', async () => {
+    await createTestFile('bug-567.txt');
+    const testCases: TestCase[] = [
+      {
+        input: `<div>
+  <div>|
+  <div></div>
+</div>`,
+        type: '{backspace}{backspace}{backspace}{backspace}span>',
+        expect: `<div>
+  <span>
+  <div></div>
+</div>`
+      }
+    ];
+    await run(testCases, {
+      timeout: slowTimeout
+    });
+  });
 });

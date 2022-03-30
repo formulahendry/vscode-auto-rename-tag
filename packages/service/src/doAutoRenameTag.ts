@@ -147,8 +147,24 @@ export const doAutoRenameTag: (
     if (nextClosingTag.tagName !== oldTagName) {
       return undefined;
     }
+    const previousOpenTag = getPreviousOpeningTagName(
+      scanner,
+      scanner.stream.position,
+      isSelfClosingTag,
+      isReact
+    );
+
+    if (
+      previousOpenTag &&
+      previousOpenTag.tagName === oldTagName &&
+      previousOpenTag.indent === nextClosingTag.indent
+    ) {
+      return undefined;
+    }
+
     const startOffset = nextClosingTag.offset;
     const endOffset = nextClosingTag.offset + nextClosingTag.tagName.length;
+
     return {
       startOffset,
       endOffset,
@@ -156,3 +172,14 @@ export const doAutoRenameTag: (
     };
   }
 };
+
+// doAutoRenameTag(
+//   `<div>
+//   <div>
+//   <div></div>
+// </div>`,
+//   9,
+//   '<span',
+//   '<div',
+//   'html'
+// ); //?

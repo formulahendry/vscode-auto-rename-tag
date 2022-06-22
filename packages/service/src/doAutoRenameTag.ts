@@ -147,8 +147,24 @@ export const doAutoRenameTag: (
     if (nextClosingTag.tagName !== oldTagName) {
       return undefined;
     }
+    const previousOpenTag = getPreviousOpeningTagName(
+      scanner,
+      offset,
+      isSelfClosingTag,
+      isReact
+    );
+
+    if (
+      previousOpenTag &&
+      previousOpenTag.tagName === oldTagName &&
+      previousOpenTag.indent === nextClosingTag.indent
+    ) {
+      return undefined;
+    }
+
     const startOffset = nextClosingTag.offset;
     const endOffset = nextClosingTag.offset + nextClosingTag.tagName.length;
+
     return {
       startOffset,
       endOffset,
@@ -156,3 +172,28 @@ export const doAutoRenameTag: (
     };
   }
 };
+
+// const testCase = {
+//   text: '<div>\n  <di>\n  <div></div>\n</div>',
+//   offset: 8,
+//   newWord: '<di',
+//   oldWord: '<div'
+// };
+// doAutoRenameTag(
+//   testCase.text,
+//   testCase.offset,
+//   testCase.newWord,
+//   testCase.oldWord,
+//   'html'
+// ); //?
+
+// doAutoRenameTag(
+//   `<div>
+//   <div>
+//   <div></div>
+// </div>`,
+//   9,
+//   '<span',
+//   '<div',
+//   'html'
+// ); //?

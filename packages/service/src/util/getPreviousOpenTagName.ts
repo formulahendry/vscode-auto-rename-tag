@@ -5,6 +5,7 @@ import {
   ScannerStateFast,
   TokenTypeFast
 } from '../htmlScanner/htmlScannerFast';
+import { getIndent } from './getIndent';
 
 export const getPreviousOpeningTagName: (
   scanner: ScannerFast,
@@ -16,6 +17,7 @@ export const getPreviousOpeningTagName: (
       tagName: string;
       offset: number;
       seenRightAngleBracket: boolean;
+      indent: number;
     }
   | undefined = (scanner, initialOffset, isSelfClosingTag, isReact) => {
   let offset = initialOffset + 1;
@@ -92,24 +94,26 @@ export const getPreviousOpeningTagName: (
     }
   } while (true);
 
+  const indent = getIndent(scanner.stream.getSource(), offset - 2);
   return {
     tagName: parentTagName,
     offset,
-    seenRightAngleBracket
+    seenRightAngleBracket,
+    indent
   };
 };
 
-getPreviousOpeningTagName(
-  createScannerFast({
-    input: `if $variable < 0 {
+// getPreviousOpeningTagName(
+//   createScannerFast({
+//     input: `if $variable < 0 {
 
-}
-$table .= '</>';`,
-    initialOffset: 35,
-    initialState: ScannerStateFast.WithinContent,
-    matchingTagPairs: getMatchingTagPairs('javascriptreact')
-  }),
-  35,
-  () => false,
-  true
-); //?
+// }
+// $table .= '</>';`,
+//     initialOffset: 35,
+//     initialState: ScannerStateFast.WithinContent,
+//     matchingTagPairs: getMatchingTagPairs('javascriptreact')
+//   }),
+//   35,
+//   () => false,
+//   true
+// ); //?

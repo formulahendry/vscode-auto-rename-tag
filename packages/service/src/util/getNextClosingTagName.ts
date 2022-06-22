@@ -5,6 +5,8 @@ import {
   createScannerFast
 } from '../htmlScanner/htmlScannerFast';
 import { getMatchingTagPairs } from '../getMatchingTagPairs';
+import { getPreviousOpeningTagName } from './getPreviousOpenTagName';
+import { getIndent } from './getIndent';
 
 export const getNextClosingTagName: (
   scanner: ScannerFast,
@@ -16,6 +18,7 @@ export const getNextClosingTagName: (
       tagName: string;
       offset: number;
       seenRightAngleBracket: boolean;
+      indent: number;
     }
   | undefined = (scanner, initialOffset, isSelfClosingTag, isReact = false) => {
   let offset = initialOffset;
@@ -109,21 +112,28 @@ export const getNextClosingTagName: (
     }
   } while (true);
 
+  const startOffset = offset;
+  const indent = getIndent(scanner.stream.getSource(), startOffset - 3);
+
   return {
     tagName: nextClosingTagName,
     offset,
-    seenRightAngleBracket
+    seenRightAngleBracket,
+    indent
   };
 };
 
 // getNextClosingTagName(
 //   createScannerFast({
-//     input: `<button>{/* </button> */}</button>`,
+//     input: `<div>
+//   <div>
+//   <div></div>
+// </div>`,
 //     initialOffset: 0,
-//     initialState: ScannerStateFast.WithinContent,
-//     matchingTagPairs: getMatchingTagPairs('javascriptreact'),
+//     initialState: ScannerStateFast.AfterOpeningEndTag,
+//     matchingTagPairs: getMatchingTagPairs('javascriptreact')
 //   }),
-//   1,
+//   12,
 //   () => false,
 //   true
 // ); //?

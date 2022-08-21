@@ -34,6 +34,8 @@ fs.copyFileSync(
 
 fs.copyFileSync(path.join(root, 'LICENSE'), path.join(root, 'dist/LICENSE'));
 
+fs.copyFileSync(path.join(root, '.vscodeignore'), path.join(root, 'dist/.vscodeignore'));
+
 fs.ensureDirSync(path.join(root, 'dist/images'));
 fs.copyFileSync(
   path.join(root, 'images/logo.png'),
